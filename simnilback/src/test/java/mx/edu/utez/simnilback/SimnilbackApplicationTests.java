@@ -1,10 +1,10 @@
-package mx.edu.utez.simnil;
+package mx.edu.utez.simnilback;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SimnilApplicationTests {
+class SimnilbackApplicationTests {
 
 	@Test
 	void contextLoads() {
