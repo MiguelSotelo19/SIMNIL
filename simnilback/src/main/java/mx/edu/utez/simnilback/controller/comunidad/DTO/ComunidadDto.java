@@ -6,7 +6,8 @@ import mx.edu.utez.simnilback.model.comunidad.ComunidadBean;
 
 @Data
 @NoArgsConstructor
-public class ComunidadDto { private Long idComunidad;
+public class ComunidadDto {
+    private Long idComunidad;
     private String nombre;
     private String codigo_postal;
     private String municipio;
