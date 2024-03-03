@@ -1,9 +1,15 @@
-import { StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 export const Header = () => {
-    return(
+    return (
         <View style={styles.header}>
-            <Image style={styles.imagen} source={require('../assets/simnil.jpg')}/>
+            <Image style={styles.imagen} source={require('../assets/logo.png')} />
+            <TouchableOpacity style={styles.button}>
+                <FontAwesomeIcon icon={faSignOutAlt} style={styles.icon} />
+                <Text style={styles.buttonText}>Salir</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -11,16 +17,37 @@ export const Header = () => {
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: 90,
-        marginTop: 45,
+        height: 80,
         marginBottom: 20,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'space-between', // Añadido para separar la imagen y el botón
         backgroundColor: '#85C1E9'
     },
     imagen: {
         width: 90,
         height: 90
+    },
+    button: {
+        marginRight: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'black',
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        borderRadius: 5,
+        backgroundColor:'#FFFFFF'
+    },
+    buttonText: {
+        color: 'black',
+        fontSize: 16,
+        marginLeft: 5, 
+        
+    },
+    icon: {
+        color: 'black',
+        fontSize: 16,
     }
 });
