@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import { Estadisticas } from './screens/Estadisticas'
+import { Login } from './screens/Login'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+      <Estadisticas />
+      {/*<Login />*/}
   </React.StrictMode>,
 )
