@@ -22,6 +22,8 @@ export const Estadisticas = () => {
           <div id="der">
             <div id="der-main">
               <h1>Consulta de Información</h1>
+              <hr />
+              
             </div>
           </div>
         </div>
