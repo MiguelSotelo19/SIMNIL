@@ -36,7 +36,6 @@
 
 #izq li:hover {
     background-color: rgb(0, 140, 255);
-    margin-right: 5%;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -45,4 +44,124 @@
     width: 12%;
     height: 12%;
     margin-right: 12%;
+}
+
+#opciones {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+#opciones select {
+    min-width: 8rem;
+    font-size: 17px;
+    background-color: gainsboro;
+    color: black;
+    padding-right: 10%;
+}
+
+
+#info {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#info button {
+    background-color: #209E00;
+    border-radius: 10px;
+    width: auto;
+    height: 45px;
+    font-size: 18px;
+}
+
+#info img {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+#info-personal {
+    color: black;
+    font-size: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+#info-personal input {
+    font-size: 20px;
+    width: 60%; 
+    margin-bottom: 3%;
+    background-color: white;
+    color: black;
+    padding: 1%;
+    border-radius: 8px;
+    text-align: center;
+    margin-left: 4%;
+    margin-top: 20%;
+}
+
+.hover {
+    background-color: rgb(0, 140, 255);
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#recu{
+    width: 80%;
+    height: 5.5vh;
+    font-size: 20px;
+    color: blue;
+    background-color: white;
+    border-color: blue;
+    border-width: 3px;
+    border-radius: 5px;
+}
+
+#recu:hover {
+    background-color: rgb(152, 152, 255);
+}
+
+#cancelar {
+    width: 80%;
+    height: 5.5vh;
+    font-size: 20px;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    color: red;
+    background-color: white;
+    border-color: red;
+    border-width: 3px;
+    border-radius: 5px;
+}
+
+#cancelar:hover {
+    background-color: rgb(255, 172, 172);
+}
+
+form input {
+    font-size: 20px;
+    width: 60%; 
+    margin-bottom: 3%;
+    background-color: white;
+    color: black;
+    padding: 1%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.info-1 {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-1 input {
+    width: 40%;
 }
