@@ -128,7 +128,7 @@
     background-color: rgb(152, 152, 255);
 }
 
-#cancelar {
+.cancelar {
     width: 80%;
     height: 5.5vh;
     font-size: 20px;
@@ -141,7 +141,7 @@
     border-radius: 5px;
 }
 
-#cancelar:hover {
+.cancelar:hover {
     background-color: rgb(255, 172, 172);
 }
 
