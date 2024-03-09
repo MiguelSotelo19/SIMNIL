@@ -28,4 +28,13 @@ public class RolBean {
     @JsonIgnore
     @OneToMany(mappedBy = "rolBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PersonaBean> personaBeanSet;
+
+    public RolBean(Long idRol, String rol) {
+        this.idRol = idRol;
+        this.rol = rol;
+    }
+
+    public RolBean( String rol) {
+        this.rol = rol;
+    }
 }
