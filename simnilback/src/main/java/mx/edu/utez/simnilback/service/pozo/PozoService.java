@@ -2,6 +2,7 @@ package mx.edu.utez.simnilback.service.pozo;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
+import mx.edu.utez.simnilback.model.persona.PersonaBean;
 import mx.edu.utez.simnilback.model.pozo.PozoBean;
 import mx.edu.utez.simnilback.model.pozo.PozoRepository;
 import org.springframework.http.HttpStatus;
@@ -48,11 +49,18 @@ public class PozoService {
     public ResponseEntity<ApiResponse> changeStatus(Long id){
         Optional<PozoBean> pozoFound = repository.findById(id);
         if (pozoFound.isPresent()){
-            PozoBean pozoToDisable = pozoFound.get();
-            pozoToDisable.setEstatus(false);
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se deshabilito correctamente"), HttpStatus.OK);
+            PozoBean PozoToDisable = pozoFound.get();
+            if(PozoToDisable.getEstatus() == false){
+                PozoToDisable.setEstatus(true);
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se Habilitó correctamente"), HttpStatus.OK);
+            } else {
+                PozoToDisable.setEstatus(false);
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se deshabilitó correctamente"), HttpStatus.OK);
+            }
         } else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se pudo deshabilitar"), HttpStatus.BAD_REQUEST);
         }
+
+
     }
 }

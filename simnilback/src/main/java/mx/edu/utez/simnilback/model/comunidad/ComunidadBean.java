@@ -55,4 +55,21 @@ public class ComunidadBean {
         this.municipio = municipio;
         this.estatus = estatus;
     }
+
+    /*public ComunidadBean(Long idComunidad, String nombre, String codigo_postal, String municipio, Boolean estatus, PozoBean pozoBean) {
+        this.idComunidad = idComunidad;
+        this.nombre = nombre;
+        this.codigo_postal = codigo_postal;
+        this.municipio = municipio;
+        this.estatus = estatus;
+        this.pozoBean = pozoBean;
+    }*/
+
+    public ComunidadBean(String nombre, String codigo_postal, String municipio, Boolean estatus, PozoBean pozoBean) {
+        this.nombre = nombre;
+        this.codigo_postal = codigo_postal;
+        this.municipio = municipio;
+        this.estatus = estatus;
+        this.pozoBean = pozoBean;
+    }
 }

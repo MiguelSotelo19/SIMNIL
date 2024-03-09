@@ -1,12 +1,9 @@
 package mx.edu.utez.simnilback.controller.persona.DTO;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
 import mx.edu.utez.simnilback.model.rol.RolBean;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor

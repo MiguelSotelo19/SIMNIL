@@ -16,10 +16,14 @@ public class ComunidadDto {
     private PozoBean pozoBean;
 
     public ComunidadBean toEntity(){
-        return new ComunidadBean(nombre, codigo_postal, municipio, estatus) ;
+        if (pozoBean == null)
+            return new ComunidadBean(idComunidad, nombre, codigo_postal, municipio, estatus);
+        return new ComunidadBean(idComunidad, nombre, codigo_postal, municipio, estatus, pozoBean);
+
     }
 
-    public ComunidadBean toUpdate(Long idComunidad){
-        return new ComunidadBean(idComunidad, nombre, codigo_postal, municipio, estatus);
+    //Actualizar
+    public ComunidadBean toUpdate(Long idComunidad) {
+        return new ComunidadBean(idComunidad, nombre, codigo_postal, municipio, estatus, pozoBean);
     }
 }

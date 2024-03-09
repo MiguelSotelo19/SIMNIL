@@ -2,6 +2,7 @@ package mx.edu.utez.simnilback.service.persona;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
+import mx.edu.utez.simnilback.model.comunidad.ComunidadBean;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
 import mx.edu.utez.simnilback.model.persona.PersonaRepository;
 import mx.edu.utez.simnilback.model.rol.RolBean;
@@ -65,15 +66,24 @@ public class PersonaService {
     }
 
     //Eliminar Persona
+
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse>changeStatus(Long id) {
-        Optional<PersonaBean> personOptional = repository.findById(id);
-        if (personOptional.isPresent()){
-            PersonaBean personaDisabled = personOptional.get();
-            personaDisabled.setEstatus(false);
-            return  new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se deshabilito correctamente a la persona"), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> changeStatus(Long id){
+        Optional<PersonaBean> personaFound = repository.findById(id);
+        if (personaFound.isPresent()){
+            PersonaBean PersonaToDisable = personaFound.get();
+            if(PersonaToDisable.getEstatus() == false){
+                PersonaToDisable.setEstatus(true);
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se Habilitó correctamente"), HttpStatus.OK);
+            } else {
+                PersonaToDisable.setEstatus(false);
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se deshabilitó correctamente"), HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se pudo deshabilitar"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Persona no encontrada"), HttpStatus.NOT_FOUND);
+
+
     }
 
 
