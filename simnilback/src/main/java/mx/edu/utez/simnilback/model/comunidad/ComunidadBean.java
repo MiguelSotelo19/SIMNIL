@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.simnilback.model.pozo.PozoBean;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "comunidades")
 @Getter
@@ -31,8 +33,11 @@ public class ComunidadBean {
     @Column(columnDefinition = "BOOLEAN", nullable = false)
     private Boolean estatus;
 
+    /*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private PozoBean pozoAbastecedor;*/
+
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "fk_id_pozo")
     private PozoBean pozoBean;
 

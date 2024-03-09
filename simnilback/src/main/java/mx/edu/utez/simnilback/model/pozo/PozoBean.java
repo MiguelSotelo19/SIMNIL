@@ -1,5 +1,6 @@
 package mx.edu.utez.simnilback.model.pozo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

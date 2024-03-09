@@ -7,6 +7,6 @@ import java.util.Optional;
 @Repository
 public interface PersonaRepository extends JpaRepository<PersonaBean, Long> {
 
-    Optional<PersonaBean> findByNumeroTelefoncico(String numeroTelefonico);
+    Optional<PersonaBean> findByNumeroTelefonico(String numeroTelefonico);
     Optional<PersonaBean> findByCorreo(String correoElectronico);
 }

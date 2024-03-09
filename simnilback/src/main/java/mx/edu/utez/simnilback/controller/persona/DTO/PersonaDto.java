@@ -1,28 +1,37 @@
 package mx.edu.utez.simnilback.controller.persona.DTO;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
+import mx.edu.utez.simnilback.model.rol.RolBean;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class PersonaDto {
-   private Long idPersona ;
-    private String nombre ;
-    private String apellido_materno;
-    private String apellido_paterno;
-    private String numero_telefonico;
-    private String correo_electronico ;
-    private String nombre_usuario;
+    private Long idPersonas;
+    private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String correo;
+    private String nombreUsuario;
     private String contrasenia;
     private Boolean estatus;
+    private String numeroTelefonico;
+    private RolBean rolBean;
+
 
     public PersonaBean toEntity(){
-        return new PersonaBean(nombre, apellido_materno, apellido_paterno, correo_electronico, nombre_usuario, contrasenia, estatus, numero_telefonico);
+        if (rolBean == null)
+            return new PersonaBean(nombre, apellidoPaterno, apellidoMaterno, correo, nombreUsuario, contrasenia, estatus, numeroTelefonico);
+        return new PersonaBean(nombre, apellidoPaterno, apellidoMaterno, correo, nombreUsuario, contrasenia, estatus, numeroTelefonico, rolBean);
+
     }
 
     //Actualizar
-    public PersonaBean toUpdate() {
-        return  new PersonaBean(idPersona,nombre,apellido_materno, apellido_paterno,correo_electronico, nombre_usuario, contrasenia, estatus,numero_telefonico);
+    public PersonaBean toUpdate(Long idPersona) {
+        return new PersonaBean(idPersona, nombre, apellidoPaterno, apellidoMaterno, correo, nombreUsuario, contrasenia, estatus, numeroTelefonico, rolBean);
     }
 }

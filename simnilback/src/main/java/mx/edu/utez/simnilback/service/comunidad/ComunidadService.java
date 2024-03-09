@@ -30,7 +30,7 @@ public class ComunidadService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(ComunidadBean comunidadesBean){
-        Optional<ComunidadBean> foundComunidad = repository.findById(comunidadesBean.getIdComunidad());
+        Optional<ComunidadBean> foundComunidad = repository.findByNombre(comunidadesBean.getNombre());
         if (foundComunidad.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error al intentar registrar la Comunidad"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(comunidadesBean), HttpStatus.OK, "Registrado Correctamente"), HttpStatus.OK);
@@ -52,6 +52,18 @@ public class ComunidadService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se ha eliminado Correctamente la Comunidad"), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se ha podido eliminar la Comunidad dada"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> changeStatus(Long id){
+        Optional<ComunidadBean> comunidadFound = repository.findById(id);
+        if (comunidadFound.isPresent()){
+            ComunidadBean comunidadToDisable = comunidadFound.get();
+            comunidadToDisable.setEstatus(false);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Se deshabilito correctamente"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se pudo deshabilitar"), HttpStatus.BAD_REQUEST);
         }
     }
 }
