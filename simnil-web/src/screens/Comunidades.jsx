@@ -110,7 +110,6 @@ export const Comunidades = () => {
 
   const enviarSolicitud = async(metodo, parametros, url) => {
     if(metodo === 'POST'){
-      console.log('POST');
       parametros.idComunidad = 0;
       await axios({
         method: metodo,
@@ -122,7 +121,7 @@ export const Comunidades = () => {
         show_alerta(msj, tipo);
         if(tipo === 'success'){
           document.getElementById('cancelarCreate').click();
-          show_alerta('Producto Almacenado Correctamente', 'success');
+          show_alerta('Comunidad Almacenada Correctamente', 'success');
           getComunidades();
         }
       })
@@ -145,7 +144,7 @@ export const Comunidades = () => {
         getComunidades();
       } else {
         document.querySelector("body > div.swal2-container.swal2-center.swal2-backdrop-show > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click();
-        show_alerta('Producto Eliminado', 'success');
+        show_alerta('Comunidad Eliminada', 'success');
         getComunidades();        
       }
     })
@@ -166,7 +165,7 @@ export const Comunidades = () => {
         setIdComunidad(id_);
         enviarSolicitud('DELETE', {idComunidad:id_}, 'http://localhost:8080/api/simnil/comunidades/');
       } else {
-        show_alerta('El producto NO fue elminado', 'info');
+        show_alerta('La comunidad NO fue elminada', 'info');
       }
     });
   }
@@ -192,11 +191,11 @@ export const Comunidades = () => {
               {/*Tablas dinamicas */}
               <div className='container-fluid'>
                 <div className="row mt-3">
-                  <div className="col-12 col-lg-8 offset-0 offset-lg-2">
+                  <div className="col-12 col-lg-8 offset-0 offset-lg-2" style={{width: '90%', marginLeft: '5%', fontSize: 15}} >
                     <div className="table-responsive">
                       <table className='table table-bordered'>
                         <thead>
-                          <tr>
+                          <tr style={{textAlign: 'center', fontSize: 17}}>
                             <th>#</th>
                             <th>Comunidad</th>
                             <th>C.P.</th>
