@@ -35,9 +35,9 @@ public class PersonaBean {
     @Column(columnDefinition = "BOOLEAN", nullable = false)
     private Boolean estatus;
     @Column(length = 10, nullable = false)
-    private String numeroTelefoncico;
+    private String numeroTelefonico;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_id_rol")
     private RolBean rolBean;
 
@@ -52,10 +52,22 @@ public class PersonaBean {
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
         this.estatus = estatus;
-        this.numeroTelefoncico = numeroTelefoncico;
+        this.numeroTelefonico = numeroTelefoncico;
     }
 
-    public PersonaBean(Long idPersonas, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String nombreUsuario, String contrasenia, Boolean estatus, String numeroTelefoncico) {
+    public PersonaBean(String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String nombreUsuario, String contrasenia, Boolean estatus, String numeroTelefoncico, RolBean rolBean) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.correo = correo;
+        this.nombreUsuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+        this.estatus = estatus;
+        this.numeroTelefonico = numeroTelefoncico;
+        this.rolBean = rolBean;
+    }
+
+    public PersonaBean(Long idPersonas, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String nombreUsuario, String contrasenia, Boolean estatus, String numeroTelefonico, RolBean rolBean) {
         this.idPersonas = idPersonas;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -64,6 +76,7 @@ public class PersonaBean {
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
         this.estatus = estatus;
-        this.numeroTelefoncico = numeroTelefoncico;
+        this.numeroTelefonico = numeroTelefonico;
+        this.rolBean = rolBean;
     }
 }

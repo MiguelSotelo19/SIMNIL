@@ -1,22 +1,22 @@
-package mx.edu.utez.simnilback.controller.comunidad;
+package mx.edu.utez.simnilback.controller.pozo;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
-import mx.edu.utez.simnilback.controller.comunidad.DTO.ComunidadDto;
-import mx.edu.utez.simnilback.service.comunidad.ComunidadService;
+import mx.edu.utez.simnilback.controller.pozo.DTO.PozoDto;
+import mx.edu.utez.simnilback.service.pozo.PozoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/simnil/comunidades")
+@RequestMapping("api/simnil/pozos")
 @CrossOrigin(origins = {"*"})
 @AllArgsConstructor
-public class ComunidadController {
-    private final ComunidadService service;
+public class PozoController {
+    private final PozoService service;
 
     @GetMapping("/")
-    public ResponseEntity<ApiResponse> obtener(){
-        return service.getAll();
+    public ResponseEntity<ApiResponse> getAll(){
+        return  service.getAll();
     }
 
     @GetMapping("/{id}")
@@ -25,12 +25,12 @@ public class ComunidadController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ApiResponse> register(@RequestBody ComunidadDto dto){
+    public ResponseEntity<ApiResponse> register(@RequestBody PozoDto dto){
         return service.save(dto.toEntity());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> modify(@PathVariable("id") Long id, @RequestBody ComunidadDto dto){
+    public ResponseEntity<ApiResponse> modify(@PathVariable("id") Long id, @RequestBody PozoDto dto){
         return service.update(dto.toUpdate(id));
     }
 

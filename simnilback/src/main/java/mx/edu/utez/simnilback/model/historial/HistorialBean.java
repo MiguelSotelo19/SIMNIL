@@ -33,7 +33,7 @@ public class HistorialBean {
     private LocalTime horaRecopilacion;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "fk_id_pozo")
     private PozoBean pozoBean;
 }
