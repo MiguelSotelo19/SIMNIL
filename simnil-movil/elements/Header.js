@@ -1,12 +1,19 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export const Header = () => {
+    const navigation = useNavigation();
+
+    const handleLogout = () => {
+        
+        navigation.navigate('Login');
+    };
     return (
         <View style={styles.header}>
             <Image style={styles.imagen} source={require('../assets/logo.png')} />
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={handleLogout}>
                 <FontAwesomeIcon icon={faSignOutAlt} style={styles.icon} />
                 <Text style={styles.buttonText}>Salir</Text>
             </TouchableOpacity>
