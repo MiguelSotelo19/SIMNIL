@@ -112,21 +112,20 @@ export const Usuarios = () => {
         show_alerta('Escribe el Nombre de Usuario', 'warning');
       } else if(contrasenia.trim() === ''){
         show_alerta('Escribe la Contraseña', 'warning');
-      } else if(numeroTelefoncico.trim() === ''){
-        show_alerta('Escribe el Número de Teléfono', 'warning');
-      } else if(correo.trim() === ''){
-        show_alerta('Escribe el Correo Electrónico', 'warning');
-      } else {
+      }  else {
         parametros = {
           idPersona: idPersonas,
           nombre: nombre,
-          apellido_materno: apellidoMaterno,
-          apellido_paterno: apellidoPaterno,
-          correo_electronico: correo,
-          nombre_usuario: nombreUsuario,
+          apellidoPaterno: apellidoPaterno,
+          apellidoMaterno: apellidoMaterno,          
+          correo: correo,
+          nombreUsuario: nombreUsuario,
           contrasenia: contrasenia,
           estatus: estatus,
-          numero_telefonico: numeroTelefoncico
+          numeroTelefonico: numeroTelefoncico,
+          rolBean: {
+            idRol: rol
+          }
         }
   
         enviarSolicitud(metodo, parametros, url);
@@ -148,6 +147,8 @@ export const Usuarios = () => {
             document.getElementById('cancelarCreate').click();
             show_alerta('Usuario Almacenado Correctamente', 'success');
             getComunidades();
+          } else {
+            console.log("No se pudo");
           }
         })
         .catch(function (error) {
@@ -242,7 +243,7 @@ export const Usuarios = () => {
                                 <td>{usuario.apellidoMaterno}</td>
                                 <td>{usuario.nombreUsuario}</td>
                                 <td>{usuario.contrasenia}</td>
-                                <td>{usuario.numeroTelefoncico}</td>
+                                <td>{usuario.numeroTelefonico}</td>
                                 <td>{usuario.correo}</td>
                                 <td>{usuario.rolBean.rol}</td>
                                 <td>{usuario.estatus == true ? "Activo": "Inactivo"}</td>
@@ -271,33 +272,7 @@ export const Usuarios = () => {
             </div>
           </div> 
 
-          <Modal
-              isOpen={modalEdit}
-              onAfterOpen={afterOpenModal}
-              onRequestClose={closeModalEdit}
-              style={customStyles}
-              contentLabel="Modal Edit"
-          >
-            <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color: 'black', fontSize: 35}}>Editar Comunidad</h2>
-            <form style={{
-                width: '90%',
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center'}}>
-
-            <input type='text' placeholder='Nombre de la Comunidad' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
-            <input type='text' placeholder='Municipio' id='municipio_' value={municipio} onChange={(e) => setMunicipio(e.target.value)} />
-            <div className='info-1'>
-              <input type='text' placeholder='Código Postal' id='cp_' value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} />
-              <input type='text' placeholder='Activo' />
-            </div>
-            
-
-            <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
-            <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>
-            </form>
-          </Modal>
-
+          
           <Modal
               isOpen={modalEdit}
               onAfterOpen={afterOpenModal}
@@ -360,13 +335,23 @@ export const Usuarios = () => {
                 <input type='text' placeholder='Apellido Materno' />
                 <input type='text' placeholder='Número de Teléfono' />
               </div>
+
+              <div className="info-1">
+                <input type='text' placeholder='Usuario' />
+                <input type='text' placeholder='Contraseña' />
+              </div>
                     
               <input type='text' placeholder='Correo Electrónico' />
-              <input type='text' placeholder='Usuario' />
-              <input type='text' placeholder='Contraseña' />
+              
+              <select onChange={(e) => setRol(e.target.value)} id='listaRol'>
+              <option id='selected'>Selecciona Rol</option>
+              {roles.map( (rol) => (
+                <option key={rol.idRol} value={rol.idRol}>{rol.rol}</option>
+              ) )}
+            </select>
 
 
-              <button id='recu'>Crear Usuario</button>
+              <button id='recu' onClick={() => validar('POST')}>Crear Usuario</button>
               <button id='cancelar' onClick={closeModal}>Cancelar</button>
               </form>
           </Modal>

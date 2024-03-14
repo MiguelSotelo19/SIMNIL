@@ -54,7 +54,9 @@ export const Login = () => {
 
                 <input className='Login' type='text' name='usuario' id='usuario' placeholder='Usuario' />
                 <input className='Login' type='password' name='password' id='password' placeholder='Contraseña' />
-                <button id='btn_login'>Iniciar Sesión</button>
+                <button id='btn_login' onClick={() => {
+                    window.location = '/Estadisticas';
+                }}>Iniciar Sesión</button>
                 <a onClick={openModal} style={{color: 'blue'}}>¿Olvidaste tu contraseña?</a>
 
                 <Modal

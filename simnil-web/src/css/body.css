@@ -156,6 +156,21 @@ form input {
     text-align: center;
 }
 
+form select {
+    font-size: 20px;
+    width: 40%; 
+    margin-bottom: 3%;
+    background-color: white;
+    color: black;
+    padding: 1%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#selected {
+    background-color: gainsboro;
+}
+
 .info-1 {
     width: 90%;
     display: flex;
