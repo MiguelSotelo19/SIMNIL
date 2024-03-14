@@ -44,15 +44,20 @@ Modal.setAppElement('#root');
 export const Comunidades = () => {
   //Tablas
   const url='http://localhost:8080/api/simnil/comunidades/';
+  const urlPozos='http://localhost:8080/api/simnil/pozos/';
   const [comunidades, setComunidades] = useState([]);
+  const [pozos, setPozos] = useState([]);
   const [idComunidad, setIdComunidad] = useState('');
   const [nombre, setNombre] = useState('');
   const [codigoPostal, setCodigoPostal] = useState('');
   const [municipio, setMunicipio] = useState('');
   const [estatus, setEstatus] = useState(false);
+  const [idPozo, setIdPozo] = useState('');
+  const [nombrePozo, setNombrePozo] = useState('');
 
   useEffect( () => {
     getComunidades();
+    getPozos();
   }, []);
 
   const getComunidades = async () => {
@@ -60,12 +65,19 @@ export const Comunidades = () => {
     setComunidades(respuesta.data.data);
   }
 
+  const getPozos = async () => {
+    const respuesta = await axios.get(urlPozos);
+    setPozos(respuesta.data.data);
+  }
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [modalEdit, setOpenEdit] = React.useState(false);
 
-  function openModal() {setIsOpen(true);}
+  function openModal() {
+    getPozos();
+    setIsOpen(true);
+  }
 
   function afterOpenModal() {
       subtitle.style.color = '#f00';
@@ -75,8 +87,27 @@ export const Comunidades = () => {
 
   function closeModalEdit() { setOpenEdit(false); }
 
-  const openModalEdit = (idComunidad, nombre, codigoPostal, municipio, estatus) => {
+  const openModalEdit = async (idComunidad, nombre, codigoPostal, municipio, estatus) => {
     setOpenEdit(true);
+
+    let respuesta = await axios.get(urlPozos);
+    respuesta = respuesta.data.data;
+    let idPozoB, nombrePozoB;
+
+    for(let i=0; i<respuesta.length; i++){
+      console.log(respuesta[i].comunidadesBeans);
+      for(let j=0; j<respuesta[i].comunidadesBeans.length; j++){
+        if (respuesta[i].comunidadesBeans[j].idComunidad == idComunidad) {
+          idPozoB=respuesta[i].idPozo;
+          nombrePozoB=respuesta[i].nombre;
+          break;
+        }
+      }
+      
+    }
+
+    setIdPozo(idPozoB);
+    setNombrePozo(nombrePozoB);
 
     setIdComunidad(idComunidad),
     setNombre(nombre);
@@ -101,7 +132,10 @@ export const Comunidades = () => {
         nombre: nombre,
         codigo_postal: codigoPostal,
         municipio: municipio,
-        estatus: true
+        estatus: true,
+        pozoBean: {
+          idPozo: idPozo
+        }
       }
 
       enviarSolicitud(metodo, parametros, url);
@@ -144,7 +178,7 @@ export const Comunidades = () => {
         getComunidades();
       } else {
         document.querySelector("body > div.swal2-container.swal2-center.swal2-backdrop-show > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click();
-        show_alerta('Comunidad Eliminada', 'success');
+        show_alerta('Comunidad Actualizada', 'success');
         getComunidades();        
       }
     })
@@ -157,13 +191,13 @@ export const Comunidades = () => {
   const deleteComunidad = (id_, name) => {
     const MySawl = withReactContent(Swal);
     MySawl.fire({
-      title: '¿Seguro de eliminar la Comunidad '+name+'?',
-      icon: 'question', text: 'No se podrá dar marcha atrás',
-      showCancelButton: true, confirmButtonText: 'Si, Eliminar', cancelButtonText: 'Cancelar'
+      title: '¿Seguro de desactivar la Comunidad '+name+'?',
+      icon: 'question', text: 'Se mantendrá inhabilitado hasta que se actualice manualmente',
+      showCancelButton: true, confirmButtonText: 'Si, Desactivar', cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed){
         setIdComunidad(id_);
-        enviarSolicitud('DELETE', {idComunidad:id_}, 'http://localhost:8080/api/simnil/comunidades/');
+        enviarSolicitud('PATCH', {idComunidad:id_}, 'http://localhost:8080/api/simnil/comunidades/');
       } else {
         show_alerta('La comunidad NO fue elminada', 'info');
       }
@@ -252,12 +286,17 @@ export const Comunidades = () => {
                 alignItems: 'center'}}>
 
             <input type='text' placeholder='Nombre de la Comunidad' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
-            <input type='text' placeholder='Municipio' id='municipio_' value={municipio} onChange={(e) => setMunicipio(e.target.value)} />
             <div className='info-1'>
+              <input type='text' placeholder='Municipio' id='municipio_' value={municipio} onChange={(e) => setMunicipio(e.target.value)} />
               <input type='text' placeholder='Código Postal' id='cp_' value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} />
-              <input type='text' placeholder='Activo' />
             </div>
             
+            <select onChange={(e) => setIdPozo(e.target.value)} id='listaPozo'>
+              <option id='selected' value={idPozo}>{nombrePozo}</option>
+              {pozos.map( (pozo) => (
+                <option key={pozo.idPozo} value={pozo.idPozo}>{pozo.nombre}</option>
+              ) )}
+            </select>
 
             <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
             <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>
@@ -279,8 +318,18 @@ export const Comunidades = () => {
                 alignItems: 'center'}}>
 
             <input type='text' placeholder='Nombre de la Comunidad' onChange={(e) => setNombre(e.target.value)} />
-            <input type='text' placeholder='Municipio' onChange={(e) => setMunicipio(e.target.value)} />
-            <input type='text' placeholder='Código Postal' onChange={(e) => setCodigoPostal(e.target.value)} />
+
+            <div className='info-1'>
+              <input type='text' placeholder='Municipio' onChange={(e) => setMunicipio(e.target.value)} />
+              <input type='text' placeholder='Código Postal' onChange={(e) => setCodigoPostal(e.target.value)} />
+            </div>
+
+            <select onChange={(e) => setIdPozo(e.target.value)} id='listaPozo'>
+              <option id='selected'>Selecciona Pozo</option>
+              {pozos.map( (pozo) => (
+                <option key={pozo.idPozo} value={pozo.idPozo}>{pozo.nombre}</option>
+              ) )}
+            </select>
 
             <button id='recu' onClick={() => validar('POST')}>Crear Comunidad</button>
             <button className='cancelar' id='cancelarCreate' onClick={closeModal}>Cancelar</button>

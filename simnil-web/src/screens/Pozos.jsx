@@ -45,26 +45,27 @@ Modal.setAppElement('#root');
 
 export const Pozos = () => {
     //Tablas
-    const url='http://localhost:8080/api/simnil/comunidades/';
-    const [comunidades, setComunidades] = useState([]);
-    const [idComunidad, setIdComunidad] = useState('');
-    const [nombre, setNombre] = useState('');
-    const [codigoPostal, setCodigoPostal] = useState('');
-    const [municipio, setMunicipio] = useState('');
-    const [estatus, setEstatus] = useState(false);
+    const url='http://localhost:8080/api/simnil/pozos/';
+    const [ pozos, setPozos ] = useState([]);
+    const [ idPozo, setIdPozo ] = useState('');
+    const [ nombre, setNombre ] = useState('');
+    const [ porcentaje, setPorcentaje ] = useState('');
+    const [ capLitros, setCapLitros ] = useState('');
+    const [ profundidad, setProfundidad ] = useState('');
 
     useEffect( () => {
-      getComunidades();
+      getPozos();
     }, []);
 
-    const getComunidades = async () => {
+    const getPozos = async () => {
       const respuesta = await axios.get(url);
-      setComunidades(respuesta.data.data);
+      setPozos(respuesta.data.data);
     }
 
     //Fin tablas
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalEdit, setOpenEdit] = React.useState(false);
 
     function openModal() {
         setIsOpen(true);
@@ -78,35 +79,42 @@ export const Pozos = () => {
         setIsOpen(false);
     }
 
+    function closeModalEdit() { 
+      setOpenEdit(false); 
+    }
+
     //Funciones
     function closeModalEdit() { setOpenEdit(false); }
 
-  const openModalEdit = (idComunidad, nombre, codigoPostal, municipio, estatus) => {
+  const openModalEdit = (idPozo, nombre, porcentaje, capLitros, profundidad) => {
     setOpenEdit(true);
 
-    setIdComunidad(idComunidad),
+    setIdPozo(idPozo),
     setNombre(nombre);
-    setCodigoPostal(codigoPostal);
-    setMunicipio(municipio);
-    setEstatus(estatus);
+    setPorcentaje(porcentaje);
+    setCapLitros(capLitros);
+    setProfundidad(profundidad);
   }
 
   const validar = (metodo) => {
-    var parametros, url='http://localhost:8080/api/simnil/comunidades/';
-    if(idComunidad == '' || idComunidad == null) setIdComunidad(1);
+    var parametros, url='http://localhost:8080/api/simnil/pozos/';
+    if(idPozo == '' || idPozo == null) setIdPozo(1);
 
     if(nombre.trim() === ''){
-      show_alerta('Escribe el nombre de la Comunidad', 'warning');
-    } else if(codigoPostal.trim() === ''){
-      show_alerta('Escribe el Codigo Postal', 'warning');
-    } else if(municipio.trim() === ''){
-      show_alerta('Escribe el nombre del Municipio', 'warning');
+      show_alerta('Escribe el nombre del Pozo', 'warning');
+    } else if(porcentaje === '' || porcentaje === null){
+      show_alerta('Escribe el porcentaje', 'warning');
+    } else if(capLitros === '' || capLitros === null){
+      show_alerta('Escribe la capacidad del pozo', 'warning');
+    } else if(profundidad === '' || profundidad === null){
+      show_alerta('Escribe la profundidad del pozo', 'warning');
     } else {
       parametros = {
-        idComunidad: idComunidad,
+        idPozo: idPozo,
+        porcentajeAgua: porcentaje,
         nombre: nombre,
-        codigo_postal: codigoPostal,
-        municipio: municipio,
+        capacidadLitros: capLitros,
+        profundidad: profundidad,
         estatus: true
       }
 
@@ -116,7 +124,7 @@ export const Pozos = () => {
 
   const enviarSolicitud = async(metodo, parametros, url) => {
     if(metodo === 'POST'){
-      parametros.idComunidad = 0;
+      parametros.idPozo = 0;
       await axios({
         method: metodo,
         url: url,
@@ -127,8 +135,8 @@ export const Pozos = () => {
         show_alerta(msj, tipo);
         if(tipo === 'success'){
           document.getElementById('cancelarCreate').click();
-          show_alerta('Comunidad Almacenada Correctamente', 'success');
-          getComunidades();
+          show_alerta('Pozo Almacenado Correctamente', 'success');
+          getPozos();
         }
       })
       .catch(function (error) {
@@ -137,9 +145,10 @@ export const Pozos = () => {
       });
     }
 
+    console.log(parametros);
     await axios({
       method: metodo,
-      url: url+parametros.idComunidad,
+      url: url+parametros.idPozo,
       data: parametros
     }).then(function (respuesta) {
       var tipo = respuesta.data[0];
@@ -147,12 +156,8 @@ export const Pozos = () => {
       show_alerta(msj, tipo);
       if(tipo === 'success'){
         document.getElementById('cancelarEdit').click();
-        getComunidades();
-      } else {
-        document.querySelector("body > div.swal2-container.swal2-center.swal2-backdrop-show > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click();
-        show_alerta('Comunidad Eliminada', 'success');
-        getComunidades();        
-      }
+        getPozos();
+      } 
     })
     .catch(function (error) {
       show_alerta('Error en la Solicitud', 'error');
@@ -160,19 +165,22 @@ export const Pozos = () => {
     });
   }
 
-  const deleteComunidad = (id_, name) => {
+  const deletePozo = (id_, name) => {
     const MySawl = withReactContent(Swal);
     MySawl.fire({
-      title: '¿Seguro de eliminar la Comunidad '+name+'?',
-      icon: 'question', text: 'No se podrá dar marcha atrás',
+      title: '¿Seguro de desactivar el pozo '+name+'?',
+      icon: 'question', text: 'Se mantendrá inhabilitado hasta que se actualice manualmente',
       showCancelButton: true, confirmButtonText: 'Si, Eliminar', cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed){
-        setIdComunidad(id_);
-        enviarSolicitud('DELETE', {idComunidad:id_}, 'http://localhost:8080/api/simnil/comunidades/');
+        setIdPozo(id_);
+        enviarSolicitud('PATCH', {idPozo:id_}, 'http://localhost:8080/api/simnil/pozos/');
+        setTimeout(function() { document.querySelector("body > div.swal2-container.swal2-center.swal2-backdrop-show > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click(); }, 10);
+        getPozos();
       } else {
-        show_alerta('La comunidad NO fue elminada', 'info');
+        show_alerta('El pozo NO pudo ser desactivado', 'info');
       }
+      getPozos();
     });
   }
 
@@ -202,29 +210,31 @@ export const Pozos = () => {
                         <thead>
                           <tr style={{textAlign: 'center', fontSize: 17}}>
                             <th>#</th>
-                            <th>Comunidad</th>
-                            <th>C.P.</th>
-                            <th>Municipio</th>
-                            <th>Estatus</th>
+                            <th>Nombre</th>
+                            <th>Porcentaje</th>
+                            <th>Capacidad Litros</th>
+                            <th>Profundidad</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                           </tr>
                         </thead>
                         <tbody className='table-group-divider'>
-                          {comunidades.map( (comunidad, i) => (
-                              <tr key={comunidad.idComunidad}>
+                          {pozos.map( (pozo, i) => (
+                              <tr key={pozo.idPozo}>
                                 <td>{(i+1)}</td>
-                                <td>{comunidad.nombre}</td>
-                                <td>{comunidad.codigo_postal}</td>
-                                <td>{comunidad.municipio}</td>
-                                <td>{comunidad.estatus == true ? "Activo": "Inactivo"}</td>
+                                <td>{pozo.nombre}</td>
+                                <td>{pozo.porcentajeAgua}</td>
+                                <td>{pozo.capacidadLitros}</td>
+                                <td>{pozo.profundidad}</td>
+                                <td>{pozo.estatus == true ? "Activo": "Inactivo"}</td>
                                 <td style={{width: '15%'}}>
                                   <button className='btn btn-warning' style={{width: '45%'}} onClick={() => openModalEdit(
-                                    comunidad.idComunidad, comunidad.nombre, comunidad.codigo_postal, comunidad.municipio, comunidad.estatus
+                                    pozo.idPozo, pozo.nombre, pozo.capacidadLitros, pozo.porcentajeAgua, pozo.profundidad, pozo.estatus
                                   )}>
                                     <img src={edit} className='icon' style={{width: '60%'}} />
                                   </button>
                                   &nbsp;
-                                  <button className='btn btn-danger' style={{width: '45%'}} onClick={() => deleteComunidad(comunidad.idComunidad, comunidad.nombre)}>
+                                  <button className='btn btn-danger' style={{width: '45%'}} onClick={() => deletePozo(pozo.idPozo, pozo.nombre)}>
                                     <img src={trash} className='icon' style={{width: '60%'}} />
                                   </button>
                                 </td>
@@ -255,16 +265,48 @@ export const Pozos = () => {
                 flexDirection: 'column', 
                 alignItems: 'center'}}>
 
-            <input type='text' placeholder='Nombre del Pozo' />
-            <input type='text' placeholder='Asignar Comunidades -- Beta' />
-
             <div className='info-1'>
-              <input type='text' placeholder='Porcentaje de agua' />
-              <input type='text' placeholder='Profundidad' />
+              <input type='text' placeholder='Nombre del Pozo' onChange={(e) => setNombre(e.target.value)} />
+              <input type='text' placeholder='Porcentaje de agua' onChange={(e) => setPorcentaje(e.target.value)} />
             </div>
 
-            <button id='recu'>Crear Pozo</button>
-            <button id='cancelar' onClick={closeModal}>Cancelar</button>
+            <div className='info-1'>
+            <input type='text' placeholder='Capacidad de Litros' onChange={(e) => setCapLitros(e.target.value)} />
+              <input type='text' placeholder='Profundidad' onChange={(e) => setProfundidad(e.target.value)} />
+            </div>
+
+            <button id='recu' onClick={() => validar('POST')} >Crear Pozo</button>
+            <button id='cancelar' className='cancelar' onClick={closeModal}>Cancelar</button>
+            </form>
+          </Modal>
+
+          <Modal
+              isOpen={modalEdit}
+              onAfterOpen={afterOpenModal}
+              onRequestClose={closeModalEdit}
+              style={customStyles}
+              contentLabel="Modal Edit"
+          >
+            <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color: 'black', fontSize: 35}}>Editar Comunidad</h2>
+            <form style={{
+                width: '90%',
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center'}}>
+
+            <div className='info-1'>
+              <input type='text' placeholder='Nombre del Pozo' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
+              <input type='text' placeholder='Porcentaje de agua' id='porcentajeAgua' value={porcentaje} onChange={(e) => setPorcentaje(e.target.value)} />
+            </div>
+
+            <div className='info-1'>
+              <input type='text' placeholder='Capacidad de Litros' id='capacidadLitros' value={capLitros} onChange={(e) => setCapLitros(e.target.value)} />
+              <input type='text' placeholder='Profundidad' id='profundidad' value={profundidad} onChange={(e) => setProfundidad(e.target.value)} />
+            </div>
+            
+
+            <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
+            <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>
             </form>
           </Modal>
 
