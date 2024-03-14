@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, TextInput } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { Header } from "../elements/Header";
 
 const Perfil = () => {
   const [position, setPosition] = useState("Administrador");
   const [user, setUser] = useState("Abel");
+  const windowHeight = Dimensions.get('window').height;
 
   return (
     <View style={styles.container}>
@@ -48,20 +49,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    alignItems: "center",
-  },
-  profileText: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
   contentContainer: {
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
+    paddingBottom: 20, 
   },
   contactName: {
     fontSize: 30,
@@ -75,63 +67,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
-  contactPosition: {
-
-    fontSize: 14,
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  contactInfo: {
-    alignItems: "center",
-  },
-  contactItem: {
-    fontSize: 30,
-    
-    fontWeight:'bold',
-  
-  },
-  tel1: {
-    fontSize: 20,
-    paddingTop:-10,
-    marginTop:50
-  
-  },
-  email: {
-    marginTop:50,
-  },
-  tel: {
-    // marginTop: 95,
-  },
-  space: {
-    height: 20, // Espacio entre elementos
-  },
-  line: {
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    marginBottom: 30,
-    marginTop:25, 
-  },
-  logo: {
-    height: 200,
-    width: 200,
-    marginTop: -40,
-    alignSelf: "center",
-  },
-  inputContainer: {
-    marginBottom: 10,
-  },
-  input: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    height: 40,
-    paddingHorizontal: 10,
-  },
-  disabledInput: {
-    backgroundColor: "#f0f0f0",
-    color: "#999999",
-  },
   userDataContainer: {
     alignItems: "center",
     marginBottom: 10,
@@ -140,32 +75,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  label: {
-    marginRight: 10,
-  },
   userValueContainer: {
-    marginTop:25,
+    marginTop: 25,
     borderRadius: 5,
-    width: 300,
+    width: "95%", 
     height: 45,
     borderColor: "black",
     borderWidth: 1,
     backgroundColor: "#d3d3d3",
   },
   positionValueContainer: {
-    marginTop:25,
+    marginTop: 25,
     borderRadius: 5,
-    width: 300,
+    width: "95%",
     height: 45,
     borderColor: "black",
     borderWidth: 1,
     backgroundColor: "#d3d3d3",
-  },
-  userValue: {
-    backgroundColor: "#f0f0f0",
-    padding: 8,
-    borderRadius: 5,
-    color: "#999999",
   },
   userText: {
     marginTop: 10,
@@ -173,8 +99,30 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingLeft: 10,
   },
+  line: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    marginBottom: 30,
+    marginTop: 25,
+  },
+  contactInfo: {
+    alignItems: "center",
+  },
+  contactItem: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  tel1: {
+    fontSize: 20,
+    paddingTop: -10,
+    marginTop: 50,
+  },
+  email: {
+    marginTop: 50,
+  },
+
   text: {
     fontSize: 25,
-    // fontWeight: 'bold',
+ 
   },
 });
