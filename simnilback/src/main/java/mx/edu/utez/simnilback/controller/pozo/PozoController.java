@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/simnil/pozos")
+@RequestMapping("/api/simnil/pozos")
 @CrossOrigin(origins = {"*"})
 @AllArgsConstructor
 public class PozoController {
