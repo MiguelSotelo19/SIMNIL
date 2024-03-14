@@ -165,12 +165,23 @@ export const Pozos = () => {
     });
   }
 
-  const deletePozo = (id_, name) => {
+  const deletePozo = (id_, name, validar) => {
+    let mensaje, tittle, confirm;
+    if(validar){
+      tittle = '¿Seguro de desactivar el Pozo '+name+'?';
+      mensaje = 'Se mantendrá inhabilitado hasta que se actualice manualmente';
+      confirm = 'Si, Eliminar';
+    } else {
+      tittle = '¿Seguro de activar el Pozo '+name+'?';
+      mensaje = 'Se activará al usuario seleccionado';
+      confirm = 'Si, Activar';
+    }
+
     const MySawl = withReactContent(Swal);
     MySawl.fire({
-      title: '¿Seguro de desactivar el pozo '+name+'?',
-      icon: 'question', text: 'Se mantendrá inhabilitado hasta que se actualice manualmente',
-      showCancelButton: true, confirmButtonText: 'Si, Eliminar', cancelButtonText: 'Cancelar'
+      title: tittle,
+      icon: 'question', text: mensaje,
+      showCancelButton: true, confirmButtonText: confirm, cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed){
         setIdPozo(id_);
@@ -178,7 +189,7 @@ export const Pozos = () => {
         setTimeout(function() { document.querySelector("body > div.swal2-container.swal2-center.swal2-backdrop-show > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click(); }, 10);
         getPozos();
       } else {
-        show_alerta('El pozo NO pudo ser desactivado', 'info');
+        show_alerta('El pozo NO pudo ser modificado', 'info');
       }
       getPozos();
     });
@@ -234,9 +245,17 @@ export const Pozos = () => {
                                     <img src={edit} className='icon' style={{width: '60%'}} />
                                   </button>
                                   &nbsp;
-                                  <button className='btn btn-danger' style={{width: '45%'}} onClick={() => deletePozo(pozo.idPozo, pozo.nombre)}>
-                                    <img src={trash} className='icon' style={{width: '60%'}} />
-                                  </button>
+                                  
+                                  {pozo.estatus ? (
+                                    <button className='btn btn-danger' style={{ width: '45%' }} onClick={() => deletePozo(pozo.idPozo, pozo.nombre, true)}>
+                                      <img src={trash} className='icon' style={{ width: '60%' }} />
+                                    </button>
+                                  ) : (
+                                    <button className='btn' style={{ width: '45%', backgroundColor: 'green' }} onClick={() => deletePozo(pozo.idPozo, pozo.nombre, false)}>
+                                      <img src={trash} className='icon' style={{ width: '60%' }} />
+                                    </button>
+                                  )}
+
                                 </td>
                               </tr>
                             ))

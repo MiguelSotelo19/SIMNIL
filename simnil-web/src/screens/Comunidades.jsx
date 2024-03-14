@@ -42,7 +42,6 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const Comunidades = () => {
-  //Tablas
   const url='http://localhost:8080/api/simnil/comunidades/';
   const urlPozos='http://localhost:8080/api/simnil/pozos/';
   const [comunidades, setComunidades] = useState([]);
@@ -188,18 +187,29 @@ export const Comunidades = () => {
     });
   }
 
-  const deleteComunidad = (id_, name) => {
+  const deleteComunidad = (id_, name, validar) => {
+    let mensaje, tittle, confirm;
+    if(validar){
+      tittle = '¿Seguro de desactivar la Comunidad '+name+'?';
+      mensaje = 'Se mantendrá inhabilitado hasta que se actualice manualmente';
+      confirm = 'Si, Eliminar';
+    } else {
+      tittle = '¿Seguro de activar la Comunidad '+name+'?';
+      mensaje = 'Se activará la comunidad seleccionada';
+      confirm = 'Si, Activar';
+    }
+
     const MySawl = withReactContent(Swal);
     MySawl.fire({
-      title: '¿Seguro de desactivar la Comunidad '+name+'?',
-      icon: 'question', text: 'Se mantendrá inhabilitado hasta que se actualice manualmente',
-      showCancelButton: true, confirmButtonText: 'Si, Desactivar', cancelButtonText: 'Cancelar'
+      title: tittle,
+      icon: 'question', text: mensaje,
+      showCancelButton: true, confirmButtonText: confirm, cancelButtonText: 'Cancelar'
     }).then((result) => {
       if(result.isConfirmed){
         setIdComunidad(id_);
         enviarSolicitud('PATCH', {idComunidad:id_}, 'http://localhost:8080/api/simnil/comunidades/');
       } else {
-        show_alerta('La comunidad NO fue elminada', 'info');
+        show_alerta('La comunidad NO pudo ser modificada', 'info');
       }
     });
   }
@@ -253,9 +263,16 @@ export const Comunidades = () => {
                                     <img src={edit} className='icon' style={{width: '60%'}} />
                                   </button>
                                   &nbsp;
-                                  <button className='btn btn-danger' style={{width: '45%'}} onClick={() => deleteComunidad(comunidad.idComunidad, comunidad.nombre)}>
-                                    <img src={trash} className='icon' style={{width: '60%'}} />
-                                  </button>
+
+                                  {comunidad.estatus ? (
+                                    <button className='btn btn-danger' style={{ width: '45%' }} onClick={() => deleteComunidad(comunidad.idComunidad, comunidad.nombre, true)}>
+                                      <img src={trash} className='icon' style={{ width: '60%' }} />
+                                    </button>
+                                  ) : (
+                                    <button className='btn' style={{ width: '45%', backgroundColor: 'green' }} onClick={() => deleteComunidad(comunidad.idComunidad, comunidad.nombre, false)}>
+                                      <img src={trash} className='icon' style={{ width: '60%' }} />
+                                    </button>
+                                  )}
                                 </td>
                               </tr>
                             ))

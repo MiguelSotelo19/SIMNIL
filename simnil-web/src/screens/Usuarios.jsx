@@ -44,7 +44,9 @@ Modal.setAppElement('#root');
 export const Usuarios = () => {
     //Tablas
     const url='http://localhost:8080/api/simnil/persona/';
+    const urlRoles = 'http://localhost:8080/api/simnil/rol/';
     const [usuarios, setUsuarios] = useState([]);
+    const [roles, setRoles] = useState([]);
     const [idPersonas, setIdPersonas] = useState('');
     const [nombre, setNombre] = useState('');
     const [apellidoPaterno, setApellidoPaterno] = useState('');
@@ -54,10 +56,13 @@ export const Usuarios = () => {
     const [estatus, setEstatus] = useState(false);
     const [numeroTelefoncico, setNumeroTelefoncico] = useState('');
     const [correo, setCorreo] = useState('');
-    const [rol, setRol] = useState('');
+    const [rol, setRol] = useState('');    
+    const [rolName, setRolName] = useState('');    
+
 
     useEffect( () => {
       getUsuarios();
+      getRoles();
     }, []);
 
     const getUsuarios = async () => {
@@ -65,12 +70,18 @@ export const Usuarios = () => {
       setUsuarios(respuesta.data.data);
     }
 
+    const getRoles = async () => {
+      const respuesta = await axios.get(urlRoles);
+      setRoles(respuesta.data.data);
+    }
+
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
     const [modalEdit, setOpenEdit] = React.useState(false);
 
     function openModal() {
-        setIsOpen(true);
+      getRoles();
+      setIsOpen(true);
     }
 
     function afterOpenModal() {
@@ -83,8 +94,20 @@ export const Usuarios = () => {
 
     function closeModalEdit() { setOpenEdit(false); }
 
-    const openModalEdit = (idPersonas, nombre, apellidoPaterno, apellidoMaterno, correo, nombreUsuario, contrasenia, estatus, numeroTelefoncico, rol) => {
+    const openModalEdit = async (idPersonas, nombre, apellidoPaterno, apellidoMaterno, correo, nombreUsuario, contrasenia, estatus, numeroTelefoncico, rol) => {
       setOpenEdit(true);
+
+      let respuesta = await axios.get(urlRoles);
+      respuesta = respuesta.data.data;
+      let idRol, nombreRol;
+
+      for(let i=0; i<respuesta.length; i++){
+        if(respuesta[i].rol == rol){
+          idRol = respuesta[i].idRol;
+          nombreRol = respuesta[i].rol;
+        }
+      }
+      setRolName(nombreRol);
 
       setIdPersonas(idPersonas);
       setNombre(nombre);
@@ -95,7 +118,7 @@ export const Usuarios = () => {
       setContrasenia(contrasenia);
       setEstatus(estatus);
       setNumeroTelefoncico(numeroTelefoncico);
-      setRol(rol);
+      setRol(idRol);
     }
     
     const validar = (metodo) => {
@@ -114,14 +137,14 @@ export const Usuarios = () => {
         show_alerta('Escribe la Contraseña', 'warning');
       }  else {
         parametros = {
-          idPersona: idPersonas,
+          idPersonas: idPersonas,
           nombre: nombre,
           apellidoPaterno: apellidoPaterno,
           apellidoMaterno: apellidoMaterno,          
           correo: correo,
           nombreUsuario: nombreUsuario,
           contrasenia: contrasenia,
-          estatus: estatus,
+          estatus: true,
           numeroTelefonico: numeroTelefoncico,
           rolBean: {
             idRol: rol
@@ -157,6 +180,7 @@ export const Usuarios = () => {
         });
       }
   
+      console.log(parametros);
       await axios({
         method: metodo,
         url: url+parametros.idPersonas,
@@ -169,7 +193,7 @@ export const Usuarios = () => {
           document.getElementById('cancelarEdit').click();
           getUsuarios();
         } else {
-          show_alerta('Ushario Eliminado', 'success');
+          show_alerta('Usuario Modificado Correctamente', 'success');
           getUsuarios();        
         }
       })
@@ -179,18 +203,29 @@ export const Usuarios = () => {
       });
     }
   
-    const deleteUsuario = (id_, name) => {
+    const deleteUsuario = (id_, name, validar) => {
+      let mensaje, tittle, confirm;
+      if(validar){
+        tittle = '¿Seguro de desactivar el Usuario '+name+'?';
+        mensaje = 'Se mantendrá inhabilitado hasta que se actualice manualmente';
+        confirm = 'Si, Eliminar';
+      } else {
+        tittle = '¿Seguro de activar el Usuario '+name+'?';
+        mensaje = 'Se activará al usuario seleccionado';
+        confirm = 'Si, Activar';
+      }
+
       const MySawl = withReactContent(Swal);
       MySawl.fire({
-        title: '¿Seguro de eliminar el Usuario '+name+'?',
-        icon: 'question', text: 'No se podrá dar marcha atrás',
-        showCancelButton: true, confirmButtonText: 'Si, Eliminar', cancelButtonText: 'Cancelar'
+        title: tittle,
+        icon: 'question', text: mensaje,
+        showCancelButton: true, confirmButtonText: confirm, cancelButtonText: 'Cancelar'
       }).then((result) => {
         if(result.isConfirmed){
           setIdPersonas(id_);
-          enviarSolicitud('DELETE', {idPersonas:id_}, 'http://localhost:8080/api/simnil/persona/');
+          enviarSolicitud('PATCH', {idPersonas:id_}, 'http://localhost:8080/api/simnil/persona/');
         } else {
-          show_alerta('El usuario NO fue elminado', 'info');
+          show_alerta('El usuario NO pudo ser modificado', 'info');
         }
       });
     }
@@ -213,7 +248,6 @@ export const Usuarios = () => {
               </div>
               <hr />
 
-              {/*Tablas dinamicas */}
               <div className='container-fluid'>
                 <div className="row mt-3">
                   <div className="col-12 col-lg-8 offset-0 offset-lg-2" style={{width: '90%', marginLeft: '5%', fontSize: 15}}>
@@ -249,14 +283,20 @@ export const Usuarios = () => {
                                 <td>{usuario.estatus == true ? "Activo": "Inactivo"}</td>
                                 <td style={{width: '15%'}}>
                                   <button className='btn btn-warning' style={{width: '45%'}} onClick={() => openModalEdit(
-                                    usuario.idPersonas, usuario.nombre, usuario.apellidoPaterno, usuario.apellidoMaterno, usuario.correo, usuario.nombreUsuario, usuario.contrasenia, usuario.estatus, usuario.numeroTelefoncico, usuario.rolBean.rol
+                                    usuario.idPersonas, usuario.nombre, usuario.apellidoPaterno, usuario.apellidoMaterno, usuario.correo, usuario.nombreUsuario, usuario.contrasenia, usuario.estatus, usuario.numeroTelefonico, usuario.rolBean.rol
                                   )}>
                                     <img src={edit} className='icon' style={{width: '60%'}} />
                                   </button>
                                   &nbsp;
-                                  <button className='btn btn-danger' style={{width: '45%'}} onClick={() => deleteUsuario(usuario.idPersonas, usuario.nombre)}>
-                                    <img src={trash} className='icon' style={{width: '60%'}} />
-                                  </button>
+                                  {usuario.estatus ? (
+                                    <button className='btn btn-danger' style={{ width: '45%' }} onClick={() => deleteUsuario(usuario.idPersonas, usuario.nombre, true)}>
+                                      <img src={trash} className='icon' style={{ width: '60%' }} />
+                                    </button>
+                                  ) : (
+                                    <button className='btn' style={{ width: '45%', backgroundColor: 'green' }} onClick={() => deleteUsuario(usuario.idPersonas, usuario.nombre, false)}>
+                                      <img src={trash} className='icon' style={{ width: '60%' }} />
+                                    </button>
+                                  )}
                                 </td>
                               </tr>
                             ))
@@ -271,7 +311,6 @@ export const Usuarios = () => {
               
             </div>
           </div> 
-
           
           <Modal
               isOpen={modalEdit}
@@ -287,25 +326,29 @@ export const Usuarios = () => {
                 flexDirection: 'column', 
                 alignItems: 'center'}}>
 
-            <div className='info-1'>
-              <input type='text' placeholder='Nombre' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
-              <input type='text' placeholder='Apellido Paterno' id='ape_paterno' value={apellidoPaterno} onChange={(e) => setApellidoPaterno(e.target.value)} />
-            </div>
-            
-            <div className='info-1'>
-              <input type='text' placeholder='Apellido Materno' id='ape_materno' value={apellidoMaterno} onChange={(e) => setApellidoMaterno(e.target.value)} />
-              <input type='text' placeholder='Telefono' id='telefono' value={numeroTelefoncico} onChange={(e) => setNumeroTelefoncico(e.target.value)} />
-            </div>
+              <div className='info-1'>
+                <input type='text' placeholder='Nombre' value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                <input type='text' placeholder='Apellido Paterno' value={apellidoPaterno} onChange={(e) => setApellidoPaterno(e.target.value)} />
+              </div>
 
-            <div className='info-1'>
-              <input type='text' placeholder='Usuario' id='usuario' value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} />
-              <input type='text' placeholder='Contraseña' id='password' value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
-            </div>
+              <div className='info-1'>
+                <input type='text' placeholder='Apellido Materno' value={apellidoMaterno} onChange={(e) => setApellidoMaterno(e.target.value)} />
+                <input type='text' placeholder='Número de Teléfono' value={numeroTelefoncico} onChange={(e) => setNumeroTelefoncico(e.target.value)} />
+              </div>
 
-            <div className='info-1'>
-              <input type='text' placeholder='Correo Electrónico' id='correo' value={correo} onChange={(e) => setCorreo(e.target.value)} />
-              <input type='text' placeholder='Rol' id='rol' value={rol} onChange={(e) => setRol(e.target.value)} />
-            </div>
+              <div className="info-1">
+                <input type='text' placeholder='Usuario' value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} />
+                <input type='text' placeholder='Contraseña' value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+              </div>
+                    
+              <input type='text' placeholder='Correo Electrónico' value={correo} onChange={(e) => setCorreo(e.target.value)} />
+              
+              <select onChange={(e) => setRol(e.target.value)} id='listaRol'>
+              <option id='selected' value={rol}>{rolName}</option>
+              {roles.map( (rol) => (
+                <option key={rol.idRol} value={rol.idRol}>{rol.rol}</option>
+              ) )}
+            </select>
 
             <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
             <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>
@@ -327,21 +370,21 @@ export const Usuarios = () => {
                   alignItems: 'center'}}>
 
               <div className='info-1'>
-                <input type='text' placeholder='Nombre' />
-                <input type='text' placeholder='Apellido Paterno' />
+                <input type='text' placeholder='Nombre' onChange={(e) => setNombre(e.target.value)} />
+                <input type='text' placeholder='Apellido Paterno' onChange={(e) => setApellidoPaterno(e.target.value)} />
               </div>
 
               <div className='info-1'>
-                <input type='text' placeholder='Apellido Materno' />
-                <input type='text' placeholder='Número de Teléfono' />
+                <input type='text' placeholder='Apellido Materno' onChange={(e) => setApellidoMaterno(e.target.value)} />
+                <input type='text' placeholder='Número de Teléfono' onChange={(e) => setNumeroTelefoncico(e.target.value)} />
               </div>
 
               <div className="info-1">
-                <input type='text' placeholder='Usuario' />
-                <input type='text' placeholder='Contraseña' />
+                <input type='text' placeholder='Usuario' onChange={(e) => setNombreUsuario(e.target.value)} />
+                <input type='text' placeholder='Contraseña' onChange={(e) => setContrasenia(e.target.value)} />
               </div>
                     
-              <input type='text' placeholder='Correo Electrónico' />
+              <input type='text' placeholder='Correo Electrónico' onChange={(e) => setCorreo(e.target.value)} />
               
               <select onChange={(e) => setRol(e.target.value)} id='listaRol'>
               <option id='selected'>Selecciona Rol</option>
@@ -350,9 +393,8 @@ export const Usuarios = () => {
               ) )}
             </select>
 
-
               <button id='recu' onClick={() => validar('POST')}>Crear Usuario</button>
-              <button id='cancelar' onClick={closeModal}>Cancelar</button>
+              <button id='cancelar' className='cancelar' onClick={closeModal}>Cancelar</button>
               </form>
           </Modal>
         </div>

@@ -29,6 +29,6 @@ public class PersonaDto {
 
     //Actualizar
     public PersonaBean toUpdate(Long idPersona) {
-        return new PersonaBean(idPersona, nombre, apellidoPaterno, apellidoMaterno, correo, nombreUsuario, contrasenia, estatus, numeroTelefonico, rolBean);
+        return new PersonaBean(idPersonas, nombre, apellidoPaterno, apellidoMaterno, correo, nombreUsuario, contrasenia, estatus, numeroTelefonico, rolBean);
     }
 }

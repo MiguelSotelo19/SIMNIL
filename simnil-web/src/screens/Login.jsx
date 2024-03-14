@@ -83,7 +83,7 @@ export const Login = () => {
                         textAlign: 'center'
                         }} type='text' placeholder='Correo Electrónico' />
                     <button id='recu'>Recuperar Contraseña</button>
-                    <button id='cancelar' onClick={closeModal}>Cancelar</button>
+                    <button id='cancelar' className='cancelar' onClick={closeModal}>Cancelar</button>
                     </form>
                 </Modal>
             </div>
