@@ -258,9 +258,7 @@ export const Usuarios = () => {
                             <th>#</th>
                             <th>Nombre(s)</th>
                             <th>Apellido Paterno</th>
-                            <th>Apellido Materno</th>
                             <th>Usuario</th>
-                            <th>Contraseña</th>
                             <th>Núm. Tel.</th>
                             <th>Correo Electrónico</th>
                             <th>Rol</th>
@@ -274,9 +272,7 @@ export const Usuarios = () => {
                                 <td>{(i+1)}</td>
                                 <td>{usuario.nombre}</td>
                                 <td>{usuario.apellidoPaterno}</td>
-                                <td>{usuario.apellidoMaterno}</td>
                                 <td>{usuario.nombreUsuario}</td>
-                                <td>{usuario.contrasenia}</td>
                                 <td>{usuario.numeroTelefonico}</td>
                                 <td>{usuario.correo}</td>
                                 <td>{usuario.rolBean.rol}</td>

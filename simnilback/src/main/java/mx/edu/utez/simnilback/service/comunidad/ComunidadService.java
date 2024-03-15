@@ -34,16 +34,36 @@ public class ComunidadService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(mx.edu.utez.simnilback.model.comunidad.ComunidadBean comunidadBean) {
+        if (comunidadBean.getNombre() == null || comunidadBean.getNombre().isEmpty() || comunidadBean.getNombre().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre de la comunidad es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (comunidadBean.getCodigo_postal() == null || comunidadBean.getCodigo_postal().isEmpty() || comunidadBean.getCodigo_postal().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El codigo postal es obligatorio y no puede estar vacio."), HttpStatus.BAD_REQUEST);
+        }
+
+        if (comunidadBean.getMunicipio() == null || comunidadBean.getMunicipio().isEmpty() || comunidadBean.getMunicipio().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El municipio es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (comunidadBean.getEstatus() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El estatus es requerido."), HttpStatus.BAD_REQUEST);
+        }
+
         Optional<mx.edu.utez.simnilback.model.comunidad.ComunidadBean> foundComunidad = repository.findByNombre(comunidadBean.getNombre());
-        if (foundComunidad.isPresent())
+        if (foundComunidad.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Comunidad ya existente"), HttpStatus.BAD_REQUEST);
-        if (comunidadBean.getPozoBean() == null || comunidadBean.getPozoBean().getIdPozo() == null)
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un Pozo Existente"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (comunidadBean.getPozoBean() == null || comunidadBean.getPozoBean().getIdPozo() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un pozo existente"), HttpStatus.BAD_REQUEST);
+        }
         Optional<PozoBean> foundIdPozo = pozoRepository.findById(comunidadBean.getPozoBean().getIdPozo());
         if (!foundIdPozo.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El Pozo proporcionado no existe"), HttpStatus.BAD_REQUEST);
         }
         comunidadBean.setPozoBean(foundIdPozo.get());
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(comunidadBean), HttpStatus.OK, "Se registró correctamente la Comunidad"), HttpStatus.OK);
     }
 

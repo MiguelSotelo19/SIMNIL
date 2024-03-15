@@ -38,18 +38,57 @@ public class PersonaService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(PersonaBean personaBean) {
-        Optional<PersonaBean> foundPersona = repository.findByNumeroTelefonico(personaBean.getNumeroTelefonico());
-        if (foundPersona.isPresent())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Persona ya existente"), HttpStatus.BAD_REQUEST);
-        if (personaBean.getRolBean() == null || personaBean.getRolBean().getIdRol() == null)
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un rol válido"), HttpStatus.BAD_REQUEST);
+
+        if (personaBean.getNombre() == null || personaBean.getNombre().isEmpty() || personaBean.getNombre().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre es obligatorio y no puede estar vacío."), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getApellidoPaterno() == null || personaBean.getApellidoPaterno().isEmpty() || personaBean.getApellidoPaterno().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El apellido Paterno es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getApellidoMaterno() == null || personaBean.getApellidoMaterno().isEmpty() || personaBean.getApellidoMaterno().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El apellido Materno es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getCorreo() == null || personaBean.getCorreo().isEmpty() || personaBean.getCorreo().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El correo es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getNombreUsuario() == null || personaBean.getNombreUsuario().isEmpty() || personaBean.getNombreUsuario().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre de usuario es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getContrasenia() == null || personaBean.getContrasenia().isEmpty() || personaBean.getContrasenia().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La contraseña es obligatorio y no puede estar vacia"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getNumeroTelefonico() == null || personaBean.getNumeroTelefonico().isEmpty() || personaBean.getNumeroTelefonico().isBlank()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El numero telefonico es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getEstatus() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El estatus es requerido"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (personaBean.getRolBean() == null || personaBean.getRolBean().getIdRol() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un rol valido"), HttpStatus.BAD_REQUEST);
+        }
+
         Optional<RolBean> foundRol = rolRepository.findById(personaBean.getRolBean().getIdRol());
         if (!foundRol.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El rol proporcionado no existe"), HttpStatus.BAD_REQUEST);
         }
         personaBean.setRolBean(foundRol.get());
-        return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(personaBean), HttpStatus.OK, "Se registró correctamente la persona"), HttpStatus.OK);
+
+        Optional<PersonaBean> foundPersona = repository.findByNumeroTelefonico(personaBean.getNumeroTelefonico());
+        if (foundPersona.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Ya existe una persona registrada con el mismo numero telefonico"), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(personaBean), HttpStatus.OK, "Se registro correctamente la persona"), HttpStatus.OK);
     }
+
 
 
     @Transactional(rollbackFor = {SQLException.class})
