@@ -3,9 +3,9 @@ import { Header } from '../components/Header_'
 import Flex from '@react-css/flex'
 
 //CSS
-import '../css/main.css'
-import '../css/header.css'
-import '../css/body.css'
+import '../css/main.css';
+import '../css/header.css';
+import '../css/body.css';
 
 export const Perfil = () => {
     return(
