@@ -340,7 +340,7 @@ export const Comunidades = () => {
               <input type='text' placeholder='Municipio' onChange={(e) => setMunicipio(e.target.value)} />
               <input type='text' placeholder='Código Postal' onChange={(e) => setCodigoPostal(e.target.value)} />
             </div>
-
+ 
             <select onChange={(e) => setIdPozo(e.target.value)} id='listaPozo'>
               <option id='selected'>Selecciona Pozo</option>
               {pozos.map( (pozo) => (

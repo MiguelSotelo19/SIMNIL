@@ -224,7 +224,6 @@ export const Pozos = () => {
                             <th>Nombre</th>
                             <th>Porcentaje</th>
                             <th>Capacidad Litros</th>
-                            <th>Profundidad</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                           </tr>
@@ -236,7 +235,6 @@ export const Pozos = () => {
                                 <td>{pozo.nombre}</td>
                                 <td>{pozo.porcentajeAgua}</td>
                                 <td>{pozo.capacidadLitros}</td>
-                                <td>{pozo.profundidad}</td>
                                 <td>{pozo.estatus == true ? "Activo": "Inactivo"}</td>
                                 <td style={{width: '15%'}}>
                                   <button className='btn btn-warning' style={{width: '45%'}} onClick={() => openModalEdit(

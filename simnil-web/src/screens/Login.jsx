@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from 'react-modal';
+import axios from 'axios';
 
 import logo_simnil from '../assets/LogoSimnil.png';
+import { show_alerta } from '../js/functions';
 import '../css/login.css';
 
 const customStyles = {
@@ -26,6 +28,39 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const Login = () => {
+    const url='http://localhost:8080/api/simnil/persona/';
+    const [usuarios, setUsuarios] = useState([]);
+    const [nombreUsuario, setNombreUsuario] = useState('');
+    const [contrasenia, setContrasenia] = useState('');
+
+    useEffect( () => {
+        getUsuarios();
+    }, []);
+  
+    const getUsuarios = async () => {
+    const respuesta = await axios.get(url);
+    setUsuarios(respuesta.data.data);
+    }
+
+    const validar = () => {
+        let aux = true;
+
+        for (let i = 0; i < usuarios.length; i++) {
+            let usuario = usuarios[i];
+            if (usuario.nombreUsuario == nombreUsuario && usuario.contrasenia == contrasenia) {             
+                aux=false;
+                window.location = '/Usuarios';
+                                
+                break;
+            }
+        }
+
+        if(aux){
+            show_alerta('Usuario y/o Contraseña Incorrectos', 'error');
+        }
+
+    }
+
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -52,11 +87,9 @@ export const Login = () => {
                 <h1 style={{fontSize: 40}}>Bienvenido a SIMNIL</h1>
                 <p style={{fontSize: 30}}>Inicia sesión con tu cuenta</p>
 
-                <input className='Login' type='text' name='usuario' id='usuario' placeholder='Usuario' />
-                <input className='Login' type='password' name='password' id='password' placeholder='Contraseña' />
-                <button id='btn_login' onClick={() => {
-                    window.location = '/Estadisticas';
-                }}>Iniciar Sesión</button>
+                <input className='Login' type='text' name='usuario' id='usuario' placeholder='Usuario' onChange={(e) => setNombreUsuario(e.target.value)} />
+                <input className='Login' type='password' name='password' id='password' placeholder='Contraseña' onChange={(e) => setContrasenia(e.target.value)} />
+                <button id='btn_login' onClick={() => validar()}>Iniciar Sesión</button>
                 <a onClick={openModal} style={{color: 'blue'}}>¿Olvidaste tu contraseña?</a>
 
                 <Modal

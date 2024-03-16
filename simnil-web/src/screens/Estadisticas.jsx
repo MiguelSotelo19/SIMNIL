@@ -1,13 +1,29 @@
-import { Menu, SideMenu } from '../components/Menu'
-import { Header } from '../components/Header_'
-import Flex from '@react-css/flex'
+import React, {useEffect, useState} from 'react';
+import { Menu, SideMenu } from '../components/Menu';
+import { Header } from '../components/Header_';
+import Flex from '@react-css/flex';
+import axios from 'axios';
 
 //CSS
-import '../css/main.css'
-import '../css/header.css'
-import '../css/body.css'
- 
+import '../css/main.css';
+import '../css/header.css';
+import '../css/body.css';
+
+import Histograma from '../components/Histograma';
+
 export const Estadisticas = () => {
+  const urlPozos='http://localhost:8080/api/simnil/pozos/';
+  const [pozos, setPozos] = useState([]);
+
+  useEffect( () => {
+    getPozos();
+  }, []);
+
+  const getPozos = async () => {
+    const respuesta = await axios.get(urlPozos);
+    setPozos(respuesta.data.data);
+  }  
+
     return(
         <>
         <Flex row id='container'>
@@ -24,13 +40,6 @@ export const Estadisticas = () => {
               <hr />
 
               <div id="opciones">
-                <div id="btn-pozo">
-                  <p>Pozo</p>
-                  <select>
-                    <option>HOLA</option>
-                  </select>
-                </div>
-
                 <div id="btn-inicio">
                   <p>Fecha Inicio</p>
                   <select>
@@ -48,6 +57,8 @@ export const Estadisticas = () => {
 
               <h1 style={{marginTop: '3%'}}>Histograma</h1>
               <hr />
+
+              <Histograma />
 
             </div>
           </div>
