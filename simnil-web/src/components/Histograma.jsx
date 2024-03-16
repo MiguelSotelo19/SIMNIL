@@ -9,40 +9,51 @@ const urlPozos = 'http://localhost:8080/api/simnil/pozos/';
 
 const peticion = await axios.get(urlPozos);
 const pozos = peticion.data.data;
-let historial = [];
 
-for (let i = 0; i < pozos.length; i++) {
-	const pozo = pozos[i];
-	let fechas = [];
+let historial = []; 
+
+function renderHisto(fechaInicio, fechaFin){
+	historial = [];
+	console.log("Desde Histo "+fechaInicio);
+	console.log("Fecha Fin "+fechaFin);
+
+	for (let i = 0; i < pozos.length; i++) {
+		const pozo = pozos[i];
+		let fechas = [];
+		
+		for(let j = 0; j < pozo.datosPozoBeans.length; j++){
+			const datos = pozo.datosPozoBeans[j];
 	
-	for(let j = 0; j < pozo.datosPozoBeans.length; j++){
-		const datos = pozo.datosPozoBeans[j];
-		let anio, mes, dia;
-
-		anio = datos.fechaRecopilacion.substr(0, 4);
-		mes = parseInt(datos.fechaRecopilacion.substr(5, 2), 10);
-		dia = parseInt(datos.fechaRecopilacion.substr(8, 2), 10);
-
-		let fecha ={ x: new Date(anio, mes, dia), y: datos.nivelAgua };
-
-		fechas.push(fecha);
+			let anio = parseInt(datos.fechaRecopilacion.substr(0, 4), 10);
+			let mes = parseInt(datos.fechaRecopilacion.substr(5, 2), 10);
+			let dia = parseInt(datos.fechaRecopilacion.substr(8, 2), 10);
+			let hora = parseInt(datos.horaRecopilacion.substr(0, 2), 10);
+			let minutos = parseInt(datos.horaRecopilacion.substr(3, 2), 10);
+			let segundos = parseInt(datos.horaRecopilacion.substr(6, 2), 10);
+	
+			let fecha ={ x: new Date(anio, mes, dia, hora, minutos, segundos), y: datos.nivelAgua };
+	
+			fechas.push(fecha);
+		}
+		fechas = fechas.sort();
+		fechas.sort((a, b) => a.x - b.x);
+	
+		let dato_histo = {
+			type: "spline",
+			name: "Pozo "+pozo.nombre,
+			showInLegend: true,
+			xValueFormatString: "DD-MM-YY hh:mm tt",
+			yValueFormatString: "Nivel de Agua ###,##%",
+			dataPoints: fechas
+		}
+	
+		historial.push(dato_histo);
 	}
-	fechas = fechas.sort();
-	fechas.sort((a, b) => a.x - b.x);
-
-	let dato_histo = {
-		type: "spline",
-		name: "Pozo "+pozo.nombre,
-		showInLegend: true,
-		xValueFormatString: "MMM YYYY",
-		yValueFormatString: "Nivel de Agua ###,##%",
-		dataPoints: fechas
-	}
-
-	historial.push(dato_histo);
 }
 
-class Histograma extends Component {
+document.onload = renderHisto();
+
+class Histograma extends React.Component {
 	constructor() {
 		super();
 		this.toggleDataSeries = this.toggleDataSeries.bind(this);
@@ -94,6 +105,7 @@ class Histograma extends Component {
 			<CanvasJSChart options = {options} 
 				 onRef={ref => this.chart = ref}
 			/>
+			{ renderHisto(this.props.fechaInicio, this.props.fechaFin) }
 		</div>
 		);
 	}
