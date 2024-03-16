@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
 import axios from 'axios';
 
 export default function Login() {
-  const url='http://localhost:8080/api/simnil/persona/';
+  const url='http://localhost:8080/api/simnil/persona/login';
   const [usuarios, setUsuarios] = useState([]);
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [contrasenia, setContrasenia] = useState('');
@@ -16,7 +15,7 @@ export default function Login() {
 
   const getUsuarios = async () => {
     try {
-      const respuesta = await axios.get(url);
+      const respuesta = await axios.post(url);
       setUsuarios(respuesta.data.data);
     } catch (error) {
       console.error('Error al obtener usuarios:', error);
@@ -45,31 +44,6 @@ export default function Login() {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-=======
-import React, { useState } from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
-
-export default function Login() {
-  const navigation = useNavigation();
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = () => {
-    // Tu lógica de inicio de sesión aquí
-    // Después de iniciar sesión, limpiamos los campos del formulario
-    setUsername('');
-    setPassword('');
-    navigation.navigate('Bottom');
-  };
-
-  const windowHeight = Dimensions.get('window').height;
-
-  return (
-    <ScrollView contentContainerStyle={{ flexGrow:1}}>
->>>>>>> main
       <View style={styles.container}>
         <Text style={styles.welcomeText}>¡Bienvenido!</Text>
 
@@ -80,44 +54,26 @@ export default function Login() {
             <Text style={styles.baseText}>Usuario</Text>
             <TextInput
               style={styles.input}
-<<<<<<< HEAD
               value={nombreUsuario}
               onChangeText={text => setNombreUsuario(text)}
-=======
-              value={username}
-              onChangeText={text => setUsername(text)}
->>>>>>> main
             />
             <Text style={styles.baseText}>Contraseña</Text>
             <TextInput
               style={styles.input}
-<<<<<<< HEAD
               value={contrasenia}
               onChangeText={text => setContrasenia(text)}
-=======
-              value={password}
-              onChangeText={text => setPassword(text)}
->>>>>>> main
               secureTextEntry={true} // Corregido aquí para ocultar el texto
             />
 
             <View style={styles.buttonContainer}>
-<<<<<<< HEAD
               <TouchableOpacity style={styles.button} onPress={validar}>
-=======
-              <TouchableOpacity style={styles.button} onPress={handleLogin}>
->>>>>>> main
                 <Text style={styles.buttonText}>Iniciar sesión</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Card>
 
-<<<<<<< HEAD
         <View style={[styles.circle, { height: Dimensions.get('window').height * 0.4 }]}></View>
-=======
-        <View style={[styles.circle, { height: windowHeight * 0.4 }]}></View>
->>>>>>> main
       </View>
     </ScrollView>
   );
