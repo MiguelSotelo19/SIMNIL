@@ -23,7 +23,7 @@ public class PersonaService {
     private final PersonaRepository repository;
     private final RolRepository rolRepository;
 
-    //Consultar personas
+    //Consultar personasa
     @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse> getAll(){
         return new ResponseEntity<>(new ApiResponse(repository.findAll(),
@@ -123,6 +123,21 @@ public class PersonaService {
         }
 
 
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> login(PersonaBean personaBean) {
+        Optional<PersonaBean> foundPersona = repository.findByNombreUsuario(personaBean.getNombreUsuario());
+        if (foundPersona.isPresent()) {
+            PersonaBean persona = foundPersona.get();
+            if (persona.getContrasenia().equals(personaBean.getContrasenia())) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Bienvenido!"), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Usuario y/o contraseña incorrectos"), HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Usuario y/o contraseña incorrectos"), HttpStatus.UNAUTHORIZED);
+        }
     }
 
 
