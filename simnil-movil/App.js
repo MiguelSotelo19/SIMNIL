@@ -1,19 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Header } from './tags/Header';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './screen/login';
 
-console.log(Header);
+import MainRoutes from './mainroutes';
+
+
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Header />
-      <Text>Open up App.js to start working on your app!</Text>      
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name='Bottom' component={MainRoutes}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%'
-  },
-});
