@@ -12,14 +12,13 @@ const pozos = peticion.data.data;
 
 let historial = []; 
 
-function renderHisto(fechaInicio, fechaFin){
+function renderHisto(fechaInicio, fechaFin){ 
 	historial = [];
-	console.log("Desde Histo "+fechaInicio);
-	console.log("Fecha Fin "+fechaFin);
 
-	for (let i = 0; i < pozos.length; i++) {
+	for (let i = 0; i < pozos.length; i++) { 
 		const pozo = pozos[i];
 		let fechas = [];
+		let available = true;
 		
 		for(let j = 0; j < pozo.datosPozoBeans.length; j++){
 			const datos = pozo.datosPozoBeans[j];
@@ -36,12 +35,29 @@ function renderHisto(fechaInicio, fechaFin){
 			fechas.push(fecha);
 		}
 		fechas = fechas.sort();
-		fechas.sort((a, b) => a.x - b.x);
+		fechas.sort((a, b) => a.x - b.x); 
+
+		if(fechaInicio != '' && fechaInicio != undefined){ 
+			let arrayFechas = [];
+			for (let i = 0; i < fechas.length; i++) {
+				const element = fechas[i].x;
+				fechaInicio = new Date(fechaInicio);
+				
+				if (element.getTime() >= fechaInicio.getTime()) {
+					arrayFechas.push(fechas[i]);
+				}
+
+			}
+			fechas = arrayFechas; 
+		} 
+
+		console.log(fechas);
+		if(fechas.length == 0) available = false; 
 	
 		let dato_histo = {
 			type: "spline",
 			name: "Pozo "+pozo.nombre,
-			showInLegend: true,
+			showInLegend: available, 
 			xValueFormatString: "DD-MM-YY hh:mm tt",
 			yValueFormatString: "Nivel de Agua ###,##%",
 			dataPoints: fechas
@@ -49,9 +65,9 @@ function renderHisto(fechaInicio, fechaFin){
 	
 		historial.push(dato_histo);
 	}
+	console.log(historial); 
 }
 
-document.onload = renderHisto();
 
 class Histograma extends React.Component {
 	constructor() {

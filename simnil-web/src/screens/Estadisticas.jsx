@@ -24,8 +24,12 @@ export const Estadisticas = () => {
   }, []);
 
   const getPozos = async () => {
-    const respuesta = await axios.get(urlPozos);
-    setPozos(respuesta.data.data);
+    try {
+      const respuesta = await axios.get(urlPozos);
+      setPozos(respuesta.data.data);
+    } catch (error) {
+      console.error('Error al obtener datos de la API:', error);
+    }
   }
 
   const getFechas = async () => {
@@ -56,16 +60,12 @@ export const Estadisticas = () => {
       let fecha = (fechas[i].x+"").substr(0, 15);
       if(i == fechas.length-1) break; 
 
-      //console.log("["+i+"]Empieza con "+fecha); 
       if(fecha == ((fechas[i+1].x+"").substr(0, 15))) { 
-        //console.log("Entra con "+fecha);
         fechas.splice(i, 1);
         i--;
       }
-      //console.log(fechas.length); 
     }
- 
-    //console.log("FECHAS");
+
     console.log(fechas); 
     setFechas(fechas); 
   }
@@ -103,7 +103,7 @@ export const Estadisticas = () => {
                   <p>Fecha Inicio</p>
                   <select onChange={(e) => { setFechaInicio(e.target.value); asignarFechas(e.target.value); }}>
                     <option value={null}></option>
-                    {fechasArray.map((fecha) => ( 
+                    {fechasArray.map((fecha) => (
                       <option key={fecha.x} value={fecha.x}>{fecha.x.toLocaleDateString()}</option>
                     ))}
                   </select>
@@ -117,7 +117,7 @@ export const Estadisticas = () => {
                       <option key={fecha.x} value={fecha.x}>{fecha.x.toLocaleDateString()}</option>
                     ))}
                   </select> 
-                </div> 
+                </div>  
               </div>
 
               <h1 style={{marginTop: '3%'}}>Histograma</h1>
