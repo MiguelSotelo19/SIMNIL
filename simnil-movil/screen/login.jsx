@@ -1,20 +1,43 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView } from 'react-native';
+import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios'; 
 
 export default function Login() {
   const navigation = useNavigation();
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [contrasenia, setContrasenia] = useState('');
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const validar = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/simnil/persona/login'); 
+      console.log('Respuesta de la solicitud HTTP:', response);
 
-  const handleLogin = () => {
-    // Tu lógica de inicio de sesión aquí
-    // Después de iniciar sesión, limpiamos los campos del formulario
-    setUsername('');
-    setPassword('');
-    navigation.navigate('Bottom');
+      let aux = true;
+
+      for (let i = 0; i < response.length; i++) {
+        let usuario = response[i];
+        if (usuario.nombreUsuario === nombreUsuario && usuario.contrasenia === contrasenia) {
+          aux = false;
+          console.log('Inicio de sesión exitoso');
+          navigation.navigate('Bottom');
+          break;
+        }
+      }
+
+      if (aux) {
+        show_alerta('Usuario y/o Contraseña Incorrectos', 'error');
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      show_alerta('No se pudo conectar al servidor', 'error');
+    }
+  };
+
+  const show_alerta = (mensaje, tipo) => {
+    console.log(mensaje, tipo);
+    Alert.alert('Error', mensaje);
   };
 
   const windowHeight = Dimensions.get('window').height;
@@ -31,19 +54,19 @@ export default function Login() {
             <Text style={styles.baseText}>Usuario</Text>
             <TextInput
               style={styles.input}
-              value={username}
-              onChangeText={text => setUsername(text)}
+              value={nombreUsuario}
+              onChangeText={text => setNombreUsuario(text)}
             />
             <Text style={styles.baseText}>Contraseña</Text>
             <TextInput
               style={styles.input}
-              value={password}
-              onChangeText={text => setPassword(text)}
-              secureTextEntry={true} // Corregido aquí para ocultar el texto
+              value={contrasenia}
+              onChangeText={text => setContrasenia(text)}
+              secureTextEntry={true}
             />
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <TouchableOpacity style={styles.button} onPress={validar}>
                 <Text style={styles.buttonText}>Iniciar sesión</Text>
               </TouchableOpacity>
             </View>
@@ -55,6 +78,7 @@ export default function Login() {
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -99,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 40,
     alignSelf: 'center',
-    paddingLeft: 10, // Ajuste para desplazar el texto hacia la derecha
+    paddingLeft: 10,
   },
   button: {
     backgroundColor: '#191970',
