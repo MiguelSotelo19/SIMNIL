@@ -1,0 +1,209 @@
+
+#izq {
+    width: 20%;
+    height: 91vh;
+    background-color: #D6EAF8;
+    align-self: flex-start;
+}
+
+#der {
+    width: 80%;
+    height: 91vh;
+    align-self: flex-end;
+}
+
+#der-main {
+    margin: 3%;
+}
+
+#der-main h1 {
+    color: #5D87FF;
+}
+
+#der-main hr {
+    color: #5D87FF;
+}
+
+#izq li {
+    list-style: none;
+    margin-top: 15%;
+    margin-right: 8%;
+    padding-left: 8%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    font-size: 25px;
+}
+
+#izq li:hover {
+    background-color: rgb(0, 140, 255);
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#icono {
+    width: 12%;
+    height: 12%;
+    margin-right: 12%;
+}
+
+#opciones {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+#opciones select {
+    min-width: 10rem;
+    font-size: 17px;
+    background-color: rgb(238, 238, 238);
+    padding-right: 10%;
+    display: inline-block;
+	cursor: pointer;
+  	height: 42px;
+  	outline: 0; 
+  	border: 0;
+	border-radius: 0;
+	color: black;
+	font-family: 
+	'Quicksand', sans-serif;
+	border:2px solid rgba(0,0,0,0.2);
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.25s ease;
+    text-align: center;
+}
+
+#opciones select option {
+    font-size: 18px;
+    text-align: center;
+}
+
+
+.fechasSelect:hover {
+    background: #B1E8CD;
+}
+
+
+#info {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#info button {
+    background-color: #209E00;
+    border-radius: 10px;
+    width: auto;
+    height: 45px;
+    font-size: 18px;
+}
+
+#info img {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+#info-personal {
+    color: black;
+    font-size: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+#info-personal input {
+    font-size: 20px;
+    width: 60%; 
+    margin-bottom: 3%;
+    background-color: white;
+    color: black;
+    padding: 1%;
+    border-radius: 8px;
+    text-align: center;
+    margin-left: 4%;
+    margin-top: 20%;
+}
+
+.hover {
+    background-color: rgb(0, 140, 255);
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#recu{
+    width: 80%;
+    height: 5.5vh;
+    font-size: 20px;
+    color: blue;
+    background-color: white;
+    border-color: blue;
+    border-width: 3px;
+    border-radius: 5px;
+}
+
+#recu:hover {
+    background-color: rgb(152, 152, 255);
+}
+
+.cancelar {
+    width: 80%;
+    height: 5.5vh;
+    font-size: 20px;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    color: red;
+    background-color: white;
+    border-color: red;
+    border-width: 3px;
+    border-radius: 5px;
+}
+
+.cancelar:hover {
+    background-color: rgb(255, 172, 172);
+}
+
+form input {
+    font-size: 20px;
+    width: 60%; 
+    margin-bottom: 3%;
+    background-color: white;
+    color: black;
+    padding: 1%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+form select {
+    font-size: 20px;
+    width: 40%; 
+    margin-bottom: 3%;
+    background-color: white;
+    color: black;
+    padding: 1%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#selected {
+    background-color: gainsboro;
+}
+
+.info-1 {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-1 input {
+    width: 40%;
+}
+
+.selectText {
+    font-size: 24px;
+}

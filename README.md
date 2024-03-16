@@ -1,2 +1,0 @@
-# SIMNIL
-Repositorio para Integradora

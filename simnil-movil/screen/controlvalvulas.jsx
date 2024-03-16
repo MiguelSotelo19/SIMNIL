@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Switch, Dimensions, TouchableOpacity } from 'react-native';
+<<<<<<< HEAD
 import { Picker } from '@react-native-picker/picker';
+=======
+>>>>>>> main
 import { Header } from '../elements/Header';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -22,8 +25,11 @@ const Valvulas = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
   const [isFailureModalVisible, setFailureModalVisible] = useState(false);
+<<<<<<< HEAD
   const [selectedMunicipio, setSelectedMunicipio] = useState('');
   const [selectedPozo, setSelectedPozo] = useState('');
+=======
+>>>>>>> main
 
   const handleSwitchChange = (index) => {
     const newSwitchValues = [...switchValues];
@@ -31,7 +37,11 @@ const Valvulas = () => {
     setSwitchValues(newSwitchValues);
     setAlertIndex(index);
 
+<<<<<<< HEAD
     const text = newSwitchValues[index] ? '¿Está seguro de cambiar el estado de la válvula?' : '¿Está seguro de cambiar el estado de la válvula?';
+=======
+    const text = newSwitchValues[index] ? '¿Está seguro de cambiar el estado de la válvula?' :'¿Está seguro de cambiar el estado de la válvula?' ;
+>>>>>>> main
     setAlertText(text);
     setModalVisible(true);
   };
@@ -68,6 +78,7 @@ const Valvulas = () => {
       <Header />
       <View style={styles.content}>
         <Text style={styles.title}>Control de válvulas</Text>
+<<<<<<< HEAD
         <View style={styles.filterContainer}>
           <Picker
             selectedValue={selectedMunicipio}
@@ -84,6 +95,8 @@ const Valvulas = () => {
             
           </Picker>
         </View>
+=======
+>>>>>>> main
         <View style={styles.table}>
           {tableData.map((rowData, index) => (
             <View style={styles.row} key={index}>
@@ -146,8 +159,11 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   content: { flex: 1, paddingHorizontal: 20 }, 
   title: { fontSize: 40, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 },
+<<<<<<< HEAD
   filterContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 },
   picker: { flex: 1, height: 50, backgroundColor: '#f0f0f0', marginRight: 10 },
+=======
+>>>>>>> main
   table: { borderWidth: 1, borderColor: '#000', borderRadius: 5, overflow: 'hidden', marginTop: 20 },
   row: { flexDirection: 'row', marginBottom: 10 },
   cell: { flex: 1, marginHorizontal: 5, justifyContent: 'center' },
