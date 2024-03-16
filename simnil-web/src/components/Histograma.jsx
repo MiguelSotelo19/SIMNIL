@@ -57,7 +57,19 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
         fechas = arrayFechas;
       }
 
-      console.log(fechas);
+	  if(fechaFin && fechaFin !== ''){
+		let arrayFechas = [];
+		for (let i = 0; i < fechas.length; i++) {
+			const element = fechas[i].x;
+			fechaFin = new Date(fechaFin);
+  
+			if (element.getTime() <= fechaFin.getTime()) {
+			  arrayFechas.push(fechas[i]);
+			}
+		  }
+		  fechas = arrayFechas;
+	  }
+
       if (fechas.length === 0) available = false;
 
       let dato_histo = {
@@ -71,7 +83,6 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
 
       historial.push(dato_histo);
     }
-	console.log("===================================");
 
     setHistorial(historial);
   }
