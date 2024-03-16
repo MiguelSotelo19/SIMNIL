@@ -31,23 +31,23 @@ export const SideMenu = ({selected}) => {
             <h2 style={{textAlign: 'center', width: '100%'}}>Menú</h2>
 
                 <li className={selectedItem == 1 ? "hover": ""} onClick={() => {
-                    window.location ='/Estadisticas';
+                    window.location ='/SIMNIL/Estadisticas';
                 }}><img src={grafica} id='icono' /> Estadísticas</li>
 
                 <li className={selectedItem == 2 ? "hover": ""} onClick={() => {
-                    window.location = '/Usuarios';
+                    window.location = '/SIMNIL/Usuarios';
                 }}><img src={users} id='icono' /> Usuarios</li>
 
                 <li className={selectedItem == 3 ? "hover": ""} onClick={() => {
-                    window.location = '/Pozos';
+                    window.location = '/SIMNIL/Pozos';
                 }}><img src={pozo} id='icono' /> Pozos</li>
 
                 <li className={selectedItem == 4 ? "hover": ""} onClick={() => {
-                    window.location = '/Comunidades';
+                    window.location = '/SIMNIL/Comunidades';
                 }}><img src={home} id='icono' /> Comunidades</li>
 
                 <li className={selectedItem == 5 ? "hover": ""} onClick={() => {
-                    window.location = '/Perfil';
+                    window.location = '/SIMNIL/Perfil';
                 }}><img src={user} id='icono' /> Perfil</li>
         </div>
         </>

@@ -16,7 +16,7 @@ import java.util.Optional;
 @Transactional
 @AllArgsConstructor
 public class HistorialService {
-/*    private final HistorialRepository repository;
+    private final HistorialRepository repository;
 
     @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse> getAll(){
@@ -34,5 +34,5 @@ public class HistorialService {
         if (foundHistorial.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error al intentar registrar el Historial"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(historialBean), HttpStatus.OK, "Registrado Correctamente"), HttpStatus.OK);
-    }*/
+    }
 }
