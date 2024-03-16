@@ -49,7 +49,7 @@ export const Login = () => {
             let usuario = usuarios[i];
             if (usuario.nombreUsuario == nombreUsuario && usuario.contrasenia == contrasenia) {             
                 aux=false;
-                window.location = '/Usuarios';
+                window.location = '/Estadisticas';
                                 
                 break;
             }
