@@ -52,6 +52,7 @@ export const Estadisticas = () => {
         i--;
       }
     }
+    setFechasFin(fechas);
     setFechas(fechas);
   };
 
@@ -65,7 +66,18 @@ export const Estadisticas = () => {
         arrayAux.push(fechasArray[i]);
       }
     }
+    
+    setFechaFin('');
     setFechasFin(arrayAux);
+
+    if(inicio == 'Invalid Date' || inicio==undefined) {
+      console.log("intento de asignacion de fechas fin");
+      console.log(fechasArray);
+      setFechaFin('');
+      setFechasFin(fechasArray);
+      let selectFin = document.getElementById('selectFin');
+      selectFin.value='';
+    }
   };
 
   return (
@@ -85,8 +97,8 @@ export const Estadisticas = () => {
 
               <div id="opciones">
                 <div id="btn-inicio">
-                  <p>Fecha Inicio</p>
-                  <select onChange={(e) => { setFechaInicio(e.target.value); asignarFechas(e.target.value); }}>
+                  <p className='selectText'>Fecha Inicio</p>
+                  <select  onChange={(e) => { setFechaInicio(e.target.value); asignarFechas(e.target.value); }}>
                     <option value={null}></option>
                     {fechasArray.length > 0 && fechasArray.map((fecha) => (
                       <option key={fecha.x} value={fecha.x}>{fecha.x.toLocaleDateString()}</option>
@@ -95,9 +107,9 @@ export const Estadisticas = () => {
                 </div>
 
                 <div id="btn-fin">
-                  <p>Fecha Fin</p>
-                  <select onChange={(e) => { setFechaFin(e.target.value); }}>
-                    <option value={null}></option>
+                  <p className='selectText'>Fecha Fin</p>
+                  <select id='selectFin' onChange={(e) => { setFechaFin(e.target.value); }}>
+                    <option value={''}></option>
                     {fechasArrayFin.length > 0 && fechasArrayFin.map((fecha) => (
                       <option key={fecha.x} value={fecha.x}>{fecha.x.toLocaleDateString()}</option>
                     ))}

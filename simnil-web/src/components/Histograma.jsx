@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import CanvasJSReact from '@canvasjs/react-charts';
 import axios from 'axios';
+import { useRef } from 'react';
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Histograma = ({ fechaInicio, fechaFin }) => {
   const [historial, setHistorial] = useState([]);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,13 +21,24 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
     fetchData();
   }, [fechaInicio, fechaFin]);
 
+  const toggleDataSeries = (e) => {
+    if (chartRef.current && chartRef.current.render) {
+      if (typeof e.dataSeries.visible === 'undefined' || e.dataSeries.visible) {
+        e.dataSeries.visible = false;
+      } else {
+        e.dataSeries.visible = true;
+      }
+      chartRef.current.render();
+    }
+  };
+
   const renderHisto = (pozos, fechaInicio, fechaFin) => {
     let historial = [];
 
     for (let i = 0; i < pozos.length; i++) {
       const pozo = pozos[i];
       let fechas = [];
-      let available = true;
+      //let available = true;
 
       for (let j = 0; j < pozo.datosPozoBeans.length; j++) {
         const datos = pozo.datosPozoBeans[j];
@@ -70,12 +83,12 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
 		  fechas = arrayFechas;
 	  }
 
-      if (fechas.length === 0) available = false;
+      //if (fechas.length === 0) available = false;
 
       let dato_histo = {
         type: "spline",
         name: "Pozo " + pozo.nombre,
-        showInLegend: available,
+        showInLegend: true,
         xValueFormatString: "DD-MM-YY hh:mm tt",
         yValueFormatString: "Nivel de Agua ###,##%",
         dataPoints: fechas
@@ -111,14 +124,15 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
       shared: true
     },
     legend: {
-      cursor: "pointer"
+      cursor: "pointer",
+      itemclick: toggleDataSeries
     },
     data: historial
   };
 
   return (
     <div>
-      <CanvasJSChart options={options} />
+      <CanvasJSChart options={options} onRef={(ref) => (chartRef.current = ref)} />
     </div>
   );
 }
