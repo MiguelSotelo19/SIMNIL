@@ -3,6 +3,7 @@ package mx.edu.utez.simnilback.service.pozo;
 import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
+import mx.edu.utez.simnilback.model.persona.PersonaRepository;
 import mx.edu.utez.simnilback.model.pozo.PozoBean;
 import mx.edu.utez.simnilback.model.pozo.PozoRepository;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PozoService {
     private final PozoRepository repository;
+    private final PersonaRepository personaRepository;
 
     @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse> getAll(){
@@ -30,13 +32,17 @@ public class PozoService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> save(PozoBean pozoBean){
+    public ResponseEntity<ApiResponse> save(PozoBean pozoBean, Long id){
+
         Optional<PozoBean> foundPozo = repository.findByNombre(pozoBean.getNombre());
         if (foundPozo.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error al Registrar el Pozo"), HttpStatus.BAD_REQUEST);
+
+        Optional<PersonaBean> foundPersona = personaRepository.findById(id);
+        if (foundPersona.isPresent())
+            pozoBean.getPersonaBeanSet().add(foundPersona.get());
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(pozoBean), HttpStatus.OK, "Se registro Correctamente"), HttpStatus.OK);
     }
-
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update(PozoBean pozoBean){
         Optional<PozoBean> foundPozo = repository.findById(pozoBean.getIdPozo());

@@ -24,9 +24,9 @@ public class PozoController {
         return service.getOne(id);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse> register(@RequestBody PozoDto dto){
-        return service.save(dto.toEntity());
+    @PostMapping("/{idPersona}")
+    public ResponseEntity<ApiResponse> register(@RequestBody PozoDto dto, @PathVariable Long idPersona){
+        return service.save(dto.toEntity(), idPersona);
     }
 
     @PutMapping("/{id}")
