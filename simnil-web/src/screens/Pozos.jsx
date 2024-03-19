@@ -149,7 +149,7 @@ export const Pozos = () => {
     await axios({
       method: metodo,
       url: url+parametros.idPozo,
-      data: parametros,
+      data: parametros
     }).then(function (respuesta) {
       var tipo = respuesta.data[0];
       var msj = respuesta.data[1];

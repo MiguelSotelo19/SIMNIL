@@ -7,7 +7,6 @@ import { Usuarios } from './screens/Usuarios'
 import { Pozos } from './screens/Pozos'
 import { Comunidades } from './screens/Comunidades'
 import { Perfil } from './screens/Perfil'
-import { Prueba } from './screens/Prueba';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
@@ -18,7 +17,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path='/SIMNIL/Pozos' Component={Pozos}/>
       <Route path='/SIMNIL/Comunidades' Component={Comunidades}/>
       <Route path='/SIMNIL/Perfil' Component={Perfil}/>
-      <Route path='/prueba' Component={Prueba} />
     </Routes>
   </Router>
 )

@@ -38,6 +38,7 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
     for (let i = 0; i < pozos.length; i++) {
       const pozo = pozos[i];
       let fechas = [];
+      //let available = true;
 
       for (let j = 0; j < pozo.datosPozoBeans.length; j++) {
         const datos = pozo.datosPozoBeans[j];
@@ -81,6 +82,8 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
 		  }
 		  fechas = arrayFechas;
 	  }
+
+      //if (fechas.length === 0) available = false;
 
       let dato_histo = {
         type: "spline",
