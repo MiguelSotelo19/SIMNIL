@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
@@ -8,38 +8,82 @@ export default function Login() {
   const navigation = useNavigation();
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [contrasenia, setContrasenia] = useState('');
+ /* const [usuarios, setUsuarios] = useState([]);
+
+  useEffect(() => {
+    getUsuarios();
+  }, []);
+
+  const getUsuarios = async () => {
+    try {
+      const respuesta = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
+      setUsuarios(respuesta.data);
+    } catch (error) {
+      console.error('Error al obtener usuarios:', error);
+      Alert.alert('Error', 'No se pudieron obtener los usuarios.');
+    }
+  };
+  const validar = () => {
+    let aux = true;
+  
+    for (let i = 0; i < usuarios.length; i++) {
+      let usuario = usuarios[i];
+      if (usuario.nombreUsuario === nombreUsuario && usuario.contrasenia === contrasenia) {
+        aux = false;
+        console.log('Inicio de sesión exitoso');
+        navigation.navigate('Bottom');
+        ;
+        break;
+      }
+    }
+  
+    if (aux) {
+      Alert.alert('Error', 'Usuario y/o contraseña incorrectos.');
+    }
+  };*/
+
+
 
   const validar = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/simnil/persona/login'); 
-      console.log('Respuesta de la solicitud HTTP:', response);
-
-      let aux = true;
-
-      for (let i = 0; i < response.length; i++) {
-        let usuario = response[i];
-        if (usuario.nombreUsuario === nombreUsuario && usuario.contrasenia === contrasenia) {
-          aux = false;
-          console.log('Inicio de sesión exitoso');
-          navigation.navigate('Bottom');
-          break;
+      const response = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
+      console.log('Respuesta de la solicitud HTTP:', response.data);
+  
+      const nombreUsuarioLower = nombreUsuario.toLowerCase(); // Convertir a minúsculas
+      const contraseniaLower = contrasenia.toLowerCase(); // Convertir a minúsculas
+  
+      let usuarioValido = false;
+      let contraseñaValida = false;
+  
+      for (let i = 0; i < response.data.length; i++) {
+        const usuario = response.data[i];
+        if (usuario.nombreUsuario.toLowerCase() === nombreUsuarioLower) { // Comparar en minúsculas
+          usuarioValido = true;
+          if (usuario.contrasenia.toLowerCase() === contraseniaLower) { // Comparar en minúsculas
+            contraseñaValida = true;
+            console.log('Inicio de sesión exitoso');
+            navigation.navigate('Perfil');
+            break;
+          }
         }
       }
-
-      if (aux) {
-        show_alerta('Usuario y/o Contraseña Incorrectos', 'error');
+  
+      if (!usuarioValido) {
+        show_alerta('Usuario incorrecto', 'error');
+      } else if (!contraseñaValida) {
+        show_alerta('Contraseña incorrecta', 'error');
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       show_alerta('No se pudo conectar al servidor', 'error');
     }
   };
-
+  
   const show_alerta = (mensaje, tipo) => {
     console.log(mensaje, tipo);
     Alert.alert('Error', mensaje);
   };
-
+  
   const windowHeight = Dimensions.get('window').height;
 
   return (
@@ -78,7 +122,6 @@ export default function Login() {
     </ScrollView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

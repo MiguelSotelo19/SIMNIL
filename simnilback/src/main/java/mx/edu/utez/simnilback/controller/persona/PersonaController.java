@@ -45,7 +45,7 @@ public class PersonaController {
     public ResponseEntity<ApiResponse> deleteById(@PathVariable Long id){return service.changeStatus(id);}
 
  // Iniciar sesión
- @PostMapping("/login")
+ @PostMapping ("/login")
  public ResponseEntity<ApiResponse> login(@RequestBody PersonaDto dto) {
   return service.login(dto.toEntity());
  }
