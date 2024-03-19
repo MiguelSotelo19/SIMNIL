@@ -2,13 +2,12 @@ package mx.edu.utez.simnilback.controller.historial;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
+import mx.edu.utez.simnilback.controller.historial.DTO.HistorialDto;
+import mx.edu.utez.simnilback.model.historial.HistorialBean;
 import mx.edu.utez.simnilback.service.historial.HistorialService;
 import mx.edu.utez.simnilback.service.persona.PersonaService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/simnil/historial")
@@ -19,6 +18,11 @@ public class HistorialController {
     @GetMapping("/")
     public ResponseEntity<ApiResponse> getAll()
     {return service.getAll();}
+
+    @PostMapping("/")
+    public ResponseEntity<ApiResponse> register(@RequestBody HistorialDto dto){
+        return service.save(dto.toEntity());
+    }
 
 
 }
