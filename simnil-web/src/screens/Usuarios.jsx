@@ -358,8 +358,7 @@ export const Usuarios = () => {
               onAfterOpen={afterOpenModal}
               onRequestClose={closeModal}
               style={customStyles}
-              contentLabel="Login Modal"
-          >
+              contentLabel="Login Modal">
               <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color: 'black', fontSize: 35}}>Registrar Usuario</h2>
               <form style={{
                   width: '90%',
