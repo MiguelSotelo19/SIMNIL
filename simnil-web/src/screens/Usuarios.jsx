@@ -257,8 +257,7 @@ export const Usuarios = () => {
                           <tr style={{textAlign: 'center', fontSize: 17}}>
                             <th>#</th>
                             <th>Nombre(s)</th>
-                            <th>Apellido Paterno</th>
-                            <th>Apellido Materno</th>
+                            <th>Apellidos</th>
                             <th>Usuario</th>
                             <th>Contraseña</th>
                             <th>Núm. Tel.</th>
@@ -273,8 +272,7 @@ export const Usuarios = () => {
                               <tr key={usuario.idPersonas}>
                                 <td>{(i+1)}</td>
                                 <td>{usuario.nombre}</td>
-                                <td>{usuario.apellidoPaterno}</td>
-                                <td>{usuario.apellidoMaterno}</td>
+                                <td>{usuario.apellidoPaterno} {usuario.apellidoMaterno}</td>
                                 <td>{usuario.nombreUsuario}</td>
                                 <td>{usuario.contrasenia}</td>
                                 <td>{usuario.numeroTelefonico}</td>
