@@ -5,6 +5,20 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'; 
 
 export default function Login() {
+
+
+  const navigation = useNavigation();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+      setUsername('');
+      setPassword('');
+    navigation.navigate('Bottom');
+  };
+
+  /*
   const navigation = useNavigation();
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [contrasenia, setContrasenia] = useState('');
@@ -43,26 +57,23 @@ export default function Login() {
   };*/
 
 
-
+/*
   const validar = async () => {
     try {
-      const response = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
+      const response = await axios.get('http://192.168.67.17:8080/api/simnil/persona/');
       console.log('Respuesta de la solicitud HTTP:', response.data);
-  
-      const nombreUsuarioLower = nombreUsuario.toLowerCase(); // Convertir a minúsculas
-      const contraseniaLower = contrasenia.toLowerCase(); // Convertir a minúsculas
   
       let usuarioValido = false;
       let contraseñaValida = false;
   
       for (let i = 0; i < response.data.length; i++) {
         const usuario = response.data[i];
-        if (usuario.nombreUsuario.toLowerCase() === nombreUsuarioLower) { // Comparar en minúsculas
+        if (usuario.nombreUsuario() === nombreUsuario) {
           usuarioValido = true;
-          if (usuario.contrasenia.toLowerCase() === contraseniaLower) { // Comparar en minúsculas
+          if (usuario.contrasenia() === contrasenia) { 
             contraseñaValida = true;
             console.log('Inicio de sesión exitoso');
-            navigation.navigate('Perfil');
+            navigation.navigate('Bottom');
             break;
           }
         }
@@ -82,12 +93,11 @@ export default function Login() {
   const show_alerta = (mensaje, tipo) => {
     console.log(mensaje, tipo);
     Alert.alert('Error', mensaje);
-  };
+  };*/
   
   const windowHeight = Dimensions.get('window').height;
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow:1}}>
       <View style={styles.container}>
         <Text style={styles.welcomeText}>¡Bienvenido!</Text>
 
@@ -98,19 +108,20 @@ export default function Login() {
             <Text style={styles.baseText}>Usuario</Text>
             <TextInput
               style={styles.input}
-              value={nombreUsuario}
-              onChangeText={text => setNombreUsuario(text)}
+             value={username}
+             onChangeText={text => setUsername(text)}
             />
             <Text style={styles.baseText}>Contraseña</Text>
             <TextInput
               style={styles.input}
-              value={contrasenia}
-              onChangeText={text => setContrasenia(text)}
+             value={password}
+             
+              onChangeText={text => setPassword(text)}
               secureTextEntry={true}
             />
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={validar}>
+              <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>Iniciar sesión</Text>
               </TouchableOpacity>
             </View>
@@ -119,7 +130,7 @@ export default function Login() {
 
         <View style={[styles.circle, { height: windowHeight * 0.4 }]}></View>
       </View>
-    </ScrollView>
+    
   );
 }
 

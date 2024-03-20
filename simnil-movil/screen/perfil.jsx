@@ -5,7 +5,7 @@ import { Header } from "../elements/Header";
 const Perfil = () => {
   const [position, setPosition] = useState("Administrador");
   const [user, setUser] = useState("Abel");
-  const windowHeight = Dimensions.get('window').height;
+ 
 
   return (
     <View style={styles.container}>
