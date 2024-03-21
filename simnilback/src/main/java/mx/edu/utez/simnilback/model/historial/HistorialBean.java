@@ -33,7 +33,21 @@ public class HistorialBean {
     private LocalTime horaRecopilacion;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "fk_id_pozo")
     private PozoBean pozoBean;
+
+
+    public HistorialBean(Double nivelAgua, Date fechaRecopilacion, LocalTime horaRecopilacion) {
+        this.nivelAgua = nivelAgua;
+        this.fechaRecopilacion = fechaRecopilacion;
+        this.horaRecopilacion = horaRecopilacion;
+    }
+
+    public HistorialBean(Double nivelAgua, Date fechaRecopilacion, LocalTime horaRecopilacion, PozoBean pozoBean) {
+        this.nivelAgua = nivelAgua;
+        this.fechaRecopilacion = fechaRecopilacion;
+        this.horaRecopilacion = horaRecopilacion;
+        this.pozoBean = pozoBean;
+    }
 }

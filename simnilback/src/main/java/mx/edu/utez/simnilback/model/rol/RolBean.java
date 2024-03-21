@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "ROLES")
 @Getter
@@ -24,6 +26,15 @@ public class RolBean {
     private String rol;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "rolBean", fetch = FetchType.LAZY)
-    private PersonaBean usuarioBean;
+    @OneToMany(mappedBy = "rolBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<PersonaBean> personaBeanSet;
+
+    public RolBean(Long idRol, String rol) {
+        this.idRol = idRol;
+        this.rol = rol;
+    }
+
+    public RolBean( String rol) {
+        this.rol = rol;
+    }
 }

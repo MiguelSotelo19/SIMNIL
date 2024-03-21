@@ -30,12 +30,12 @@ public class ComunidadController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> modify(@RequestBody ComunidadDto dto){
-        return service.update(dto.toUpdate());
+    public ResponseEntity<ApiResponse> modify(@PathVariable("id") Long id, @RequestBody ComunidadDto dto){
+        return service.update(dto.toUpdate(id));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> erase(@PathVariable("id") Long id){
-        return service.delete(id);
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse> disable(@PathVariable("id") Long id){
+        return service.changeStatus(id);
     }
 }

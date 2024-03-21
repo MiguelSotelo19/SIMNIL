@@ -29,10 +29,10 @@ public class PersonaController {
     }
 
     //Actualizar Persona
-    @PutMapping("/")
+    @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> update
-    (@RequestBody PersonaDto dto){
-        return service.update(dto.toUpdate());
+    (@RequestBody PersonaDto dto, @PathVariable("id") Long id){
+        return service.update(dto.toUpdate(id));
     }
 
     //Mostrar todas las personas
@@ -41,6 +41,12 @@ public class PersonaController {
     {return service.getAll();}
 
     //Elliminar Persona
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteById(@PathVariable Long id){return service.deleteById(id);}
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse> deleteById(@PathVariable Long id){return service.changeStatus(id);}
+
+ // Iniciar sesión
+ @PostMapping("/login")
+ public ResponseEntity<ApiResponse> login(@RequestBody PersonaDto dto) {
+  return service.login(dto.toEntity());
+ }
 }
