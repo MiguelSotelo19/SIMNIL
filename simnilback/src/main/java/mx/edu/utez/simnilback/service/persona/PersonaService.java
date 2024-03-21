@@ -126,19 +126,38 @@ public class PersonaService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> login(PersonaBean personaBean) {
-        Optional<PersonaBean> foundPersona = repository.findByNombreUsuario(personaBean.getNombreUsuario());
+    public ResponseEntity<ApiResponse> recuperarPassword(String nombreUsuario, String nuevaContrasenia) {
+        Optional<PersonaBean> foundPersona = repository.findByNombreUsuario(nombreUsuario);
+
         if (foundPersona.isPresent()) {
             PersonaBean persona = foundPersona.get();
-            if (persona.getContrasenia().equals(personaBean.getContrasenia())) {
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Bienvenido!"), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Usuario y/o contraseña incorrectos"), HttpStatus.UNAUTHORIZED);
-            }
+            persona.setContrasenia(nuevaContrasenia);
+            repository.save(persona);
+
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Contraseña actualizada correctamente"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Usuario y/o contraseña incorrectos"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Usuario no encontrado"), HttpStatus.NOT_FOUND);
         }
     }
+
+
+//    @Transactional(rollbackFor = {SQLException.class})
+//    public ResponseEntity<ApiResponse> login(PersonaBean personaBean) {
+//        Optional<PersonaBean> foundPersona = repository.findByNombreUsuario(personaBean.getNombreUsuario());
+//        if (foundPersona.isPresent()) {
+//            PersonaBean persona = foundPersona.get();
+//            if (persona.getContrasenia().equals(personaBean.getContrasenia())) {
+//                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Bienvenido!"), HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>(new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Usuario y/o contraseña incorrectos"), HttpStatus.UNAUTHORIZED);
+//            }
+//        } else {
+//            return new ResponseEntity<>(new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Usuario y/o contraseña incorrectos"), HttpStatus.UNAUTHORIZED);
+//        }
+//    }
+
+
+
 
 
 
