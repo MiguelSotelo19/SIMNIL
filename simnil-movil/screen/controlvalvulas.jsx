@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-import { StyleSheet, Text, View } from 'react-native';
-import { Header } from '../elements/Header';
-
-Valvulas =()=>{
-    return(
-        <View style={styles.container}>
-        <Header />    
-      </View>
-
-    );
-}
-export default Valvulas;
-
-const styles = StyleSheet.create({
-    container: {
-      width: '100%'
-    },
-  });
-=======
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Switch, Dimensions, TouchableOpacity } from 'react-native';
 import { Header } from '../elements/Header';
@@ -161,4 +141,3 @@ const styles = StyleSheet.create({
 });
 
 export default Valvulas;
->>>>>>> main

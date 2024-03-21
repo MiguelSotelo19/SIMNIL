@@ -9,13 +9,8 @@ const Tab = createBottomTabNavigator();
 
 const TabNav=()=>{
     return(
-<<<<<<< HEAD
-        <Tab.Navigator initialRouteName='Estadistica'>
+        <Tab.Navigator initialRouteName='perfil'>
             <Tab.Screen name='perfil' component={Perfil} options={
-=======
-        <Tab.Navigator initialRouteName='Perfil'>
-            <Tab.Screen name='Perfil' component={Perfil} options={
->>>>>>> main
                 {
                     headerShadowVisible:false,
                     tabBarActiveTintColor:'#00aa83',

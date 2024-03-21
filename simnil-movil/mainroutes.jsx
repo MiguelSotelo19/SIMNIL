@@ -1,27 +1,15 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Perfil from "./screen/perfil";
-<<<<<<< HEAD
-
-=======
 import Estadistica from "./screen/histogramas";
 import Valvulas from "./screen/controlvalvulas";
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
->>>>>>> main
 
 const Tab = createBottomTabNavigator();
 
 const MainRoutes = () => {
         return(
-<<<<<<< HEAD
-            <Tab.Navigator initialRouteName="Perfil">
-                <Tab.Screen name="Perfil" component={Perfil} options={{headerShown: false}}></Tab.Screen>
-            </Tab.Navigator>
-        );
-
-}
-=======
             <Tab.Navigator tabBarOptions={{
                 activeTintColor: "#FFF",
                 inactiveTintColor: "#000",
@@ -72,5 +60,4 @@ const MainRoutes = () => {
 
 }
 
->>>>>>> main
 export default MainRoutes;
