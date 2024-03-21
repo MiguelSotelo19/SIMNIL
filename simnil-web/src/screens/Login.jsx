@@ -47,7 +47,8 @@ export const Login = () => {
 
         for (let i = 0; i < usuarios.length; i++) {
             let usuario = usuarios[i];
-            if (usuario.nombreUsuario == nombreUsuario && usuario.contrasenia == contrasenia) {             
+            console.log(usuario);
+            if (usuario.nombreUsuario == nombreUsuario && usuario.contrasenia == contrasenia && usuario.rolBean.rol == "Administrador" && usuario.estatus==true) {             
                 aux=false;
                 window.location = '/SIMNIL/Estadisticas';
                                 

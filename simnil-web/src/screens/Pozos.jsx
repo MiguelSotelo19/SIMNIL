@@ -25,7 +25,7 @@ Modal.setAppElement('#root');
 const customStyles = {
   content: {
     width: '45%',
-    height: '60vh',
+    height: '61vh',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -51,7 +51,7 @@ export const Pozos = () => {
     const [ nombre, setNombre ] = useState('');
     const [ porcentaje, setPorcentaje ] = useState('');
     const [ capLitros, setCapLitros ] = useState('');
-    const [ profundidad, setProfundidad ] = useState('');
+    const [ profundidad, setProfundidad ] = useState(0);
 
     useEffect( () => {
       getPozos();
@@ -283,13 +283,22 @@ export const Pozos = () => {
                 alignItems: 'center'}}>
 
             <div className='info-1'>
-              <input type='text' placeholder='Nombre del Pozo' onChange={(e) => setNombre(e.target.value)} />
-              <input type='text' placeholder='Porcentaje de agua' onChange={(e) => setPorcentaje(e.target.value)} />
+              <div className="field">
+                <span className='labInp'>Nombre del Pozo</span>
+                <input required type='text' placeholder='Nombre del Pozo' onChange={(e) => setNombre(e.target.value)} />
+              </div>
             </div>
 
             <div className='info-1'>
-            <input type='text' placeholder='Capacidad de Litros' onChange={(e) => setCapLitros(e.target.value)} />
-              <input type='text' placeholder='Profundidad' onChange={(e) => setProfundidad(e.target.value)} />
+              <div className="field">
+                <span className='labInp'>Porcentaje de agua</span>
+                <input required type='number' placeholder='Porcentaje de agua' min={0} max={100} onChange={(e) => setPorcentaje(e.target.value)} />
+              </div>
+
+              <div className="field">
+                <span className='labInp'>Capacidad de Litros</span>
+                <input required type='number' placeholder='Capacidad de Litros' min={0} onChange={(e) => setCapLitros(e.target.value)} />
+              </div>
             </div>
 
             <button id='recu' onClick={() => validar('POST')} >Crear Pozo</button>
@@ -304,7 +313,7 @@ export const Pozos = () => {
               style={customStyles}
               contentLabel="Modal Edit"
           >
-            <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color: 'black', fontSize: 35}}>Editar Comunidad</h2>
+            <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{color: 'black', fontSize: 35}}>Editar Pozo</h2>
             <form style={{
                 width: '90%',
                 display: 'flex', 
@@ -312,15 +321,23 @@ export const Pozos = () => {
                 alignItems: 'center'}}>
 
             <div className='info-1'>
-              <input type='text' placeholder='Nombre del Pozo' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
-              <input type='text' placeholder='Porcentaje de agua' id='porcentajeAgua' value={porcentaje} onChange={(e) => setPorcentaje(e.target.value)} />
+              <div className="field">
+                <span className='labInp'>Nombre del Pozo</span>
+                <input required type='text' placeholder='Nombre del Pozo' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
+              </div>
             </div>
 
             <div className='info-1'>
-              <input type='text' placeholder='Capacidad de Litros' id='capacidadLitros' value={capLitros} onChange={(e) => setCapLitros(e.target.value)} />
-              <input type='text' placeholder='Profundidad' id='profundidad' value={profundidad} onChange={(e) => setProfundidad(e.target.value)} />
+              <div className="field">
+                <span className='labInp'>Porcentaje de agua</span>
+                <input required type='number' placeholder='Porcentaje de agua' min={0} max={100} id='porcentajeAgua' value={porcentaje} onChange={(e) => setPorcentaje(e.target.value)} />
+              </div>
+
+              <div className="field">
+                <span className='labInp'>Capacidad de Litros</span>
+                <input required type='number' placeholder='Capacidad de Litros' min={0} id='capacidadLitros' value={capLitros} onChange={(e) => setCapLitros(e.target.value)} />
+              </div>
             </div>
-            
 
             <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
             <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>

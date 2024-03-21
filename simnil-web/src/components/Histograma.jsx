@@ -35,6 +35,8 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
   const renderHisto = (pozos, fechaInicio, fechaFin) => {
     let historial = [];
 
+    console.log("Fecha de inicio: "+fechaInicio);
+    console.log("Fecha de Fin: "+fechaFin);
     for (let i = 0; i < pozos.length; i++) {
       const pozo = pozos[i];
       let fechas = [];

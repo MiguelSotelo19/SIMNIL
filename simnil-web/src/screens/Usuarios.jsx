@@ -23,7 +23,7 @@ import { show_alerta } from '../js/functions';
 const customStyles = {
   content: {
     width: '55%',
-    height: '80vh',
+    height: '81vh',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -153,6 +153,7 @@ export const Usuarios = () => {
   
         enviarSolicitud(metodo, parametros, url);
       }
+      getUsuarios();
     }
   
     const enviarSolicitud = async(metodo, parametros, url) => {
@@ -208,7 +209,7 @@ export const Usuarios = () => {
       if(validar){
         tittle = '¿Seguro de desactivar el Usuario '+name+'?';
         mensaje = 'Se mantendrá inhabilitado hasta que se actualice manualmente';
-        confirm = 'Si, Eliminar';
+        confirm = 'Si, Desactivar';
       } else {
         tittle = '¿Seguro de activar el Usuario '+name+'?';
         mensaje = 'Se activará al usuario seleccionado';
@@ -259,7 +260,6 @@ export const Usuarios = () => {
                             <th>Nombre(s)</th>
                             <th>Apellidos</th>
                             <th>Usuario</th>
-                            <th>Contraseña</th>
                             <th>Núm. Tel.</th>
                             <th>Correo Electrónico</th>
                             <th>Rol</th>
@@ -274,7 +274,6 @@ export const Usuarios = () => {
                                 <td>{usuario.nombre}</td>
                                 <td>{usuario.apellidoPaterno} {usuario.apellidoMaterno}</td>
                                 <td>{usuario.nombreUsuario}</td>
-                                <td>{usuario.contrasenia}</td>
                                 <td>{usuario.numeroTelefonico}</td>
                                 <td>{usuario.correo}</td>
                                 <td>{usuario.rolBean.rol}</td>
@@ -325,23 +324,47 @@ export const Usuarios = () => {
                 alignItems: 'center'}}>
 
               <div className='info-1'>
-                <input type='text' placeholder='Nombre' value={nombre} onChange={(e) => setNombre(e.target.value)} />
-                <input type='text' placeholder='Apellido Paterno' value={apellidoPaterno} onChange={(e) => setApellidoPaterno(e.target.value)} />
+                <div className="field">
+                  <span className='labInp'>Nombre(s)</span>
+                  <input required type='text' placeholder='Nombre' value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                </div>
+
+                <div className="field">
+                  <span className='labInp'>Apellido Paterno</span>
+                  <input required type='text' placeholder='Apellido Paterno' value={apellidoPaterno} onChange={(e) => setApellidoPaterno(e.target.value)} />
+                </div>
               </div>
 
               <div className='info-1'>
-                <input type='text' placeholder='Apellido Materno' value={apellidoMaterno} onChange={(e) => setApellidoMaterno(e.target.value)} />
-                <input type='text' placeholder='Número de Teléfono' value={numeroTelefoncico} onChange={(e) => setNumeroTelefoncico(e.target.value)} />
+                <div className="field">
+                  <span className='labInp'>Apellido Materno</span>
+                  <input required type='text' placeholder='Apellido Materno' value={apellidoMaterno} onChange={(e) => setApellidoMaterno(e.target.value)} />
+                </div>
+
+                <div className="field">
+                  <span className='labInp'>Núm. de Teléfono</span>
+                  <input required type='tel' maxLength={10} minLength={10} min={0} placeholder='Número de Teléfono' value={numeroTelefoncico} onChange={(e) => setNumeroTelefoncico(e.target.value)} />
+                </div>
               </div>
 
-              <div className="info-1">
-                <input type='text' placeholder='Usuario' value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} />
-                <input type='text' placeholder='Contraseña' value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+              <div className='info-1'>
+                <div className="field">
+                  <span className='labInp'>Nombre de Usuario</span>
+                  <input required type='text' placeholder='Usuario' value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} />
+                </div>
+
+                <div className="field">
+                  <span className='labInp'>Contraseña</span>
+                  <input required type='password' placeholder='Contraseña' value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+                </div>
               </div>
                     
-              <input type='text' placeholder='Correo Electrónico' value={correo} onChange={(e) => setCorreo(e.target.value)} />
+              <div className="field">
+                <span className='labInp'>Correo Electrónico</span>
+                <input required type='email' placeholder='Correo Electrónico' value={correo} onChange={(e) => setCorreo(e.target.value)} />
+              </div>
               
-              <select onChange={(e) => setRol(e.target.value)} id='listaRol'>
+              <select required onChange={(e) => setRol(e.target.value)} id='listaRol'>
               <option id='selected' value={rol}>{rolName}</option>
               {roles.map( (rol) => (
                 <option key={rol.idRol} value={rol.idRol}>{rol.rol}</option>
@@ -367,23 +390,48 @@ export const Usuarios = () => {
                   alignItems: 'center'}}>
 
               <div className='info-1'>
-                <input type='text' placeholder='Nombre' onChange={(e) => setNombre(e.target.value)} />
-                <input type='text' placeholder='Apellido Paterno' onChange={(e) => setApellidoPaterno(e.target.value)} />
+                <div className="field">
+                  <span className='labInp'>Nombre(s)</span>
+                  <input required type='text' placeholder='Nombre' value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                </div>
+
+                <div className="field">
+                  <span className='labInp'>Apellido Paterno</span>
+                  <input required type='text' placeholder='Apellido Paterno' value={apellidoPaterno} onChange={(e) => setApellidoPaterno(e.target.value)} />
+                </div>
               </div>
 
               <div className='info-1'>
-                <input type='text' placeholder='Apellido Materno' onChange={(e) => setApellidoMaterno(e.target.value)} />
-                <input type='text' placeholder='Número de Teléfono' onChange={(e) => setNumeroTelefoncico(e.target.value)} />
+                <div className="field">
+                  <span className='labInp'>Apellido Materno</span>
+                  <input required type='text' placeholder='Apellido Materno' value={apellidoMaterno} onChange={(e) => setApellidoMaterno(e.target.value)} />
+                </div>
+
+                <div className="field">
+                  <span className='labInp'>Núm. de Teléfono</span>
+                  <input required type='tel' maxLength={10} minLength={10} placeholder='Número de Teléfono' value={numeroTelefoncico} onChange={(e) => setNumeroTelefoncico(e.target.value)} />
+                </div>
               </div>
 
-              <div className="info-1">
-                <input type='text' placeholder='Usuario' onChange={(e) => setNombreUsuario(e.target.value)} />
-                <input type='text' placeholder='Contraseña' onChange={(e) => setContrasenia(e.target.value)} />
+              <div className='info-1'>
+                <div className="field">
+                  <span className='labInp'>Nombre de Usuario</span>
+                  <input required type='text' placeholder='Usuario' value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} />
+                </div>
+
+                <div className="field">
+                  <span className='labInp'>Contraseña</span>
+                  <input required type='password' placeholder='Contraseña' value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+                </div>
               </div>
-                    
-              <input type='text' placeholder='Correo Electrónico' onChange={(e) => setCorreo(e.target.value)} />
               
-              <select onChange={(e) => setRol(e.target.value)} id='listaRol'>
+              <div className="field">
+                <span className='labInp'>Correo Electrónico</span>
+                <input required type='email' placeholder='Correo Electrónico' value={correo} onChange={(e) => setCorreo(e.target.value)} />
+              </div>
+              
+              
+              <select required onChange={(e) => setRol(e.target.value)} id='listaRol'>
               <option id='selected'>Selecciona Rol</option>
               {roles.map( (rol) => (
                 <option key={rol.idRol} value={rol.idRol}>{rol.rol}</option>
