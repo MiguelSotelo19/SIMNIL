@@ -6,7 +6,6 @@ import Login from './screen/login';
 import MainRoutes from './mainroutes';
 
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {

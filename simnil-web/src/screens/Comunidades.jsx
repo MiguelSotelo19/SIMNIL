@@ -23,7 +23,7 @@ import { show_alerta } from '../js/functions';
 const customStyles = {
   content: {
     width: '45%',
-    height: '60vh',
+    height: '61vh',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -232,7 +232,6 @@ export const Comunidades = () => {
               </div>
               <hr />
 
-              {/*Tablas dinamicas */}
               <div className='container-fluid'>
                 <div className="row mt-3">
                   <div className="col-12 col-lg-8 offset-0 offset-lg-2" style={{width: '90%', marginLeft: '5%', fontSize: 15}} >
@@ -302,13 +301,25 @@ export const Comunidades = () => {
                 flexDirection: 'column', 
                 alignItems: 'center'}}>
 
-            <input type='text' placeholder='Nombre de la Comunidad' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
-            <div className='info-1'>
-              <input type='text' placeholder='Municipio' id='municipio_' value={municipio} onChange={(e) => setMunicipio(e.target.value)} />
-              <input type='text' placeholder='Código Postal' id='cp_' value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} />
+            <div className="field">
+              <span className='labInp'>Nombre de la Comunidad</span>
+              <input required type='text' placeholder='Nombre de la Comunidad' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
             </div>
             
-            <select onChange={(e) => setIdPozo(e.target.value)} id='listaPozo'>
+            <div className='info-1'>
+              <div className="field">
+                <span className='labInp'>Municipio</span>
+                <input required type='text' placeholder='Municipio' id='municipio_' value={municipio} onChange={(e) => setMunicipio(e.target.value)} />
+              </div>
+
+              <div className="field">
+                <span className='labInp'>Código Postal</span>
+                <input required type='number' maxLength={5} minLength={5} placeholder='Código Postal' id='cp_' value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} />
+              </div>
+            </div>
+            
+            <span className='labInp'>Pozo que lo abastece</span>
+            <select required onChange={(e) => setIdPozo(e.target.value)} id='listaPozo'>
               <option id='selected' value={idPozo}>{nombrePozo}</option>
               {pozos.map( (pozo) => (
                 <option key={pozo.idPozo} value={pozo.idPozo}>{pozo.nombre}</option>
@@ -334,14 +345,25 @@ export const Comunidades = () => {
                 flexDirection: 'column', 
                 alignItems: 'center'}}>
 
-            <input type='text' placeholder='Nombre de la Comunidad' onChange={(e) => setNombre(e.target.value)} />
-
+            <div className="field">
+              <span className='labInp'>Nombre de la Comunidad</span>
+              <input required type='text' placeholder='Nombre de la Comunidad' id='nombre_' value={nombre} onChange={(e) => setNombre(e.target.value)} />
+            </div>
+            
             <div className='info-1'>
-              <input type='text' placeholder='Municipio' onChange={(e) => setMunicipio(e.target.value)} />
-              <input type='text' placeholder='Código Postal' onChange={(e) => setCodigoPostal(e.target.value)} />
+              <div className="field">
+                <span className='labInp'>Municipio</span>
+                <input required type='text' placeholder='Municipio' id='municipio_' value={municipio} onChange={(e) => setMunicipio(e.target.value)} />
+              </div>
+
+              <div className="field">
+                <span className='labInp'>Código Postal</span>
+                <input required type='number' maxLength={5} minLength={5} placeholder='Código Postal' id='cp_' value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} />
+              </div>
             </div>
  
-            <select onChange={(e) => setIdPozo(e.target.value)} id='listaPozo'>
+            <span className='labInp'>Pozo que lo abastece</span>
+            <select required onChange={(e) => setIdPozo(e.target.value)} id='listaPozo'>
               <option id='selected'>Selecciona Pozo</option>
               {pozos.map( (pozo) => (
                 <option key={pozo.idPozo} value={pozo.idPozo}>{pozo.nombre}</option>

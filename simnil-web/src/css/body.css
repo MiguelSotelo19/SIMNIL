@@ -169,7 +169,7 @@
 }
 
 form input {
-    font-size: 20px;
+    font-size: 24px;
     width: 60%; 
     margin-bottom: 3%;
     background-color: white;
@@ -180,7 +180,7 @@ form input {
 }
 
 form select {
-    font-size: 20px;
+    font-size: 24px;
     width: 40%; 
     margin-bottom: 3%;
     background-color: white;
@@ -204,6 +204,27 @@ form select {
     width: 40%;
 }
 
+.field {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    align-items: center;
+    margin-left: 2%;
+    
+}
+
+.field input {
+    font-size: 24px;
+    width: 80%;
+}
+
+.labInp {
+    font-size: 20px;
+    color: grey;
+}
+
 .selectText {
     font-size: 24px;
 }
+

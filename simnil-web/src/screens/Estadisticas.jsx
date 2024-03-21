@@ -68,6 +68,8 @@ export const Estadisticas = () => {
     }
     
     setFechaFin('');
+    let selectFin = document.getElementById('selectFin');
+    selectFin.value='';
     setFechasFin(arrayAux);
 
     if(inicio == 'Invalid Date' || inicio==undefined) {
