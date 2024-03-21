@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 import { Header } from "../elements/Header";
 
 const Perfil = () => {
@@ -8,9 +8,10 @@ const Perfil = () => {
   const windowHeight = Dimensions.get('window').height;
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
+        <View style={styles.container}>
       <Header />
-
+    
       <View style={styles.contentContainer}>
         <Text style={styles.contactName}>Abel </Text>
         <Text style={styles.contactSe}>Makkonen Tesfaye</Text>
@@ -40,6 +41,8 @@ const Perfil = () => {
         </View>
       </View>
     </View>
+    </ScrollView>
+    
   );
 };
 

@@ -17,7 +17,7 @@ const MainRoutes = () => {
                 inactiveBackgroundColor: "#9b9b9b",
                 labelStyle: {
                   color: "#000", // Color del texto cuando no está seleccionado
-                  fontWeight: "bold" // Otras propiedades de estilo que desees agregar
+                  fontWeight: "bold"
                 },
                 iconStyle: {
                   color: "#000" // Color del icono cuando no está seleccionado
