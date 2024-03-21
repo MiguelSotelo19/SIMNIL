@@ -18,14 +18,22 @@
     "@react-navigation/native-stack": "^6.9.18",
     "@react-navigation/stack": "^6.3.21",
     "axios": "^1.6.8",
+<<<<<<< HEAD
     "cors": "^2.8.5",
+=======
+>>>>>>> 5e2df364c27f4d5116d3b320742950267e38e7bd
     "expo": "~50.0.6",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.4",
+<<<<<<< HEAD
     "react-native-chart-kit": "^6.12.0",
+=======
+    "react-native-alert-notification": "^0.4.0",
+>>>>>>> 5e2df364c27f4d5116d3b320742950267e38e7bd
     "react-native-elements": "^3.4.3",
+    "react-native-modal": "^13.0.1",
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {

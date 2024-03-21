@@ -4,7 +4,7 @@ import { Header } from '../components/Header_';
 import Flex from '@react-css/flex';
 import axios from 'axios';
 import Histograma from '../components/Histograma';
- 
+
 export const Estadisticas = () => {
   const urlPozos = 'http://localhost:8080/api/simnil/pozos/';
   const [pozos, setPozos] = useState([]);
@@ -73,6 +73,8 @@ export const Estadisticas = () => {
     setFechasFin(arrayAux);
 
     if(inicio == 'Invalid Date' || inicio==undefined) {
+      console.log("intento de asignacion de fechas fin");
+      console.log(fechasArray);
       setFechaFin('');
       setFechasFin(fechasArray);
       let selectFin = document.getElementById('selectFin');
