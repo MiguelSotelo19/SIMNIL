@@ -1,7 +1,7 @@
 
 #izq {
     width: 20%;
-    height: 90vh;
+    height: 91vh;
     background-color: #D6EAF8;
     align-self: flex-start;
 }
@@ -55,11 +55,34 @@
 }
 
 #opciones select {
-    min-width: 8rem;
+    min-width: 10rem;
     font-size: 17px;
-    background-color: gainsboro;
-    color: black;
+    background-color: rgb(238, 238, 238);
     padding-right: 10%;
+    display: inline-block;
+	cursor: pointer;
+  	height: 42px;
+  	outline: 0; 
+  	border: 0;
+	border-radius: 0;
+	color: black;
+	font-family: 
+	'Quicksand', sans-serif;
+	border:2px solid rgba(0,0,0,0.2);
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.25s ease;
+    text-align: center;
+}
+
+#opciones select option {
+    font-size: 18px;
+    text-align: center;
+}
+
+
+.fechasSelect:hover {
+    background: #B1E8CD;
 }
 
 
@@ -179,4 +202,8 @@ form select {
 
 .info-1 input {
     width: 40%;
+}
+
+.selectText {
+    font-size: 24px;
 }

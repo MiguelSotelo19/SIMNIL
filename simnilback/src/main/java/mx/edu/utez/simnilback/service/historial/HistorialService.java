@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
 import mx.edu.utez.simnilback.model.historial.HistorialBean;
 import mx.edu.utez.simnilback.model.historial.HistorialRepository;
+import mx.edu.utez.simnilback.model.pozo.PozoBean;
+import mx.edu.utez.simnilback.model.pozo.PozoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,8 @@ import java.util.Optional;
 @Transactional
 @AllArgsConstructor
 public class HistorialService {
-/*    private final HistorialRepository repository;
+    private final HistorialRepository repository;
+    private final PozoRepository pozoRepository;
 
     @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse> getAll(){
@@ -30,9 +33,29 @@ public class HistorialService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(HistorialBean historialBean){
-        Optional<HistorialBean> foundHistorial = repository.findById(historialBean.getIdHistorial());
-        if (foundHistorial.isPresent())
+        Optional<HistorialBean> foundHistorial = repository.findByHoraRecopilacionAndFechaRecopilacionAndPozoBean_IdPozo(historialBean.getHoraRecopilacion(), historialBean.getFechaRecopilacion(), historialBean.getPozoBean().getIdPozo());
+        if (foundHistorial.isPresent()){
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error al intentar registrar el Historial"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (historialBean.getPozoBean() == null || historialBean.getPozoBean().getIdPozo() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un pozo existente"), HttpStatus.BAD_REQUEST);
+        }
+        Optional<PozoBean> foundIdPozo = pozoRepository.findById(historialBean.getPozoBean().getIdPozo());
+        if (!foundIdPozo.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El Pozo proporcionado no existe"), HttpStatus.BAD_REQUEST);
+        }
+        historialBean.setPozoBean(foundIdPozo.get());
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(historialBean), HttpStatus.OK, "Registrado Correctamente"), HttpStatus.OK);
-    }*/
+    }
+
+    /* if (comunidadBean.getPozoBean() == null || comunidadBean.getPozoBean().getIdPozo() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un pozo existente"), HttpStatus.BAD_REQUEST);
+        }
+        Optional<PozoBean> foundIdPozo = pozoRepository.findById(comunidadBean.getPozoBean().getIdPozo());
+        if (!foundIdPozo.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El Pozo proporcionado no existe"), HttpStatus.BAD_REQUEST);
+        }
+        comunidadBean.setPozoBean(foundIdPozo.get());*/
 }
