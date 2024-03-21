@@ -24,6 +24,9 @@ public class PozoController {
         return service.getOne(id);
     }
 
+
+
+
     @PostMapping("/")
     public ResponseEntity<ApiResponse> register(@RequestBody PozoDto dto){
         return service.save(dto.toEntity());

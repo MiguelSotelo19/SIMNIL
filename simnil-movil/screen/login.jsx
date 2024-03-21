@@ -1,49 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 export default function Login() {
-  const url='http://localhost:8080/api/simnil/persona/login';
-  const [usuarios, setUsuarios] = useState([]);
+  const navigation = useNavigation();
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [contrasenia, setContrasenia] = useState('');
 
-  useEffect(() => {
-    getUsuarios();
-  }, []);
-
-  const getUsuarios = async () => {
+  const validar = async () => {
     try {
-      const respuesta = await axios.post(url);
-      setUsuarios(respuesta.data.data);
-    } catch (error) {
-      console.error('Error al obtener usuarios:', error);
-    }
-  }
+      console.log('Haciendo solicitud HTTP...');
+      const response = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
+      console.log('Respuesta de la solicitud HTTP:', response.data.data);
 
-  const validar = () => {
-    let aux = true;
+      const nombreUsuarioLower = nombreUsuario.toLowerCase(); 
+      const contraseniaLower = contrasenia.toLowerCase(); 
 
-    for (let i = 0; i < usuarios.length; i++) {
-      let usuario = usuarios[i];
-      if (usuario.nombreUsuario === nombreUsuario && usuario.contrasenia === contrasenia) {             
-        aux = false;
-        // Redireccionamiento no válido en React Native
-        // window.location = '/Usuarios'; 
-        break;
+      let usuarioValido = false;
+      let contraseñaValida = false;
+
+      for (let i = 0; i < response.data.length; i++) {
+        const usuario = response.data[i];
+        if (usuario.nombreUsuario.toLowerCase() === nombreUsuarioLower) { 
+          usuarioValido = true;
+          if (usuario.contrasenia.toLowerCase() === contraseniaLower) { 
+            contraseñaValida = true;
+            console.log('Inicio de sesión exitoso');
+            navigation.navigate('Bottom');
+            break;
+          }
+        }
       }
-    }
 
-    if (aux) {
-      // Implementa tu propia lógica para mostrar una alerta en React Native
-      // show_alerta('Usuario y/o Contraseña Incorrectos', 'error');
-      console.log('Usuario y/o Contraseña Incorrectos');
+      if (!usuarioValido || !contraseñaValida) {
+        show_alerta('Usuario y/o contraseña incorrectos', 'error');
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      show_alerta('No se pudo conectar al servidor', 'error');
     }
-  }
+  };
+
+  const show_alerta = (mensaje, tipo) => {
+    console.log(mensaje, tipo);
+    Alert.alert('Error', mensaje);
+  };
+
+  const windowHeight = Dimensions.get('window').height;
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow:1}}>
       <View style={styles.container}>
         <Text style={styles.welcomeText}>¡Bienvenido!</Text>
 
@@ -62,7 +70,7 @@ export default function Login() {
               style={styles.input}
               value={contrasenia}
               onChangeText={text => setContrasenia(text)}
-              secureTextEntry={true} // Corregido aquí para ocultar el texto
+              secureTextEntry={true}
             />
 
             <View style={styles.buttonContainer}>
@@ -73,7 +81,7 @@ export default function Login() {
           </View>
         </Card>
 
-        <View style={[styles.circle, { height: Dimensions.get('window').height * 0.4 }]}></View>
+        <View style={[styles.circle, { height: windowHeight * 0.4 }]}></View>
       </View>
     </ScrollView>
   );
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 40,
     alignSelf: 'center',
-    paddingLeft: 10, // Ajuste para desplazar el texto hacia la derecha
+    paddingLeft: 10,
   },
   button: {
     backgroundColor: '#191970',

@@ -14,6 +14,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
+    "@react-native-community/datetimepicker": "^7.6.2",
     "@react-native-picker/picker": "^2.6.1",
     "@react-navigation/bottom-tabs": "^6.5.12",
     "@react-navigation/native": "^6.1.10",
@@ -26,7 +27,9 @@
     "react-dom": "18.2.0",
     "react-native": "0.73.4",
     "react-native-alert-notification": "^0.4.0",
+    "react-native-calendars": "^1.1304.1",
     "react-native-chart-kit": "^6.12.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^3.4.3",
     "react-native-modal": "^13.0.1",
     "react-native-web": "~0.19.6"
