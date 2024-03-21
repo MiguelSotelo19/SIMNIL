@@ -1,102 +1,57 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, TextInput, StyleSheet, Image, Text, Dimensions, ScrollView, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios'; 
+import axios from 'axios';
 
 export default function Login() {
-
-/*
   const navigation = useNavigation();
-
- 
-
-  const handleLogin = () => {
-      setUsername('');
-      setPassword('');
-    navigation.navigate('Bottom');
-  };**/
-
-  
-  const navigation = useNavigation();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  //const [usuarios, setUsuarios] = useState([]);
-/*
-  useEffect(() => {
-    getUsuarios();
-  }, []);
-
-  const getUsuarios = async () => {
-    try {
-      const respuesta = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
-      setUsuarios(respuesta.data);
-    } catch (error) {
-      console.error('Error al obtener usuarios:', error);
-      Alert.alert('Error', 'No se pudieron obtener los usuarios.');
-    }
-  };
-  const validar = () => {
-    let aux = true;
-  
-    for (let i = 0; i < usuarios.length; i++) {
-      let usuario = usuarios[i];
-      if (usuario.nombreUsuario === nombreUsuario && usuario.contrasenia === contrasenia) {
-        aux = false;
-        console.log('Inicio de sesión exitoso');
-        navigation.navigate('Bottom');
-        ;
-        break;
-      }
-    }
-  
-    if (aux) {
-      Alert.alert('Error', 'Usuario y/o contraseña incorrectos.');
-    }
-  };*/
-
-  const windowHeight = Dimensions.get('window').height;
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [contrasenia, setContrasenia] = useState('');
 
   const validar = async () => {
     try {
-      const response = await axios.get('http:// 192.168.100.41:8080/api/simnil/persona/');
-      console.log('Respuesta de la solicitud HTTP:', response.data);
-  
+      console.log('Haciendo solicitud HTTP...');
+      const response = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
+      console.log('Respuesta de la solicitud HTTP:', response.data.data);
+
+      const nombreUsuarioLower = nombreUsuario.toLowerCase(); 
+      const contraseniaLower = contrasenia.toLowerCase(); 
+
       let usuarioValido = false;
       let contraseñaValida = false;
-  
+
       for (let i = 0; i < response.data.length; i++) {
         const usuario = response.data[i];
-        if (usuario.nombreUsuario() === nombreUsuario) {
+        if (usuario.nombreUsuario.toLowerCase() === nombreUsuarioLower) { 
           usuarioValido = true;
-          if (usuario.contrasenia() === contrasenia) { 
+          if (usuario.contrasenia.toLowerCase() === contraseniaLower) { 
             contraseñaValida = true;
             console.log('Inicio de sesión exitoso');
-            navigation.navigate('Bottom');
+            navigation.navigate('Perfil');
             break;
           }
         }
       }
-  
-      if (!usuarioValido) {
-        show_alerta('Usuario incorrecto', 'error');
-      } else if (!contraseñaValida) {
-        show_alerta('Contraseña incorrecta', 'error');
+
+      if (!usuarioValido || !contraseñaValida) {
+        show_alerta('Usuario y/o contraseña incorrectos', 'error');
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       show_alerta('No se pudo conectar al servidor', 'error');
     }
   };
-  
+
   const show_alerta = (mensaje, tipo) => {
     console.log(mensaje, tipo);
     Alert.alert('Error', mensaje);
   };
-  
 
+  const windowHeight = Dimensions.get('window').height;
 
   return (
+    <ScrollView contentContainerStyle={{ flexGrow:1}}>
       <View style={styles.container}>
         <Text style={styles.welcomeText}>¡Bienvenido!</Text>
 
@@ -107,15 +62,14 @@ export default function Login() {
             <Text style={styles.baseText}>Usuario</Text>
             <TextInput
               style={styles.input}
-             value={username}
-             onChangeText={text => setUsername(text)}
+              value={nombreUsuario}
+              onChangeText={text => setNombreUsuario(text)}
             />
             <Text style={styles.baseText}>Contraseña</Text>
             <TextInput
               style={styles.input}
-             value={password}
-             
-              onChangeText={text => setPassword(text)}
+              value={contrasenia}
+              onChangeText={text => setContrasenia(text)}
               secureTextEntry={true}
             />
 
@@ -129,7 +83,7 @@ export default function Login() {
 
         <View style={[styles.circle, { height: windowHeight * 0.4 }]}></View>
       </View>
-    
+    </ScrollView>
   );
 }
 
