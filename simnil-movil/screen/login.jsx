@@ -6,24 +6,23 @@ import axios from 'axios';
 
 export default function Login() {
 
-
+/*
   const navigation = useNavigation();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+ 
 
   const handleLogin = () => {
       setUsername('');
       setPassword('');
     navigation.navigate('Bottom');
-  };
+  };**/
 
-  /*
+  
   const navigation = useNavigation();
-  const [nombreUsuario, setNombreUsuario] = useState('');
-  const [contrasenia, setContrasenia] = useState('');
- /* const [usuarios, setUsuarios] = useState([]);
-
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  //const [usuarios, setUsuarios] = useState([]);
+/*
   useEffect(() => {
     getUsuarios();
   }, []);
@@ -56,11 +55,11 @@ export default function Login() {
     }
   };*/
 
+  const windowHeight = Dimensions.get('window').height;
 
-/*
   const validar = async () => {
     try {
-      const response = await axios.get('http://192.168.67.17:8080/api/simnil/persona/');
+      const response = await axios.get('http:// 192.168.100.41:8080/api/simnil/persona/');
       console.log('Respuesta de la solicitud HTTP:', response.data);
   
       let usuarioValido = false;
@@ -93,9 +92,9 @@ export default function Login() {
   const show_alerta = (mensaje, tipo) => {
     console.log(mensaje, tipo);
     Alert.alert('Error', mensaje);
-  };*/
+  };
   
-  const windowHeight = Dimensions.get('window').height;
+
 
   return (
       <View style={styles.container}>
@@ -121,7 +120,7 @@ export default function Login() {
             />
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <TouchableOpacity style={styles.button} onPress={validar}>
                 <Text style={styles.buttonText}>Iniciar sesión</Text>
               </TouchableOpacity>
             </View>
