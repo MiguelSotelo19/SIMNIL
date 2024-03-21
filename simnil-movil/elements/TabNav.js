@@ -9,7 +9,7 @@ const Tab = createBottomTabNavigator();
 
 const TabNav=()=>{
     return(
-        <Tab.Navigator initialRouteName='perfil'>
+        <Tab.Navigator initialRouteName='Estadistica'>
             <Tab.Screen name='perfil' component={Perfil} options={
                 {
                     headerShadowVisible:false,
