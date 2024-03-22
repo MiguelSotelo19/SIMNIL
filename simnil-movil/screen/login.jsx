@@ -9,10 +9,43 @@ export default function Login() {
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [contrasenia, setContrasenia] = useState('');
 
-  const handleLogin = () => {
-    setUsername('');
-    setPassword('');
-    navigation.navigate('Bottom');
+  const validar = async () => {
+    try {
+      console.log('Haciendo solicitud HTTP...');
+      const response = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
+      console.log('Respuesta de la solicitud HTTP:', response.data.data);
+
+      const nombreUsuarioLower = nombreUsuario.toLowerCase(); 
+      const contraseniaLower = contrasenia.toLowerCase(); 
+
+      let usuarioValido = false;
+      let contraseñaValida = false;
+
+      for (let i = 0; i < response.data.data.length; i++) {
+        const usuario = response.data.data[i];
+        if (usuario.nombreUsuario.toLowerCase() === nombreUsuarioLower) { 
+          usuarioValido = true;
+          if (usuario.contrasenia.toLowerCase() === contraseniaLower) { 
+            contraseñaValida = true;
+            console.log('Inicio de sesión exitoso');
+            navigation.navigate('Bottom');
+            break;
+          }
+        }
+      }
+
+      if (!usuarioValido || !contraseñaValida) {
+        show_alerta('Usuario y/o contraseña incorrectos', 'error');
+      } 
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      show_alerta('No se pudo conectar al servidor', 'error');
+    }
+  };
+
+  const show_alerta = (mensaje, tipo) => {
+    console.log(mensaje, tipo);
+    Alert.alert('Error', mensaje);
   };
 
   const windowHeight = Dimensions.get('window').height;

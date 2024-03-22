@@ -16,14 +16,14 @@ const MainRoutes = () => {
                 activeBackgroundColor: "#72BCED",
                 inactiveBackgroundColor: "#9b9b9b",
                 labelStyle: {
-                  color: "#000", // Color del texto cuando no está seleccionado
+                  color: "#000", 
                   fontWeight: "bold"
                 },
                 iconStyle: {
-                  color: "#000" // Color del icono cuando no está seleccionado
+                  color: "#000" 
                 },
                 style: {
-                  backgroundColor: "#9b9b9b" // Color de fondo cuando no está seleccionado
+                  backgroundColor: "#9b9b9b" 
                 }
               }} initialRouteName="Perfil">
                 <Tab.Screen  name="Cuenta" component={Perfil} options={{headerShown: false,
