@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
@@ -121,3 +121,9 @@ const Estadistica = ({ fechaInicio, fechaFin }) => {
 }
 
 export default Estadistica;
+
+const styles = StyleSheet.create({
+    container: {
+      width: '100%'
+    },
+  });
