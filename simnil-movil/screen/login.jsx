@@ -21,8 +21,8 @@ export default function Login() {
       let usuarioValido = false;
       let contraseñaValida = false;
 
-      for (let i = 0; i < response.data.length; i++) {
-        const usuario = response.data[i];
+      for (let i = 0; i < response.data.data.length; i++) {
+        const usuario = response.data.data[i];
         if (usuario.nombreUsuario.toLowerCase() === nombreUsuarioLower) { 
           usuarioValido = true;
           if (usuario.contrasenia.toLowerCase() === contraseniaLower) { 
@@ -36,7 +36,7 @@ export default function Login() {
 
       if (!usuarioValido || !contraseñaValida) {
         show_alerta('Usuario y/o contraseña incorrectos', 'error');
-      }
+      } 
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       show_alerta('No se pudo conectar al servidor', 'error');
