@@ -8,6 +8,7 @@ import MainRoutes from './mainroutes';
 
 
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Perfil">
         <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
         <Stack.Screen name='Bottom' component={MainRoutes} options={{headerShown: false}}></Stack.Screen>
+     
   
       </Stack.Navigator>
     </NavigationContainer>
