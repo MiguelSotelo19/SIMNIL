@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between', // Añadido para separar la imagen y el botón
+        justifyContent: 'space-between', 
         backgroundColor: '#85C1E9',
         marginTop:30
     },

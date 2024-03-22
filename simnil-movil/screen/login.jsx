@@ -15,20 +15,19 @@ export default function Login() {
       const response = await axios.get('http://10.0.2.2:8080/api/simnil/persona/');
       console.log('Respuesta de la solicitud HTTP:', response.data.data);
 
-      const nombreUsuarioLower = nombreUsuario.toLowerCase(); 
-      const contraseniaLower = contrasenia.toLowerCase(); 
+      
 
       let usuarioValido = false;
       let contraseñaValida = false;
 
-      for (let i = 0; i < response.data.length; i++) {
-        const usuario = response.data[i];
-        if (usuario.nombreUsuario.toLowerCase() === nombreUsuarioLower) { 
+      for (let i = 0; i < response.data.data.length; i++) {
+        const usuario = response.data.data[i];
+        if (usuario.nombreUsuario === nombreUsuario) { 
           usuarioValido = true;
-          if (usuario.contrasenia.toLowerCase() === contraseniaLower) { 
+          if (usuario.contrasenia === contrasenia) { 
             contraseñaValida = true;
             console.log('Inicio de sesión exitoso');
-            navigation.navigate('Perfil');
+            navigation.navigate('Bottom');
             break;
           }
         }
@@ -36,7 +35,7 @@ export default function Login() {
 
       if (!usuarioValido || !contraseñaValida) {
         show_alerta('Usuario y/o contraseña incorrectos', 'error');
-      }
+      } 
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       show_alerta('No se pudo conectar al servidor', 'error');
