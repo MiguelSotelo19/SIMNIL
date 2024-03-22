@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import mx.edu.utez.simnilback.model.historial.HistorialBean;
 import mx.edu.utez.simnilback.model.pozo.PozoBean;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -21,15 +22,16 @@ public class HistorialDto {
 
     private Double nivelAgua;
 
-    private Date fechaRecopilacion;
+    private LocalDate fechaRecopilacion;
 
     private LocalTime horaRecopilacion;
 
     private PozoBean pozoBean;
 
     public HistorialBean toEntity(){
-        if(pozoBean==null)
+        /*if(pozoBean==null)
             return  new HistorialBean(nivelAgua, fechaRecopilacion, horaRecopilacion);
+        return new HistorialBean(nivelAgua, fechaRecopilacion, horaRecopilacion, pozoBean);*/
         return new HistorialBean(nivelAgua, fechaRecopilacion, horaRecopilacion, pozoBean);
     }
 }

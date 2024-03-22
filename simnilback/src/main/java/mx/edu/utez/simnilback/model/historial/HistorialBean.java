@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.simnilback.model.pozo.PozoBean;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -27,7 +28,7 @@ public class HistorialBean {
     private Double nivelAgua;
 
     @Column(columnDefinition = "DATE", nullable = false)
-    private Date fechaRecopilacion;
+    private LocalDate fechaRecopilacion;
 
     @Column(columnDefinition = "TIME", nullable = false)
     private LocalTime horaRecopilacion;
@@ -38,13 +39,13 @@ public class HistorialBean {
     private PozoBean pozoBean;
 
 
-    public HistorialBean(Double nivelAgua, Date fechaRecopilacion, LocalTime horaRecopilacion) {
+    public HistorialBean(Double nivelAgua, LocalDate fechaRecopilacion, LocalTime horaRecopilacion) {
         this.nivelAgua = nivelAgua;
         this.fechaRecopilacion = fechaRecopilacion;
         this.horaRecopilacion = horaRecopilacion;
     }
 
-    public HistorialBean(Double nivelAgua, Date fechaRecopilacion, LocalTime horaRecopilacion, PozoBean pozoBean) {
+    public HistorialBean(Double nivelAgua, LocalDate fechaRecopilacion, LocalTime horaRecopilacion, PozoBean pozoBean) {
         this.nivelAgua = nivelAgua;
         this.fechaRecopilacion = fechaRecopilacion;
         this.horaRecopilacion = horaRecopilacion;

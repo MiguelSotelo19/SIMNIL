@@ -35,14 +35,14 @@ public class PozoService {
     public ResponseEntity<ApiResponse> save(PozoBean pozoBean, Long id){
 
         Optional<PozoBean> foundPozo = repository.findByNombre(pozoBean.getNombre());
-<<<<<<< HEAD
+
         if (foundPozo.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error al Registrar el Pozo"), HttpStatus.BAD_REQUEST);
 
         Optional<PersonaBean> foundPersona = personaRepository.findById(id);
         if (foundPersona.isPresent())
             pozoBean.getPersonaBeanSet().add(foundPersona.get());
-=======
+
 
         if(pozoBean.getNombre() == null || pozoBean.getNombre().isEmpty() || pozoBean.getNombre().isBlank()){
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El pozo requiere un nombre"), HttpStatus.BAD_REQUEST);
@@ -69,7 +69,7 @@ public class PozoService {
         }
        /* if (foundPozo.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error al Registrar el Pozo"), HttpStatus.BAD_REQUEST);*/
->>>>>>> b42be04da3a869b2841e70963ff7aef36fbd71ae
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(pozoBean), HttpStatus.OK, "Se registro Correctamente"), HttpStatus.OK);
     }
     @Transactional(rollbackFor = {SQLException.class})
