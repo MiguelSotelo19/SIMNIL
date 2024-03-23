@@ -3,6 +3,7 @@ package mx.edu.utez.simnilback.service.pozo;
 import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
+import mx.edu.utez.simnilback.model.persona.PersonaRepository;
 import mx.edu.utez.simnilback.model.pozo.PozoBean;
 import mx.edu.utez.simnilback.model.pozo.PozoRepository;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PozoService {
     private final PozoRepository repository;
+    private final PersonaRepository personaRepository;
 
     @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse> getAll(){

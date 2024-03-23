@@ -33,7 +33,7 @@ public class ComunidadService {
 
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> save(mx.edu.utez.simnilback.model.comunidad.ComunidadBean comunidadBean) {
+    public ResponseEntity<ApiResponse> save(ComunidadBean comunidadBean) {
         if (comunidadBean.getNombre() == null || comunidadBean.getNombre().isEmpty() || comunidadBean.getNombre().isBlank()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre de la comunidad es obligatorio y no puede estar vacio"), HttpStatus.BAD_REQUEST);
         }
@@ -50,7 +50,7 @@ public class ComunidadService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El estatus es requerido."), HttpStatus.BAD_REQUEST);
         }
 
-        Optional<mx.edu.utez.simnilback.model.comunidad.ComunidadBean> foundComunidad = repository.findByNombre(comunidadBean.getNombre());
+        Optional<ComunidadBean> foundComunidad = repository.findByNombre(comunidadBean.getNombre());
         if (foundComunidad.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Comunidad ya existente"), HttpStatus.BAD_REQUEST);
         }
@@ -110,6 +110,4 @@ public class ComunidadService {
 
 
     }
-
-
 }
