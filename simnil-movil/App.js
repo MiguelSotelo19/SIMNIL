@@ -5,6 +5,10 @@ import Login from './screen/login';
 
 import MainRoutes from './mainroutes';
 
+import Routes from './routesexternas';
+
+
+
 
 
 const Stack = createNativeStackNavigator();
@@ -12,9 +16,13 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name='Bottom' component={MainRoutes}></Stack.Screen>
+      <Stack.Navigator initialRouteName="Perfil">
+        <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
+        <Stack.Screen name='Bottom' component={MainRoutes} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name ='Visitantes' component={Routes} options={{headerShown:false}}></Stack.Screen>
+        
+     
+  
       </Stack.Navigator>
     </NavigationContainer>
   );

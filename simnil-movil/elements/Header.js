@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between', // Añadido para separar la imagen y el botón
-        backgroundColor: '#85C1E9',
-        marginTop:30
+        backgroundColor: '#85C1E9'
     },
     imagen: {
         width: 90,

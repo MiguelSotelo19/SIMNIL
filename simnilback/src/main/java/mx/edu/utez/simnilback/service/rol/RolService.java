@@ -49,6 +49,11 @@ public class RolService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(RolBean rolBean){
+
+        if(rolBean.getRol() == null || rolBean.getRol().isEmpty() || rolBean.getRol().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre del rol es requerido"), HttpStatus.BAD_REQUEST);
+        }
+
         Optional<RolBean> foundRol = repository.findByRol(rolBean.getRol());
 
         if (foundRol.isPresent()){

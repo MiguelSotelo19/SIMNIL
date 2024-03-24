@@ -1,36 +1,66 @@
-import React, { useState ,useEffect} from 'react';
-import { View, StyleSheet, Text, Switch, FlatList, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Switch, FlatList } from 'react-native';
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import init from 'react_native_mqtt';
-import { Header } from "../elements/Header";
-
-
+import { Header } from '../elements/Header';
 
 const Valvulas = () => {
-  const [switchValues, setSwitchValues] = useState([1]);
-  const [enabled, setEnabled] = useState(false); // Estado para el Switch
+  const [pozos, setPozos] = useState([]);
+  const [switchValues, setSwitchValues] = useState([]);
+  const [client, setClient] = useState(null);
 
-  // Configuración para el servidor MQTT
-  init({
-    size: 10000,
-    storageBackend: AsyncStorage,
-    defaultExpires: 1000 * 3600 * 24,
-    enableCache: true,
-    sync: {}
-  });
+  useEffect(() => {
+    // Configuración para el servidor MQTT
+    init({
+      size: 10000,
+      storageBackend: AsyncStorage,
+      defaultExpires: 1000 * 3600 * 24,
+      enableCache: true,
+      sync: {},
+    });
 
-  // Opciones de conexión MQTT
-  const options = {
-    host: '3.87.76.132',
-    port: 9001,
-    id: 'id_' + parseInt(Math.random() * 100000)
-  };
+    // Opciones de conexión MQTT
+    const options = {
+      host: '3.87.76.132',
+      port: 9001,
+      id: 'id_' + parseInt(Math.random() * 100000),
+    };
 
-  const client = new Paho.MQTT.Client(options.host, options.port, 'usernameClient');
+    const mqttClient = new Paho.MQTT.Client(options.host, options.port, 'usernameClient');
 
-  function onConnect() {
-    console.log("Conectado al Servidor MQQT en EC2");
-  }
+    const onConnect = () => {
+      console.log('Conectado al Servidor MQTT en EC2');
+    };
+
+    mqttClient.connect({
+      onSuccess: onConnect,
+      useSSL: false,
+      onFailure: (error) => {
+        console.log('Error en lo Siguiente: ' + error);
+      },
+    });
+
+    setClient(mqttClient);
+
+    return () => {
+      mqttClient.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://10.0.2.2:8080/api/simnil/pozos/');
+        setPozos(response.data.data);
+        setSwitchValues(Array(response.data.data.length).fill(0));
+      } catch (error) {
+        console.error('Error al obtener los datos de los pozos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const toggleSwitch = (index) => {
     const newSwitchValues = [...switchValues];
@@ -44,38 +74,20 @@ const Valvulas = () => {
   };
 
   const prenderLed = () => {
-    client.publish("prueba/encendido", "1");
+    client.publish('prueba/encendido', '1');
   };
 
   const apagarLed = () => {
-    client.publish("prueba/encendido", "0");
+    client.publish('prueba/encendido', '0');
   };
-
-  useEffect(() => {
-    client.connect({
-      onSuccess: onConnect,
-      useSSL: false,
-      onFailure: (error) => {
-        console.log('Error en lo Siguiente: ' + error)
-      }
-    })
-  }, [switchValues]);
 
   const renderItem = ({ item, index }) => (
     <View style={styles.row}>
-      <Text style={styles.text}>{item[0]}</Text>
-      <Text style={styles.text}>{item[1]}</Text>
-      <Switch
-        value={switchValues[index] === 1}
-        onValueChange={() => toggleSwitch(index)}
-      />
+      <Text style={styles.text}>{item.nombre}</Text>
+      <Text style={styles.text}>{item.ubicacion}</Text>
+      <Switch value={switchValues[index] === 1} onValueChange={() => toggleSwitch(index)} />
     </View>
   );
-
-  const data = [
-    ['Pozo Xochitepec', 'Xochitepec']
-  
-  ];
 
   return (
     <View style={styles.container}>
@@ -83,9 +95,9 @@ const Valvulas = () => {
       <View style={styles.content}>
         <Text style={styles.title}>Control de válvulas</Text>
         <FlatList
-          data={data}
+          data={pozos}
           renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => `${item.id}`}
         />
       </View>
     </View>

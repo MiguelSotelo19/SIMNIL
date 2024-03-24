@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { Header } from "../elements/Header";
 
 const Perfil = () => {
   const [position, setPosition] = useState("Administrador");
-  const [user, setUser] = useState("Abel");
-  const windowHeight = Dimensions.get('window').height;
+  const [user, setUser] = useState("");
+
+ 
 
   return (
     <View style={styles.container}>
