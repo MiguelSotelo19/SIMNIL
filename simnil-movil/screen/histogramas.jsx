@@ -90,7 +90,7 @@ const Estadistica = ({ fechaInicio, fechaFin }) => {
   const handleStartDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
     setStartDate(currentDate);
-    setStartDateFocused(false); // Cerrar el selector de fecha
+    setStartDateFocused(false); 
   };
 
   const handleEndDateChange = (event, selectedDate) => {
