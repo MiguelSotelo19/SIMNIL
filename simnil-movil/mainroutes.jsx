@@ -10,7 +10,10 @@ const Tab = createBottomTabNavigator();
 
 const MainRoutes = () => {
         return(
-            <Tab.Navigator tabBarOptions={{
+         
+            <Tab.Navigator 
+            
+            tabBarOptions={{
                 activeTintColor: "#FFF",
                 inactiveTintColor: "#000",
                 activeBackgroundColor: "#72BCED",
@@ -43,7 +46,11 @@ const MainRoutes = () => {
                     <Ionicons name="stats-chart-sharp" size={24} color="black" />
                    )
                 }}></Tab.Screen>
-                <Tab.Screen name="Controles" component={Valvulas} options={{headerShown: false,
+                
+                <Tab.Screen 
+              
+                
+                name="Controles" component={Valvulas} options={{headerShown: false,
                  headerShadowVisible:false,
                  tabBarActiveTintColor:'#191970',
                  tabBarInactiveTintColor:'#002fd',

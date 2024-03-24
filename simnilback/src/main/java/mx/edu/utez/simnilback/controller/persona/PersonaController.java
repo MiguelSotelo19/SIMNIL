@@ -51,10 +51,10 @@ public class PersonaController {
  }
 
 
-
+/*
  // Iniciar sesión
  @PostMapping("/login")
  public ResponseEntity<ApiResponse> login(@RequestBody PersonaDto dto) {
   return service.login(dto.toEntity());
- }
+ }*/
 }

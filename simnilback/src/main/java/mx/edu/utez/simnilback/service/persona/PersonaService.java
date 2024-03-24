@@ -141,6 +141,7 @@ public class PersonaService {
     }
 
 
+
 //    @Transactional(rollbackFor = {SQLException.class})
 //    public ResponseEntity<ApiResponse> login(PersonaBean personaBean) {
 //        Optional<PersonaBean> foundPersona = repository.findByNombreUsuario(personaBean.getNombreUsuario());

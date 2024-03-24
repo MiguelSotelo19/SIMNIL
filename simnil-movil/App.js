@@ -5,6 +5,8 @@ import Login from './screen/login';
 
 import MainRoutes from './mainroutes';
 
+import Routes from './routesexternas';
+
 
 
 
@@ -17,6 +19,8 @@ export default function App() {
       <Stack.Navigator initialRouteName="Perfil">
         <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
         <Stack.Screen name='Bottom' component={MainRoutes} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name ='Visitantes' component={Routes} options={{headerShown:false}}></Stack.Screen>
+        
      
   
       </Stack.Navigator>
