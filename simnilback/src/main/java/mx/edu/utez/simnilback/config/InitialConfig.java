@@ -4,7 +4,6 @@ import mx.edu.utez.simnilback.model.persona.PersonaBean;
 import mx.edu.utez.simnilback.model.persona.PersonaRepository;
 import mx.edu.utez.simnilback.model.rol.RolBean;
 import mx.edu.utez.simnilback.model.rol.RolRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;

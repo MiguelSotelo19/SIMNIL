@@ -1,7 +1,6 @@
 package mx.edu.utez.simnilback.security;
 
 import mx.edu.utez.simnilback.security.jwt.JwtAuthenticationFilter;
-import mx.edu.utez.simnilback.security.model.UserDetailsImpl;
 import mx.edu.utez.simnilback.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -2,15 +2,13 @@ package mx.edu.utez.simnilback.service.persona;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utez.simnilback.config.ApiResponse;
-import mx.edu.utez.simnilback.model.comunidad.ComunidadBean;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
 import mx.edu.utez.simnilback.model.persona.PersonaRepository;
 import mx.edu.utez.simnilback.model.rol.RolBean;
 import mx.edu.utez.simnilback.model.rol.RolRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import mx.edu.utez.simnilback.security.MainSecurity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +23,7 @@ public class PersonaService {
     private final PersonaRepository repository;
     private final RolRepository rolRepository;
 
+    private final MainSecurity pass; // Inyecta el servicio de encriptación de contraseñas
 
     //Consultar personasa
     @Transactional(readOnly = true)
@@ -88,6 +87,9 @@ public class PersonaService {
         if (foundPersona.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Ya existe una persona registrada con el mismo numero telefonico"), HttpStatus.BAD_REQUEST);
         }
+
+        String encryptedPassword = pass.passwordEncoder().encode(personaBean.getContrasenia());
+        personaBean.setContrasenia(encryptedPassword);
 
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(personaBean), HttpStatus.OK, "Se registro correctamente la persona"), HttpStatus.OK);
     }

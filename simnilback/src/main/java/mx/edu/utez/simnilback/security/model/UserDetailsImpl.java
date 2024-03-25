@@ -1,7 +1,6 @@
 package mx.edu.utez.simnilback.security.model;
 
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
-import mx.edu.utez.simnilback.model.rol.RolBean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails{
     private String username;
