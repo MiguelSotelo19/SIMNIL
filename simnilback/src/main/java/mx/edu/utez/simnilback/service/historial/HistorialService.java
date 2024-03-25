@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -31,7 +36,7 @@ public class HistorialService {
         return new ResponseEntity<>(new ApiResponse(repository.findById(id), HttpStatus.OK, "Se encontro el Registro con el Id dado"), HttpStatus.OK);
     }
 
-    @Transactional(rollbackFor = {SQLException.class})
+    /*@Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(HistorialBean historialBean){
         Optional<HistorialBean> foundHistorial = repository.findByHoraRecopilacionAndFechaRecopilacionAndPozoBean_IdPozo(historialBean.getHoraRecopilacion(), historialBean.getFechaRecopilacion(), historialBean.getPozoBean().getIdPozo());
         if (foundHistorial.isPresent()){
@@ -48,6 +53,27 @@ public class HistorialService {
         historialBean.setPozoBean(foundIdPozo.get());
 
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(historialBean), HttpStatus.OK, "Registrado Correctamente"), HttpStatus.OK);
+    }*/
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> save(Double nivelAgua, PozoBean idPozo){
+        Optional<PozoBean> foundIdPozo = pozoRepository.findById(idPozo.getIdPozo());
+        if (!foundIdPozo.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El Pozo proporcionado no existe"), HttpStatus.BAD_REQUEST);
+        } else {
+            ZoneId zonaHoraria = ZoneId.of("America/Mexico_City");
+            ZonedDateTime horaFechaActual = ZonedDateTime.now(zonaHoraria);
+
+            LocalTime horaLocal = horaFechaActual.toLocalTime();
+            LocalDate fechaLocal = horaFechaActual.toLocalDate();
+
+            if (nivelAgua <= 0 || nivelAgua == null || nivelAgua.isNaN()){
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se envio Nivel Agua"), HttpStatus.BAD_REQUEST);
+            } else {
+                HistorialBean historialBean = new HistorialBean(nivelAgua, fechaLocal, horaLocal, idPozo);
+                return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(historialBean), HttpStatus.OK, "Registrado Correctamente"), HttpStatus.OK);
+            }
+        }
     }
 
     /* if (comunidadBean.getPozoBean() == null || comunidadBean.getPozoBean().getIdPozo() == null) {

@@ -26,7 +26,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class MainSecurity {
     private final String[] WHITE_LIST = {
             "/api/auth/**",
-            "/api/simnil/persona/"
     };
     private final UserDetailsServiceImpl service;
 
@@ -64,8 +63,11 @@ public class MainSecurity {
         http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST).permitAll()
-                                .requestMatchers("/api/simnil/**").hasAuthority("Admin")
-                             //   .requestMatchers("/api/person/**").hasAnyAuthority("ADMIN_ROLE", "USER_ROLE")
+                                /*.requestMatchers("/api/simnil/**").hasAuthority("Administrador")
+                                .requestMatchers("/api/simnil/**").hasAuthority("Personal")
+                                .requestMatchers("/api/simnil/**").hasAuthority("Empleado")*/
+                                .requestMatchers("/api/simnil/historial/").permitAll()
+                                .requestMatchers("/api/simnil/**").hasAnyAuthority("Administrador", "Personal")
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

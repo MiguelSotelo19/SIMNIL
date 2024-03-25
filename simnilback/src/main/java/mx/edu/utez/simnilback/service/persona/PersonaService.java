@@ -22,6 +22,7 @@ public class PersonaService {
 
     private final PersonaRepository repository;
     private final RolRepository rolRepository;
+    private PasswordEncoder passwordEncoder;
 
     private final MainSecurity pass; // Inyecta el servicio de encriptación de contraseñas
 
@@ -88,8 +89,13 @@ public class PersonaService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Ya existe una persona registrada con el mismo numero telefonico"), HttpStatus.BAD_REQUEST);
         }
 
+<<<<<<< HEAD
         String encryptedPassword = pass.passwordEncoder().encode(personaBean.getContrasenia());
         personaBean.setContrasenia(encryptedPassword);
+=======
+        String encrypted = passwordEncoder.encode(personaBean.getContrasenia());
+        personaBean.setContrasenia(encrypted);
+>>>>>>> 740c9c80dc939d652da75f55f44ce7d2e989d161
 
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(personaBean), HttpStatus.OK, "Se registro correctamente la persona"), HttpStatus.OK);
     }
@@ -144,14 +150,6 @@ public class PersonaService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Usuario no encontrado"), HttpStatus.NOT_FOUND);
         }
     }
-
-    //ESTO ES PARA SEGURIDAD, CREO
-    @Transactional(readOnly = true)
-    public Optional<PersonaBean> findUserByUsername(String username){
-        return repository.findByNombreUsuario(username);
-    }
-
-
 
 //    @Transactional(rollbackFor = {SQLException.class})
 //    public ResponseEntity<ApiResponse> login(PersonaBean personaBean) {

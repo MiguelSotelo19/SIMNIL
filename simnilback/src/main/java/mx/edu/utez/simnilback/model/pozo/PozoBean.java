@@ -1,5 +1,6 @@
 package mx.edu.utez.simnilback.model.pozo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,6 +43,7 @@ public class PozoBean {
     @OneToMany(mappedBy = "pozoBean",fetch = FetchType.LAZY)
     private Set<mx.edu.utez.simnilback.model.comunidad.ComunidadBean> comunidadesBeans;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name="pozos_personas",joinColumns = @JoinColumn(name="fk_id_pozo"),
             inverseJoinColumns =@JoinColumn(name = "fk_id_persona") )
