@@ -30,7 +30,7 @@ public class PersonaBean {
     private String correo;
     @Column(length = 100, nullable = false)
     private String nombreUsuario;
-    @Column(length = 250, nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String contrasenia;
     @Column(columnDefinition = "BOOLEAN", nullable = false)
     private Boolean estatus;

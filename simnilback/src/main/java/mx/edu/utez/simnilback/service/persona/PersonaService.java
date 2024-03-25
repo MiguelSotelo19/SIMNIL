@@ -7,8 +7,10 @@ import mx.edu.utez.simnilback.model.persona.PersonaBean;
 import mx.edu.utez.simnilback.model.persona.PersonaRepository;
 import mx.edu.utez.simnilback.model.rol.RolBean;
 import mx.edu.utez.simnilback.model.rol.RolRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class PersonaService {
 
     private final PersonaRepository repository;
     private final RolRepository rolRepository;
+
 
     //Consultar personasa
     @Transactional(readOnly = true)
@@ -139,6 +142,13 @@ public class PersonaService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Usuario no encontrado"), HttpStatus.NOT_FOUND);
         }
     }
+
+    //ESTO ES PARA SEGURIDAD, CREO
+    @Transactional(readOnly = true)
+    public Optional<PersonaBean> findUserByUsername(String username){
+        return repository.findByNombreUsuario(username);
+    }
+
 
 
 //    @Transactional(rollbackFor = {SQLException.class})
