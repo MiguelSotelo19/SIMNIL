@@ -2,6 +2,7 @@ package mx.edu.utez.simnilback.service.auth;
 
 import mx.edu.utez.simnilback.config.ApiResponse;
 import mx.edu.utez.simnilback.model.persona.PersonaBean;
+import mx.edu.utez.simnilback.model.persona.PersonaRepository;
 import mx.edu.utez.simnilback.security.jwt.JwtProvider;
 import mx.edu.utez.simnilback.service.persona.PersonaService;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,13 @@ import java.util.Optional;
 @Service
 @Transactional
 public class AuthService {
-    private final PersonaService userService;
+    //private final PersonaService userService;
+    private final PersonaRepository personaRepository;
     private final JwtProvider provider;
     private final AuthenticationManager manager;
 
-    public AuthService(PersonaService userService, JwtProvider provider, AuthenticationManager manager) {
-        this.userService = userService;
+    public AuthService(PersonaRepository personaRepository, JwtProvider provider, AuthenticationManager manager) {
+        this.personaRepository = personaRepository;
         this.provider = provider;
         this.manager = manager;
     }
@@ -34,7 +36,7 @@ public class AuthService {
     @Transactional
     public ResponseEntity<ApiResponse> signIn(String username, String password) {
         try {
-            Optional<PersonaBean> foundUser = userService.findUserByUsername(username);
+            Optional<PersonaBean> foundUser = personaRepository.findByNombreUsuario(username);
             if (foundUser.isEmpty())
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "UserNotFound"), HttpStatus.BAD_REQUEST);
             PersonaBean user = foundUser.get();

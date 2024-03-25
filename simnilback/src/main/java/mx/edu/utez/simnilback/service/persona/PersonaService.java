@@ -24,6 +24,7 @@ public class PersonaService {
 
     private final PersonaRepository repository;
     private final RolRepository rolRepository;
+    private PasswordEncoder passwordEncoder;
 
 
     //Consultar personasa
@@ -89,6 +90,9 @@ public class PersonaService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Ya existe una persona registrada con el mismo numero telefonico"), HttpStatus.BAD_REQUEST);
         }
 
+        String encrypted = passwordEncoder.encode(personaBean.getContrasenia());
+        personaBean.setContrasenia(encrypted);
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(personaBean), HttpStatus.OK, "Se registro correctamente la persona"), HttpStatus.OK);
     }
 
@@ -142,14 +146,6 @@ public class PersonaService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Usuario no encontrado"), HttpStatus.NOT_FOUND);
         }
     }
-
-    //ESTO ES PARA SEGURIDAD, CREO
-    @Transactional(readOnly = true)
-    public Optional<PersonaBean> findUserByUsername(String username){
-        return repository.findByNombreUsuario(username);
-    }
-
-
 
 //    @Transactional(rollbackFor = {SQLException.class})
 //    public ResponseEntity<ApiResponse> login(PersonaBean personaBean) {
