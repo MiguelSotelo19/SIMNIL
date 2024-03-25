@@ -9,6 +9,7 @@ import mx.edu.utez.simnilback.model.rol.RolRepository;
 import mx.edu.utez.simnilback.security.MainSecurity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,7 @@ public class PersonaService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(PersonaBean personaBean) {
+
 
         if (personaBean.getNombre() == null || personaBean.getNombre().isEmpty() || personaBean.getNombre().isBlank()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre es obligatorio y no puede estar vacío."), HttpStatus.BAD_REQUEST);
@@ -84,18 +86,13 @@ public class PersonaService {
         }
         personaBean.setRolBean(foundRol.get());
 
-        Optional<PersonaBean> foundPersona = repository.findByNumeroTelefonico(personaBean.getNumeroTelefonico());
+        Optional<PersonaBean> foundPersona = repository.findByNumeroTelefonicoOrNombreUsuario(personaBean.getNumeroTelefonico(), personaBean.getNombreUsuario());
         if (foundPersona.isPresent()) {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Ya existe una persona registrada con el mismo numero telefonico"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Ya existe una persona registrada con los mismos datos"), HttpStatus.BAD_REQUEST);
         }
 
-<<<<<<< HEAD
-        String encryptedPassword = pass.passwordEncoder().encode(personaBean.getContrasenia());
-        personaBean.setContrasenia(encryptedPassword);
-=======
         String encrypted = passwordEncoder.encode(personaBean.getContrasenia());
         personaBean.setContrasenia(encrypted);
->>>>>>> 740c9c80dc939d652da75f55f44ce7d2e989d161
 
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(personaBean), HttpStatus.OK, "Se registro correctamente la persona"), HttpStatus.OK);
     }
