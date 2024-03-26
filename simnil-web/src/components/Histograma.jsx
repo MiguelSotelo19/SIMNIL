@@ -51,6 +51,7 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
         let hora = parseInt(datos.horaRecopilacion.substr(0, 2), 10);
         let minutos = parseInt(datos.horaRecopilacion.substr(3, 2), 10);
         let segundos = parseInt(datos.horaRecopilacion.substr(6, 2), 10);
+        mes = mes-1;
 
         let fecha = { x: new Date(anio, mes, dia, hora, minutos, segundos), y: datos.nivelAgua };
 
@@ -72,18 +73,21 @@ const Histograma = ({ fechaInicio, fechaFin }) => {
         fechas = arrayFechas;
       }
 
-	  if(fechaFin && fechaFin !== ''){
-		let arrayFechas = [];
-		for (let i = 0; i < fechas.length; i++) {
-			const element = fechas[i].x;
-			fechaFin = new Date(fechaFin);
-  
-			if (element.getTime() <= fechaFin.getTime()) {
-			  arrayFechas.push(fechas[i]);
-			}
-		  }
-		  fechas = arrayFechas;
-	  }
+    if (fechaFin && fechaFin !== '') {
+      let fechaFinDate = new Date(fechaFin);
+      fechaFinDate.setDate(fechaFinDate.getDate() + 1);
+
+      let arrayFechas = [];
+      for (let i = 0; i < fechas.length; i++) {
+        const element = fechas[i].x;
+        
+        if (element.getTime() <= fechaFinDate.getTime()) {
+          arrayFechas.push(fechas[i]);
+        }
+      }
+      fechas = arrayFechas;
+    }
+      
 
       //if (fechas.length === 0) available = false;
 

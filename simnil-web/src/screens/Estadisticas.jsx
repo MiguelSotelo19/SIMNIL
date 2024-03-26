@@ -54,32 +54,34 @@ export const Estadisticas = () => {
     }
     setFechasFin(fechas);
     setFechas(fechas);
+    
+    document.getElementById("inicio").min = getFormatFecha(fechas[0].x);
+    document.getElementById("fin").min = getFormatFecha(fechas[0].x);
+
+    let size = fechas.length - 1;
+    document.getElementById("inicio").max = getFormatFecha(fechas[size].x);
+    document.getElementById("fin").max = getFormatFecha(fechas[size].x);
   };
 
+  const getFormatFecha = (fechaOriginal) => {
+    var fecha = new Date(fechaOriginal);
+    var año = fecha.getFullYear(); 
+    var mes = fecha.getMonth(); 
+    var dia = fecha.getDate(); 
+
+    var fechaFormateada = año + '-' + (mes < 10 ? '0' : '') + mes + '-' + (dia < 10 ? '0' : '') + dia;
+    return fechaFormateada
+  }
+
   const asignarFechas = (inicio) => {
-    let arrayAux = [];
-    for (let i = 0; i < fechasArray.length; i++) {
-      const element = fechasArray[i].x;
-      inicio = new Date(inicio);
-
-      if (element.getTime() > inicio.getTime()) {
-        arrayAux.push(fechasArray[i]);
-      }
-    }
-    
+    document.getElementById("fin").value='';
     setFechaFin('');
-    let selectFin = document.getElementById('selectFin');
-    selectFin.value='';
-    setFechasFin(arrayAux);
+    var fechaInicial = new Date(inicio);
+    var unDiaEnMilisegundos = 86400000;
+    var fechaFinal = new Date(fechaInicial.getTime() + unDiaEnMilisegundos);
 
-    if(inicio == 'Invalid Date' || inicio==undefined) {
-      console.log("intento de asignacion de fechas fin");
-      console.log(fechasArray);
-      setFechaFin('');
-      setFechasFin(fechasArray);
-      let selectFin = document.getElementById('selectFin');
-      selectFin.value='';
-    }
+    var newFecha = fechaFinal.toISOString().split('T')[0];
+    document.getElementById("fin").min = newFecha;
   };
 
   return (
@@ -100,22 +102,12 @@ export const Estadisticas = () => {
               <div id="opciones">
                 <div id="btn-inicio">
                   <p className='selectText'>Fecha Inicio</p>
-                  <select  onChange={(e) => { setFechaInicio(e.target.value); asignarFechas(e.target.value); }}>
-                    <option value={null}></option>
-                    {fechasArray.length > 0 && fechasArray.map((fecha) => (
-                      <option key={fecha.x} value={fecha.x}>{fecha.x.toLocaleDateString()}</option>
-                    ))}
-                  </select>
+                  <input id='inicio' className='calendar' type='date' onChange={(e) => {setFechaInicio(e.target.value); asignarFechas(e.target.value);}} />
                 </div>
 
                 <div id="btn-fin">
                   <p className='selectText'>Fecha Fin</p>
-                  <select id='selectFin' onChange={(e) => { setFechaFin(e.target.value); }}>
-                    <option value={''}></option>
-                    {fechasArrayFin.length > 0 && fechasArrayFin.map((fecha) => (
-                      <option key={fecha.x} value={fecha.x}>{fecha.x.toLocaleDateString()}</option>
-                    ))}
-                  </select> 
+                  <input id='fin' className='calendar' type='date' onChange={(e) => {setFechaFin(e.target.value);}} />
                 </div>  
               </div>
 

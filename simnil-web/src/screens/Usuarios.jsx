@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import edit from '../assets/editar.png';
 import trash from '../assets/basura.png';
+import ojo from '../assets/ojo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { show_alerta } from '../js/functions';
@@ -80,6 +81,13 @@ export const Usuarios = () => {
     const [modalEdit, setOpenEdit] = React.useState(false);
 
     function openModal() {
+      setNombre('');
+      setApellidoPaterno('');
+      setApellidoMaterno('');
+      setNumeroTelefoncico('');
+      setNombreUsuario('');
+      setContrasenia('');
+      setCorreo('');
       getRoles();
       setIsOpen(true);
     }
@@ -125,6 +133,7 @@ export const Usuarios = () => {
       var parametros, url='http://localhost:8080/api/simnil/persona/';
       if(idPersonas == '' || idPersonas == null) setIdPersonas(1);
   
+      
       if(nombre.trim() === ''){
         show_alerta('Escribe el Nombre de la Persona', 'warning');
       } else if(apellidoPaterno.trim() === ''){
@@ -150,10 +159,11 @@ export const Usuarios = () => {
             idRol: rol
           }
         }
-  
+
         enviarSolicitud(metodo, parametros, url);
+        getUsuarios();
       }
-      getUsuarios();
+      
     }
   
     const enviarSolicitud = async(metodo, parametros, url) => {
@@ -173,6 +183,7 @@ export const Usuarios = () => {
             getComunidades();
           } else {
             console.log("No se pudo");
+            show_alerta('Usuario Almacenado Correctamente', 'success');
           }
         })
         .catch(function (error) {
@@ -180,8 +191,7 @@ export const Usuarios = () => {
           console.log(error);
         });
       }
-  
-      console.log(parametros);
+
       await axios({
         method: metodo,
         url: url+parametros.idPersonas,
@@ -230,6 +240,17 @@ export const Usuarios = () => {
         }
       });
     }
+
+    function mostrarPassword(){
+      var cambio = document.getElementById("txtPassword");
+      if(cambio.type == "password"){
+        cambio.type = "text";
+        $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+      }else{
+        cambio.type = "password";
+        $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+      }
+    } 
 
     return(
         <>
@@ -355,7 +376,12 @@ export const Usuarios = () => {
 
                 <div className="field">
                   <span className='labInp'>Contraseña</span>
-                  <input required type='password' placeholder='Contraseña' value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+                  <div className="input-group" style={{width: '80%'}}>
+                    <input required type='password' id='txtPassword' placeholder='Contraseña'  value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+                    <div>
+                      <button id="show_password" className="btn btn-primary" type="button"  onClick={() => mostrarPassword()}> <img className='showPassword' src={ojo} /> </button>
+                    </div>
+                  </div>                  
                 </div>
               </div>
                     
@@ -371,8 +397,11 @@ export const Usuarios = () => {
               ) )}
             </select>
 
-            <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
-            <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>
+            <div className="acciones">
+              <button id='recu' onClick={() => validar('PUT')}>Guardar Cambios</button>
+              <button className='cancelar' id='cancelarEdit' onClick={closeModal}>Cancelar</button>
+            </div>
+            
             </form>
           </Modal>
 
@@ -421,7 +450,12 @@ export const Usuarios = () => {
 
                 <div className="field">
                   <span className='labInp'>Contraseña</span>
-                  <input required type='password' placeholder='Contraseña' value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+                  <div className="input-group" style={{width: '80%'}}>
+                    <input required type='password' id='txtPassword' placeholder='Contraseña'  value={contrasenia} onChange={(e) => setContrasenia(e.target.value)} />
+                    <div>
+                      <button id="show_password" className="btn btn-primary" type="button"  onClick={() => mostrarPassword()}> <img className='showPassword' src={ojo} /> </button>
+                    </div>
+                  </div>                  
                 </div>
               </div>
               
@@ -432,14 +466,17 @@ export const Usuarios = () => {
               
               
               <select required onChange={(e) => setRol(e.target.value)} id='listaRol'>
-              <option id='selected'>Selecciona Rol</option>
+              <option id='selected' value={null}>Selecciona Rol</option>
               {roles.map( (rol) => (
                 <option key={rol.idRol} value={rol.idRol}>{rol.rol}</option>
               ) )}
             </select>
 
-              <button id='recu' onClick={() => validar('POST')}>Crear Usuario</button>
-              <button id='cancelar' className='cancelar' onClick={closeModal}>Cancelar</button>
+              <div className="acciones">
+                <button id='recu' onClick={() => {if(rol != null || rol != '') validar('POST')}}>Crear Usuario</button>
+                <button id='cancelar' className='cancelar' onClick={closeModal}>Cancelar</button>
+              </div>
+              
               </form>
           </Modal>
         </div>

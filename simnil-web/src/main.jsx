@@ -11,12 +11,12 @@ import { Perfil } from './screens/Perfil'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <Routes>
-      <Route path='/SIMNIL/' Component={Login}/>
-      <Route path='/SIMNIL/Estadisticas' Component={Estadisticas}/>
-      <Route path='/SIMNIL/Usuarios' Component={Usuarios}/>
-      <Route path='/SIMNIL/Pozos' Component={Pozos}/>
-      <Route path='/SIMNIL/Comunidades' Component={Comunidades}/>
-      <Route path='/SIMNIL/Perfil' Component={Perfil}/>
+      <Route path='/SIMNIL/' element={<Login />}/>
+      <Route path='/SIMNIL/Estadisticas' element={< Estadisticas />}/>
+      <Route path='/SIMNIL/Usuarios' element={<Usuarios />}/>
+      <Route path='/SIMNIL/Pozos' element={<Pozos />}/>
+      <Route path='/SIMNIL/Comunidades' element={<Comunidades />}/>
+      <Route path='/SIMNIL/Perfil' element={<Perfil />}/>
     </Routes>
   </Router>
 )

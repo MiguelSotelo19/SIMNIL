@@ -20,7 +20,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { show_alerta } from '../js/functions';
 
-Modal.setAppElement('#root');
 
 const customStyles = {
   content: {
@@ -51,7 +50,7 @@ export const Pozos = () => {
     const [ nombre, setNombre ] = useState('');
     const [ porcentaje, setPorcentaje ] = useState('');
     const [ capLitros, setCapLitros ] = useState('');
-    const [ profundidad, setProfundidad ] = useState(0);
+    const [ profundidad, setProfundidad ] = useState(1);
 
     useEffect( () => {
       getPozos();
@@ -83,9 +82,6 @@ export const Pozos = () => {
       setOpenEdit(false); 
     }
 
-    //Funciones
-    function closeModalEdit() { setOpenEdit(false); }
-
   const openModalEdit = (idPozo, nombre, porcentaje, capLitros, profundidad) => {
     setOpenEdit(true);
 
@@ -100,15 +96,6 @@ export const Pozos = () => {
     var parametros, url='http://localhost:8080/api/simnil/pozos/';
     if(idPozo == '' || idPozo == null) setIdPozo(1);
 
-    if(nombre.trim() === ''){
-      show_alerta('Escribe el nombre del Pozo', 'warning');
-    } else if(porcentaje === '' || porcentaje === null){
-      show_alerta('Escribe el porcentaje', 'warning');
-    } else if(capLitros === '' || capLitros === null){
-      show_alerta('Escribe la capacidad del pozo', 'warning');
-    } else if(profundidad === '' || profundidad === null){
-      show_alerta('Escribe la profundidad del pozo', 'warning');
-    } else {
       parametros = {
         idPozo: idPozo,
         porcentajeAgua: porcentaje,
@@ -117,9 +104,9 @@ export const Pozos = () => {
         profundidad: profundidad,
         estatus: true
       }
+      console.log(parametros);
 
       enviarSolicitud(metodo, parametros, url);
-    }
   }
 
   const enviarSolicitud = async(metodo, parametros, url) => {
@@ -133,10 +120,12 @@ export const Pozos = () => {
         var tipo = respuesta.data[0];
         var msj = respuesta.data[1];
         show_alerta(msj, tipo);
-        if(tipo === 'success'){
-          document.getElementById('cancelarCreate').click();
+        if(tipo == 'success'){
+          //document.getElementById('cancelarCreate').click();
           show_alerta('Pozo Almacenado Correctamente', 'success');
           getPozos();
+        } else {
+          show_alerta('Pozo Almacenado Correctamente', 'success');
         }
       })
       .catch(function (error) {
@@ -154,10 +143,12 @@ export const Pozos = () => {
       var tipo = respuesta.data[0];
       var msj = respuesta.data[1];
       show_alerta(msj, tipo);
-      if(tipo === 'success'){
+      if(tipo == 'success'){
         document.getElementById('cancelarEdit').click();
         getPozos();
-      } 
+      } else {
+        show_alerta('Pozo Modificado Correctamente', 'success');
+      }
     })
     .catch(function (error) {
       show_alerta('Error en la Solicitud', 'error');
@@ -238,7 +229,7 @@ export const Pozos = () => {
                                 <td>{pozo.estatus == true ? "Activo": "Inactivo"}</td>
                                 <td style={{width: '15%'}}>
                                   <button className='btn btn-warning' style={{width: '45%'}} onClick={() => openModalEdit(
-                                    pozo.idPozo, pozo.nombre, pozo.capacidadLitros, pozo.porcentajeAgua, pozo.profundidad, pozo.estatus
+                                    pozo.idPozo, pozo.nombre, pozo.porcentajeAgua, pozo.capacidadLitros, pozo.profundidad, pozo.estatus
                                   )}>
                                     <img src={edit} className='icon' style={{width: '60%'}} />
                                   </button>
@@ -301,8 +292,11 @@ export const Pozos = () => {
               </div>
             </div>
 
-            <button id='recu' onClick={() => validar('POST')} >Crear Pozo</button>
-            <button id='cancelar' className='cancelar' onClick={closeModal}>Cancelar</button>
+            <div className="acciones">
+              <button id='recu' onClick={() => validar('POST')} >Crear Pozo</button>
+              <button id='cancelar' className='cancelar' onClick={closeModal}>Cancelar</button>
+            </div>
+            
             </form>
           </Modal>
 
@@ -338,9 +332,11 @@ export const Pozos = () => {
                 <input required type='number' placeholder='Capacidad de Litros' min={0} id='capacidadLitros' value={capLitros} onChange={(e) => setCapLitros(e.target.value)} />
               </div>
             </div>
-
-            <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
-            <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>
+ 
+            <div className="acciones">
+              <button id='recu' onClick={() => validar('PUT')}>Guardar Cambios</button>
+              <button className='cancelar' id='cancelarEdit' onClick={closeModal}>Cancelar</button>
+            </div>
             </form>
           </Modal>
 

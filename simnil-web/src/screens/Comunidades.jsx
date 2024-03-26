@@ -74,6 +74,9 @@ export const Comunidades = () => {
   const [modalEdit, setOpenEdit] = React.useState(false);
 
   function openModal() {
+    setNombre('');
+    setMunicipio('');
+    setCodigoPostal('');
     getPozos();
     setIsOpen(true);
   }
@@ -171,7 +174,6 @@ export const Comunidades = () => {
     }).then(function (respuesta) {
       var tipo = respuesta.data[0];
       var msj = respuesta.data[1];
-      show_alerta(msj, tipo);
       if(tipo === 'success'){
         document.getElementById('cancelarEdit').click();
         getComunidades();
@@ -326,8 +328,11 @@ export const Comunidades = () => {
               ) )}
             </select>
 
-            <button id='recu' style={{width: '50%'}} onClick={() => validar('PUT')}>Guardar Cambios</button>
-            <button className='cancelar' id='cancelarEdit' style={{width: '50%'}} onClick={closeModal}>Cancelar</button>
+            <div className="acciones">
+              <button id='recu' onClick={() => validar('PUT')}>Guardar Cambios</button>
+              <button className='cancelar' id='cancelarEdit' onClick={closeModal}>Cancelar</button>
+            </div>
+
             </form>
           </Modal>
 
@@ -370,8 +375,11 @@ export const Comunidades = () => {
               ) )}
             </select>
 
-            <button id='recu' onClick={() => validar('POST')}>Crear Comunidad</button>
-            <button className='cancelar' id='cancelarCreate' onClick={closeModal}>Cancelar</button>
+            <div className="acciones">
+              <button id='recu' onClick={() => validar('POST')}>Crear Comunidad</button>
+              <button className='cancelar' id='cancelarCreate' onClick={closeModal}>Cancelar</button>
+            </div>
+            
             </form>
           </Modal>
         </div>
