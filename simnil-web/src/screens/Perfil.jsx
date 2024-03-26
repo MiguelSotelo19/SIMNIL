@@ -6,8 +6,14 @@ import Flex from '@react-css/flex'
 import '../css/main.css';
 import '../css/header.css';
 import '../css/body.css';
+import { useEffect, useState } from 'react';
 
 export const Perfil = () => {
+  const [ usuario, setUsuario ] = useState('');
+  const [ puesto, setPuesto ] = useState('');
+  const [ contacto, setContacto ] = useState('');
+  const [ correo, setCorreo ] = useState('');
+
     return(
         <>
         <Flex row id='container'>
@@ -27,27 +33,35 @@ export const Perfil = () => {
               <hr />
 
               <h1 style={{color: 'black'}}>Datos Personales</h1>
-              <div id="info-personal">
-                <label>Usuario: 
-                    <input type='text' placeholder='Usuario' />
-                </label>
+              <form>
+                <div className="info-personal" >
+                  <div id="info-1" style={{display: 'flex', flexFlow: 'row', justifyContent: 'space-between', marginTop: '5%'}}>
+                    <div className="field">
+                      <span className='labInp' style={{fontSize: '30px'}}>Usuario</span>
+                      <input disabled style={{width: '60%', fontSize: '30px'}} type='text' placeholder='Usuario' value={usuario} />
+                    </div>
 
-                <label>Puesto: 
-                    <input type='text' placeholder='Puesto' />
-                </label>
+                    <div className="field">
+                      <span className='labInp' style={{fontSize: '30px'}}>Puesto</span>
+                      <input disabled style={{width: '60%', fontSize: '30px'}} type='text' placeholder='Puesto' value={puesto} />
+                    </div>
+                  </div>
+                
 
-              </div>
+                <div id="info-1" style={{display: 'flex', flexFlow: 'row', justifyContent: 'space-between', marginTop: '6%'}}>
+                  <div className="field">
+                    <span className='labInp' style={{fontSize: '30px'}}>Contacto</span>
+                    <input disabled style={{width: '60%', fontSize: '30px'}} type='text' placeholder='Contacto' value={contacto} />
+                  </div>
 
-              <div id="info-personal">
-                <label>Contacto: 
-                    <input type='text' placeholder='Contacto' />
-                </label>
-
-                <label>Correo: 
-                    <input type='text' placeholder='Correo' />
-                </label>
-              </div>
-              
+                  <div className="field">
+                    <span className='labInp' style={{fontSize: '30px'}}>Correo</span>
+                    <input disabled  style={{width: '60%', fontSize: '30px'}} type='text' placeholder='Correo' value={correo} />
+                  </div>
+                </div>
+                
+                </div>
+              </form>       
 
             </div>
           </div>
