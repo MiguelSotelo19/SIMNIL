@@ -29,13 +29,14 @@ public class PersonaController {
     }
 
     //Actualizar Persona
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> update
-    (@RequestBody PersonaDto dto, @PathVariable("id") Long id){
-        return service.update(dto.toUpdate(id));
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id, @RequestBody PersonaDto dto) {
+//     dto.setIdPersonas(id);
+//     return service.update(dto.toUpdate());
+//    }
 
-    //Mostrar todas las personas
+
+ //Mostrar todas las personas
     @GetMapping("/")
     public ResponseEntity<ApiResponse> getAll()
     {return service.getAll();}

@@ -99,18 +99,7 @@ public class PersonaService {
 
 
 
-    @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> update(PersonaBean updatePersona) {
-        if (updatePersona.getRolBean() == null || updatePersona.getRolBean().getIdRol() == null)
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un rol válido"), HttpStatus.BAD_REQUEST);
-        Optional <RolBean> foundRol = rolRepository.findById(updatePersona.getRolBean().getIdRol());
-        if (foundRol.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El rol proporcionado no existe"), HttpStatus.BAD_REQUEST);
-        Optional<PersonaBean> existingPersonOptional = repository.findById(updatePersona.getIdPersonas());
-        if (existingPersonOptional.isPresent())
-            updatePersona.setRolBean(foundRol.get());
-            return new ResponseEntity<>(new ApiResponse(repository.save(updatePersona), HttpStatus.OK, "Persona actualizada exitosamente"), HttpStatus.OK);
-    }
+
 
     //Eliminar Persona
 

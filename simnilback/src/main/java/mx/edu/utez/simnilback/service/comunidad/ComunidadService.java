@@ -86,9 +86,30 @@ public class ComunidadService {
         if (foundPozo.isEmpty())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El Pozo proporcionado no existe"), HttpStatus.BAD_REQUEST);
         Optional<ComunidadBean> existingComunidadOptional = repository.findById(updateComunidad.getIdComunidad());
+
+        if (updateComunidad.getNombre() == null || updateComunidad.getNombre().isEmpty() || updateComunidad.getNombre().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre del Pozo no debe ser vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (updateComunidad.getCodigo_postal() == null || updateComunidad.getCodigo_postal().isEmpty() || updateComunidad.getCodigo_postal().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El código postal del Pozo no debe ser vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (updateComunidad.getCodigo_postal().length() != 5){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El código postal del Pozo no cumple con la longitud estimada"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (updateComunidad.getMunicipio() == null || updateComunidad.getMunicipio().isEmpty() || updateComunidad.getMunicipio().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El municipio del Pozo no debe ser vacio"), HttpStatus.BAD_REQUEST);
+        }
+
+        if(updateComunidad.getEstatus() ==  null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El estatus del Pozo no debe ser vacio"), HttpStatus.BAD_REQUEST);
+        }
         if (existingComunidadOptional.isPresent())
             updateComunidad.setPozoBean(foundPozo.get());
         return new ResponseEntity<>(new ApiResponse(repository.save(updateComunidad), HttpStatus.OK, "Comunidad actualizada exitosamente"), HttpStatus.OK);
+
     }
 
 
