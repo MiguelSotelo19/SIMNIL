@@ -99,6 +99,57 @@ public class PersonaService {
 
 
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> update(PersonaBean updatePersona) {
+        if (updatePersona.getRolBean() == null || updatePersona.getRolBean().getIdRol() == null)
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Debe proporcionar un rol válido"), HttpStatus.BAD_REQUEST);
+        Optional <RolBean> foundRol = rolRepository.findById(updatePersona.getRolBean().getIdRol());
+        if (foundRol.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El rol proporcionado no existe"), HttpStatus.BAD_REQUEST);
+        Optional<PersonaBean> existingPersonOptional = repository.findByIdPersonas(updatePersona.getIdPersonas());
+        if (existingPersonOptional.isPresent())
+            updatePersona.setRolBean(foundRol.get());
+
+        if(updatePersona.getNombre() == null || updatePersona.getNombre().isEmpty() || updatePersona.getNombre().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre no debe ser vacío"), HttpStatus.BAD_REQUEST);
+        }
+
+        if(updatePersona.getApellidoPaterno() == null || updatePersona.getApellidoPaterno().isEmpty() || updatePersona.getApellidoPaterno().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El apellido paterno no debe ser vacío"), HttpStatus.BAD_REQUEST);
+        }
+
+        if(updatePersona.getApellidoMaterno() == null || updatePersona.getApellidoMaterno().isEmpty() || updatePersona.getApellidoMaterno().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El apellido materno no debe ser vacío"), HttpStatus.BAD_REQUEST);
+        }
+
+        if(updatePersona.getCorreo() == null || updatePersona.getCorreo().isEmpty() || updatePersona.getCorreo().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El correo materno no debe ser vacío"), HttpStatus.BAD_REQUEST);
+        }
+
+        if(updatePersona.getNombreUsuario() == null || updatePersona.getNombreUsuario().isEmpty() || updatePersona.getNombreUsuario().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre de usuario no debe ser vacío"), HttpStatus.BAD_REQUEST);
+        }
+
+        if(updatePersona.getContrasenia() == null || updatePersona.getContrasenia().isEmpty() || updatePersona.getContrasenia().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La contraseña no debe ser vacía"), HttpStatus.BAD_REQUEST);
+        }
+
+        if(updatePersona.getEstatus() == null){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El estatus de usuario no debe ser vacío"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (updatePersona.getNumeroTelefonico() == null || updatePersona.getNumeroTelefonico().isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El número telefónico no debe ser nulo"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (!updatePersona.getNumeroTelefonico().isBlank() && updatePersona.getNumeroTelefonico().length() != 10) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El número telefónico debe tener 10 caracteres"), HttpStatus.BAD_REQUEST);
+        }
+
+        String encrypted = passwordEncoder.encode(updatePersona.getContrasenia());
+        updatePersona.setContrasenia(encrypted);
+        return new ResponseEntity<>(new ApiResponse(repository.save(updatePersona), HttpStatus.OK, "Persona actualizada exitosamente"), HttpStatus.OK);
+    }
 
 
     //Eliminar Persona

@@ -29,11 +29,11 @@ public class PersonaController {
     }
 
     //Actualizar Persona
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id, @RequestBody PersonaDto dto) {
-//     dto.setIdPersonas(id);
-//     return service.update(dto.toUpdate());
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse> update(@PathVariable("id") Long id, @RequestBody PersonaDto dto) {
+     dto.setIdPersonas(id);
+     return service.update(dto.toUpdate());
+    }
 
 
  //Mostrar todas las personas
