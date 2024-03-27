@@ -1,3 +1,4 @@
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Perfil from "./screen/perfil";
 import Estadistica from "./screen/histogramas";
@@ -20,9 +21,6 @@ const Routes = () => {
           color: "#000", // Color del texto cuando no está seleccionado
           fontWeight: "bold", // Otras propiedades de estilo que desees agregar
         },
-        iconStyle: {
-          color: "#000", // Color del icono cuando no está seleccionado
-        },
         style: {
           backgroundColor: "#9b9b9b", // Color de fondo cuando no está seleccionado
         },
@@ -37,8 +35,8 @@ const Routes = () => {
           headerShadowVisible: false,
           tabBarActiveTintColor: "#191970",
           tabBarInactiveTintColor: "#002fd",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="user-circle" size={30} color="black" />
+          tabBarIcon: ({ color, size, focused }) => (
+            <FontAwesome name="user-circle" size={30} color={focused ? "#FFF" : "#000"} />
           ),
         }}
       ></Tab.Screen>
@@ -50,8 +48,8 @@ const Routes = () => {
           headerShadowVisible: false,
           tabBarActiveTintColor: "#191970",
           tabBarInactiveTintColor: "#002fd",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="stats-chart-sharp" size={24} color="black" />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name="stats-chart-sharp" size={24} color={focused ? "#FFF" : "#000"} />
           ),
         }}
       ></Tab.Screen>

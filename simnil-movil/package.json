@@ -33,6 +33,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^3.4.3",
     "react-native-modal": "^13.0.1",
+    "react-native-mqtt": "^0.1.0-beta4",
     "react-native-picker-select": "^9.0.1",
     "react-native-web": "~0.19.6"
   },
