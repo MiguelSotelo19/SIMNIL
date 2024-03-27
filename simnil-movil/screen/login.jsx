@@ -19,6 +19,8 @@ export default function Login() {
   const [modalVisible, setModalVisible] = useState(false);
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [contrasenia, setContrasenia] = useState("");
+  const [nuevacontrasenia, setNuevaContrasenia] = useState("");
+  const [confirmarContrasenia, setConfirmarContrasenia] = useState(""); 
   const navigation = useNavigation();
 
   const validar = async () => {
@@ -68,35 +70,33 @@ export default function Login() {
 
   const handleForgotPassword = async () => {
     try {
-      // Realizar la solicitud HTTP para cambiar la contraseña
+      if (nuevacontrasenia !== confirmarContrasenia) {
+        Alert.alert("Error", "Las contraseñas no coinciden");
+        return;
+      }
+
       const response = await axios.put(
         "http://10.0.2.2:8080/api/simnil/persona/recovery",
         {
-          nombreUsuario: nombreUsuario, // Aquí se envía el nombre de usuario
-          nuevaContrasenia: contrasenia, // Aquí se envía la nueva contraseña
+          nombreUsuario: nombreUsuario,
+          contrasenia: nuevacontrasenia,
         }
       );
-  
-      // Manejar la respuesta exitosa del servidor
-      console.log("Respuesta de la solicitud HTTP:", response.data.data);
-  
-      // Mostrar un mensaje de éxito al usuario
+
+      console.log("Respuesta de la solicitud HTTP:", response.data);
+
       Alert.alert("Éxito", "Se ha cambiado la contraseña exitosamente");
-  
-      // Cerrar el modal de recuperación de contraseña
+
       setModalVisible(false);
     } catch (error) {
-      // Manejar los errores que ocurran durante la solicitud HTTP
       console.error("Error al cambiar la contraseña:", error);
-  
-      // Mostrar un mensaje de error al usuario
+
       Alert.alert(
         "Error",
         "No se pudo cambiar la contraseña. Por favor, inténtalo de nuevo más tarde."
       );
     }
   };
-  
 
   const windowHeight = Dimensions.get("window").height;
 
@@ -145,19 +145,27 @@ export default function Login() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.baseText2} >Usuario</Text>
+            <Text style={styles.baseText}>Usuario</Text>
             <TextInput
               style={styles.inputmodal}
               value={nombreUsuario}
               onChangeText={(text) => setNombreUsuario(text)}
-            
             />
 
-            <Text style={styles.baseText2}>Nueva Contraseña:</Text>
+            <Text style={styles.baseText}>Nueva Contraseña:</Text>
             <TextInput
               style={styles.inputmodal}
-              value={contrasenia}
-              onChangeText={(text) => setContrasenia(text)}
+              value={nuevacontrasenia}
+              onChangeText={(text) => setNuevaContrasenia(text)}
+              secureTextEntry={true}
+            />
+
+            {/* Nuevo campo para confirmar contraseña */}
+            <Text style={styles.baseText}>Confirmar Contraseña:</Text>
+            <TextInput
+              style={styles.inputmodal}
+              value={confirmarContrasenia}
+              onChangeText={(text) => setConfirmarContrasenia(text)}
               secureTextEntry={true}
             />
 

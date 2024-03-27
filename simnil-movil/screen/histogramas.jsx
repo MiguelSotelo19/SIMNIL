@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'; // Importa ScrollView
+import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'; 
 import { LineChart } from 'react-native-chart-kit';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
@@ -89,7 +89,7 @@ const Estadistica = ({ fechaInicio, fechaFin }) => {
   const handleStartDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
     setStartDate(currentDate);
-    setStartDateFocused(false); // Cerrar el selector de fecha
+    setStartDateFocused(false); 
   };
 
   const handleEndDateChange = (event, selectedDate) => {
@@ -145,30 +145,31 @@ const Estadistica = ({ fechaInicio, fechaFin }) => {
         />
       )}
       {historial.map((datosPozo, index) => (
-        <View key={index}>
-          <Text>{datosPozo.name}</Text>
-          <LineChart
-            data={{
-              labels: datosPozo.data.map((item) => item.x.toISOString()),
-              datasets: [
-                {
-                  data: datosPozo.data.map((item) => item.y),
-                },
-              ],
-            }}
-            width={400}
-            height={200}
-            yAxisSuffix="%"
-            yAxisInterval={1}
-            chartConfig={{
-              backgroundGradientFrom: '#fff',
-              backgroundGradientTo: '#fff',
-              decimalPlaces: 2,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            }}
-          />
-        </View>
+  <View key={index} style={styles.chartContainer}>
+    <Text style={styles.chartTitle}>{datosPozo.name}</Text>
+    <LineChart
+      data={{
+        labels: datosPozo.data.map((item) => item.x.toISOString()),
+        datasets: [
+          {
+            data: datosPozo.data.map((item) => item.y),
+          },
+        ],
+      }}
+      width={Dimensions.get('window').width - 40} // Ancho ajustado al tamaño de la pantalla
+      height={200}
+      yAxisSuffix="%"
+      yAxisInterval={1}
+      chartConfig={{
+        backgroundGradientFrom: '#fff',
+        backgroundGradientTo: '#fff',
+        decimalPlaces: 2,
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+      }}
+      style={styles.chart} // Agregar estilo al gráfico para ajustar su apariencia
+    />
+  </View>
       ))}
     </ScrollView>
   );
@@ -184,5 +185,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+  chartContainer: {
+    marginBottom: 20,
+    paddingHorizontal: 20, // Agregar espacio horizontal alrededor del gráfico
+  },
+  chartTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  chart: {
+    marginVertical: 8, // Agregar margen vertical para separar el gráfico del título
+    borderRadius: 16, // Añadir bordes redondeados al gráfico
   },
 });
