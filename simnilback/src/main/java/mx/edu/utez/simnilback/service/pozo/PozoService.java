@@ -74,6 +74,27 @@ public class PozoService {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update(PozoBean pozoBean){
+
+        if(pozoBean.getNombre() == null || pozoBean.getNombre().isEmpty() || pozoBean.getNombre().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El pozo requiere un nombre"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (pozoBean.getCapacidadLitros() == null || pozoBean.getCapacidadLitros() < 0 || pozoBean.getCapacidadLitros() ==0) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La capacidad en litros debe ser un valor positivo y/o mayor a 0."), HttpStatus.BAD_REQUEST);
+        }
+
+        if (pozoBean.getPorcentajeAgua() < 0 || pozoBean.getPorcentajeAgua() > 100 || pozoBean.getPorcentajeAgua() == 0) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El porcentaje de agua debe estar entre 1 y 100."), HttpStatus.BAD_REQUEST);
+        }
+
+        if (pozoBean.getProfundidad() == null || pozoBean.getProfundidad() < 0 || pozoBean.getProfundidad() == 0) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La profundidad debe ser un valor positivo y mayor a 0."), HttpStatus.BAD_REQUEST);
+        }
+
+        if (pozoBean.getEstatus() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El estatus es requerido."), HttpStatus.BAD_REQUEST);
+        }
+
         Optional<PozoBean> foundPozo = repository.findById(pozoBean.getIdPozo());
         if (foundPozo.isPresent())
             return  new ResponseEntity<>(new ApiResponse(repository.save(pozoBean), HttpStatus.OK, "Se actualizo correctamente"), HttpStatus.OK);

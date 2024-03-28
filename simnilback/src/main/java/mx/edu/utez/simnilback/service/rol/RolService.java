@@ -67,6 +67,11 @@ public class RolService {
     //este es opcional, pero por si las dudas aksdlakdjlasd
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update(RolBean updateRol){
+
+        if(updateRol.getRol() == null || updateRol.getRol().isEmpty() || updateRol.getRol().isBlank()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El nombre del rol es requerido"), HttpStatus.BAD_REQUEST);
+        }
+
         Optional<RolBean> foundRol= repository.findById(updateRol.getIdRol());
         if (foundRol.isPresent()){
             return new ResponseEntity<>(new ApiResponse(repository.save(updateRol), HttpStatus.OK, "Actualización exitosa!"), HttpStatus.OK);
